@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+﻿using MakeFriendSolution.Models.Enum;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,15 @@ namespace MakeFriendSolution.Models
 {
     public class User
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
         public string PassWord { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool Disable { get; set; }
+        public ERole Role { get; set; }
         public string FullName { get; set; }
-
+        public EGender Gender { get; set; }
+        public string AvatarPath { get; set; }
+        public ELocation Location { get; set; }
+        public EUserStatus Status { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime CreatedAt { get; set; }

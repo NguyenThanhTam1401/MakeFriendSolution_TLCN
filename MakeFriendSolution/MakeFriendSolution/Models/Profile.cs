@@ -8,6 +8,35 @@ namespace MakeFriendSolution.Models
 {
     public class Profile
     {
+        public Profile()
+        {
+        }
+
+        public Profile(Profile profile)
+        {
+            Id = profile.Id;
+            Title = profile.Title;
+            Summary = profile.Summary;
+            FindPeople = profile.FindPeople;
+            Weight = profile.Weight;
+            Height = profile.Height;
+            Dob = profile.Dob;
+            UserId = profile.UserId;
+            IAm = profile.IAm;
+            Marriage = profile.Marriage;
+            Target = profile.Target;
+            Education = profile.Education;
+            Body = profile.Body;
+            Character = profile.Character;
+            LifeStyle = profile.LifeStyle;
+            MostValuable = profile.MostValuable;
+            Job = profile.Job;
+            Religion = profile.Religion;
+            Smoking = profile.Smoking;
+            DrinkBeer = profile.DrinkBeer;
+            Children = profile.Children;
+        }
+
         public int Id { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
@@ -15,7 +44,7 @@ namespace MakeFriendSolution.Models
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
 
         /// <summary>

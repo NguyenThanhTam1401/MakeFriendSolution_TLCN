@@ -8,7 +8,7 @@ namespace MakeFriendSolution.Models
     public class ThumbnailImage
     {
         public int Id { get; set; }
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; }
         public string ImagePath { get; set; }
         public DateTime CreatedAt { get; set; }

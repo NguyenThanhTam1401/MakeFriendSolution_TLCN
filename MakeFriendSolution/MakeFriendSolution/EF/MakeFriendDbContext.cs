@@ -1,4 +1,5 @@
-﻿using MakeFriendSolution.Models;
+﻿using MakeFriendSolution.EF.Configurations;
+using MakeFriendSolution.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,19 @@ namespace MakeFriendSolution.EF
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new HaveMessageConfig());
+            modelBuilder.ApplyConfiguration(new UserConfig());
+            modelBuilder.ApplyConfiguration(new ImageConfig());
+            modelBuilder.ApplyConfiguration(new ProfileConfig());
+
+            modelBuilder.Seed();
+        }
+
         public DbSet<User> Users { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<ThumbnailImage> ThumbnailImages { get; set; }
+        public DbSet<HaveMessage> HaveMessages { get; set; }
     }
 }
