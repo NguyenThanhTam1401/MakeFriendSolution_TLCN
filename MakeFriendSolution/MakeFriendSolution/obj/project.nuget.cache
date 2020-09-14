@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pcvBnGnRXSz2MGr1f6aVKRe/5nmhDJ4ESCZQPzK8x78PTW093EYgg0kMkwK8l8Np/S0nHbJlVg/q6dD+KMrEmA==",
+  "dgSpecHash": "A1qNY29yeh55ezDPqzQpL3+pi53RrOo5Z97o7Hn3DplqxF2ZYJ7XA0UT50js+kZRKrPnWxTOTgxYaujlaD35HQ==",
   "success": true,
-  "projectFilePath": "D:\\RealTime\\MakeFriendSolution\\MakeFriendSolution\\MakeFriendSolution.csproj",
+  "projectFilePath": "D:\\Github\\MakeFriendSolution_TLCN\\MakeFriendSolution\\MakeFriendSolution\\MakeFriendSolution.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Thanh Tam\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Thanh Tam\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.7\\microsoft.aspnetcore.jsonpatch.3.1.7.nupkg.sha512",

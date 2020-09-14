@@ -8921,11 +8921,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\RealTime\\MakeFriendSolution\\MakeFriendSolution\\MakeFriendSolution.csproj",
+      "projectUniqueName": "D:\\Github\\MakeFriendSolution_TLCN\\MakeFriendSolution\\MakeFriendSolution\\MakeFriendSolution.csproj",
       "projectName": "MakeFriendSolution",
-      "projectPath": "D:\\RealTime\\MakeFriendSolution\\MakeFriendSolution\\MakeFriendSolution.csproj",
+      "projectPath": "D:\\Github\\MakeFriendSolution_TLCN\\MakeFriendSolution\\MakeFriendSolution\\MakeFriendSolution.csproj",
       "packagesPath": "C:\\Users\\Thanh Tam\\.nuget\\packages\\",
-      "outputPath": "D:\\RealTime\\MakeFriendSolution\\MakeFriendSolution\\obj\\",
+      "outputPath": "D:\\Github\\MakeFriendSolution_TLCN\\MakeFriendSolution\\MakeFriendSolution\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Thanh Tam\\AppData\\Roaming\\NuGet\\NuGet.Config",

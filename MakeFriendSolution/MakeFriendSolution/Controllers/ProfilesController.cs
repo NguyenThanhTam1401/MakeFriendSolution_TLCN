@@ -25,7 +25,7 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpGet("matrix/{userId}")]
-        public async Task<IActionResult> GetMatrix(string userId, [FromQuery] FilterUserViewModel filter)
+        public async Task<IActionResult> GetMatrix(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
             var usersResponse = new List<UserResponse>();
 

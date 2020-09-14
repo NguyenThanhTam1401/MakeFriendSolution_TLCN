@@ -17,7 +17,7 @@ namespace MakeFriendSolution.EF
             builder.Entity<AppUser>().HasData(
                 new AppUser()
                 {
-                    Id = adminId.ToString(),
+                    Id = adminId,
                     UserName = "Admin",
                     FullName = "Nguyễn Thành Tâm",
                     Email = "tam@gmail.com",
@@ -51,7 +51,7 @@ namespace MakeFriendSolution.EF
                 },
                 new AppUser()
                 {
-                    Id = vuongId.ToString(),
+                    Id = vuongId,
                     UserName = "vuong",
                     FullName = "Nguyên Vương",
                     Email = "vuong@gmail.com",

@@ -111,7 +111,7 @@ namespace MakeFriendSolution.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, AppUser user)
+        public async Task<IActionResult> PutUser(Guid id, AppUser user)
         {
             if (id != user.Id)
             {
@@ -165,7 +165,7 @@ namespace MakeFriendSolution.Controllers
             return user;
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(Guid id)
         {
             return _context.Users.Any(e => e.Id == id);
         }
