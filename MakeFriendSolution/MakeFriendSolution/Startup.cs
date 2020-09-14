@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MakeFriendSolution.Common;
 using MakeFriendSolution.EF;
+using MakeFriendSolution.HubConfig;
+using MakeFriendSolution.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +31,15 @@ namespace MakeFriendSolution
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllOrigins",
-                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
+
+            services.AddSignalR();
 
             services.AddDbContext<MakeFriendDbContext>(options =>
     options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")));
@@ -52,7 +60,7 @@ namespace MakeFriendSolution
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors("AllowAllOrigins");
+            app.UseCors("CorsPolicy");
             app.UseRouting();
 
             app.UseAuthorization();
@@ -60,6 +68,7 @@ namespace MakeFriendSolution
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChartHub>("/chatHub");
             });
         }
     }

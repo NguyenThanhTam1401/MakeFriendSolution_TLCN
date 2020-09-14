@@ -8,7 +8,7 @@ namespace MakeFriendSolution.Models.ViewModels
 {
     public class UserResponse
     {
-        public UserResponse(User user)
+        public UserResponse(AppUser user)
         {
             Id = user.Id;
             UserName = user.UserName;
@@ -21,10 +21,9 @@ namespace MakeFriendSolution.Models.ViewModels
             Status = user.Status.ToString();
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
-            Profile = new ProfileResponse(user.Profile);
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string UserName { get; set; }
         public string PassWord { get; set; }
         public string Role { get; set; }

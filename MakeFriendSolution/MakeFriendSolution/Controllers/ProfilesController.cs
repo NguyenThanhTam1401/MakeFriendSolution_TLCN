@@ -25,22 +25,20 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpGet("matrix/{userId}")]
-        public async Task<IActionResult> GetMatrix(int userId)
+        public async Task<IActionResult> GetMatrix(string userId, [FromQuery] FilterUserViewModel filter)
         {
             var usersResponse = new List<UserResponse>();
 
             var user = await _context.Users
                 .Where(x => x.Id == userId)
-                .Include(x => x.Profile)
                 .FirstOrDefaultAsync();
 
-            UserResponse mainUser = new UserResponse(user);
-            usersResponse.Add(mainUser);
-
             var users = await _context.Users
-                .Include(x => x.Profile)
-                .Where(x => x.Id != userId)
+                .Where(x => x.Id != userId && x.IAm != user.IAm)
                 .ToListAsync();
+
+            //FilterUsers
+            FilterUers(ref users, filter);
 
             users.Insert(0, user);
 
@@ -52,27 +50,26 @@ namespace MakeFriendSolution.Controllers
 
             int sl = users.Count;
 
-            double[,] usersMatrix = new double[sl, 13];
+            double[,] usersMatrix = new double[sl, 12];
             for (int i = 0; i < sl; i++)
             {
-                usersMatrix[i, 0] = (double)users[i].Profile.IAm;
-                usersMatrix[i, 1] = (double)users[i].Profile.Marriage;
-                usersMatrix[i, 2] = (double)users[i].Profile.Target;
-                usersMatrix[i, 3] = (double)users[i].Profile.Education;
-                usersMatrix[i, 4] = (double)users[i].Profile.Body;
-                usersMatrix[i, 5] = (double)users[i].Profile.Character;
-                usersMatrix[i, 6] = (double)users[i].Profile.LifeStyle;
-                usersMatrix[i, 7] = (double)users[i].Profile.MostValuable;
-                usersMatrix[i, 8] = (double)users[i].Profile.Job;
-                usersMatrix[i, 9] = (double)users[i].Profile.Religion;
-                usersMatrix[i, 10] = (double)users[i].Profile.Smoking;
-                usersMatrix[i, 11] = (double)users[i].Profile.DrinkBeer;
-                usersMatrix[i, 12] = (double)users[i].Profile.Children;
+                usersMatrix[i, 0] = (double)users[i].Marriage;
+                usersMatrix[i, 1] = (double)users[i].Target;
+                usersMatrix[i, 2] = (double)users[i].Education;
+                usersMatrix[i, 3] = (double)users[i].Body;
+                usersMatrix[i, 4] = (double)users[i].Character;
+                usersMatrix[i, 5] = (double)users[i].LifeStyle;
+                usersMatrix[i, 6] = (double)users[i].MostValuable;
+                usersMatrix[i, 7] = (double)users[i].Job;
+                usersMatrix[i, 8] = (double)users[i].Religion;
+                usersMatrix[i, 9] = (double)users[i].Smoking;
+                usersMatrix[i, 10] = (double)users[i].DrinkBeer;
+                usersMatrix[i, 11] = (double)users[i].Children;
             }
 
             cMatrix m = new cMatrix();
             m.Row = sl;
-            m.Column = 13;
+            m.Column = 12;
             m.Matrix = usersMatrix;
 
             List<double> kq = new List<double>();
@@ -88,86 +85,70 @@ namespace MakeFriendSolution.Controllers
             return Ok(usersResponse);
         }
 
-        // GET: api/Profiles
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
+        private int CalculateAge(DateTime birthDay)
         {
-            return await _context.Profiles.ToListAsync();
+            var today = DateTime.Today;
+            var age = today.Year - birthDay.Year;
+            if (birthDay > today.AddYears(-age))
+                age--;
+
+            return age;
         }
 
-        // GET: api/Profiles/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
+        private void FilterUers(ref List<AppUser> users, FilterUserViewModel filter)
         {
-            var profile = await _context.Profiles.FindAsync(id);
-
-            if (profile == null)
+            if (filter.Location != null && filter.Location != "")
             {
-                return NotFound();
+                if (Enum.TryParse(filter.Location.Trim(), out ELocation locate))
+                {
+                    users = users.Where(x => x.Location == locate).ToList();
+                }
             }
 
-            return profile;
+            if (filter.FullName != null && filter.FullName.Trim() != "")
+            {
+                users = users.Where(x => x.FullName.Contains(filter.FullName.Trim())).ToList();
+            }
+
+            if (filter.Gender != null && filter.Gender.Trim() != "")
+            {
+                if (Enum.TryParse(filter.Gender.Trim(), out EGender gender))
+                    users = users.Where(x => x.Gender == gender).ToList();
+            }
+
+            if (filter.FromAge != 0)
+            {
+                users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
+            }
+
+            if (filter.ToAge != 0)
+            {
+                users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
+            }
         }
 
-        // PUT: api/Profiles/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfile(int id, Profile profile)
+        [HttpGet("updateProfile")]
+        public async Task<IActionResult> ChuanHoaDob()
         {
-            if (id != profile.Id)
+            Random random = new Random();
+            var users = await _context.Users
+                .Where(x => x.Dob.Year > 2010).ToListAsync();
+            foreach (var user in users)
             {
-                return BadRequest();
+                user.Dob = user.Dob.AddYears(-random.Next(15, 60));
             }
-
-            _context.Entry(profile).State = EntityState.Modified;
 
             try
             {
+                _context.UpdateRange(users);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
-                if (!ProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                var message = e.InnerException;
+                return BadRequest(message);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Profiles
-        [HttpPost]
-        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
-        {
-            _context.Profiles.Add(profile);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
-        }
-
-        // DELETE: api/Profiles/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Profile>> DeleteProfile(int id)
-        {
-            var profile = await _context.Profiles.FindAsync(id);
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            _context.Profiles.Remove(profile);
-            await _context.SaveChangesAsync();
-
-            return profile;
-        }
-
-        private bool ProfileExists(int id)
-        {
-            return _context.Profiles.Any(e => e.Id == id);
+            return Ok("Profiles had been updated!");
         }
     }
 }

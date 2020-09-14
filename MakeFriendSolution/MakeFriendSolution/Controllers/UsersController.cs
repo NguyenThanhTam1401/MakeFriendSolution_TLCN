@@ -30,9 +30,9 @@ namespace MakeFriendSolution.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
-            return await _context.Users.Include(x => x.Profile).ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         [HttpGet("test")]
@@ -49,7 +49,7 @@ namespace MakeFriendSolution.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromForm] LoginRequest request)
         {
-            var user = await _context.Users.Include(x => x.Profile)
+            var user = await _context.Users
                 .Where(x => x.UserName == request.UserName.Trim()).FirstOrDefaultAsync();
 
             if (user == null)
@@ -72,7 +72,7 @@ namespace MakeFriendSolution.Controllers
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(SignUpRequest request)
         {
-            var user = new User()
+            var user = new AppUser()
             {
                 CreatedAt = DateTime.Now,
                 Email = request.Email,
@@ -82,8 +82,7 @@ namespace MakeFriendSolution.Controllers
                 PhoneNumber = request.PhoneNumber,
                 Role = ERole.User,
                 Status = EUserStatus.Active,
-                UserName = request.UserName,
-                UpdatedAt = DateTime.Now
+                UserName = request.UserName
             };
             //Save Image
             if (request.AvartarFile != null)
@@ -112,7 +111,7 @@ namespace MakeFriendSolution.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(string id, AppUser user)
         {
             if (id != user.Id)
             {
@@ -142,7 +141,7 @@ namespace MakeFriendSolution.Controllers
 
         // POST: api/Users
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<AppUser>> PostUser(AppUser user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -152,7 +151,7 @@ namespace MakeFriendSolution.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(Guid id)
+        public async Task<ActionResult<AppUser>> DeleteUser(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -166,7 +165,7 @@ namespace MakeFriendSolution.Controllers
             return user;
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
         }

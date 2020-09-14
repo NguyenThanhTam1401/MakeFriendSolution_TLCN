@@ -7,16 +7,14 @@ namespace MakeFriendSolution.Models.ViewModels
 {
     public class ProfileResponse
     {
-        public ProfileResponse(Profile profile)
+        public ProfileResponse(AppUser profile)
         {
-            Id = profile.Id;
             Title = profile.Title;
             Summary = profile.Summary;
             FindPeople = profile.FindPeople;
             Weight = profile.Weight;
             Height = profile.Height;
             Dob = profile.Dob;
-            UserId = profile.UserId;
             IAm = profile.IAm.ToString();
             Marriage = profile.Marriage.ToString();
             Target = profile.Target.ToString();
@@ -32,14 +30,12 @@ namespace MakeFriendSolution.Models.ViewModels
             Children = profile.Children.ToString();
         }
 
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }
         public string FindPeople { get; set; }
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
-        public int UserId { get; set; }
 
         /// <summary>
         /// Dưới đây là các thông số dùng để tính toán

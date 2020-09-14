@@ -5,21 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200906095347_Init.cs" />
-    <Compile Remove="Migrations\20200906095347_Init.Designer.cs" />
-    <Compile Remove="Migrations\20200906095732_Init.cs" />
-    <Compile Remove="Migrations\20200906095732_Init.Designer.cs" />
-    <Compile Remove="Migrations\20200907042213_Init.cs" />
-    <Compile Remove="Migrations\20200907042213_Init.Designer.cs" />
-    <Compile Remove="Migrations\20200907053818_Init.cs" />
-    <Compile Remove="Migrations\20200907053818_Init.Designer.cs" />
-    <Compile Remove="Migrations\20200907055416_Init.cs" />
-    <Compile Remove="Migrations\20200907055416_Init.Designer.cs" />
-    <Compile Remove="Migrations\20200907125227_Init.cs" />
-    <Compile Remove="Migrations\20200907125227_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200911054248_Init.cs" />
+    <Compile Remove="Migrations\20200911054248_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200912075457_Init.cs" />
+    <Compile Remove="Migrations\20200912075457_Init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="user-content\" />
   </ItemGroup>
 

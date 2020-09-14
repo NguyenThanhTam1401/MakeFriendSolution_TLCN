@@ -12,10 +12,12 @@ namespace MakeFriendSolution.EF
     {
         public static void Seed(this ModelBuilder builder)
         {
-            builder.Entity<User>().HasData(
-                new User()
+            var adminId = new Guid("EC826AF8-0310-48CF-8A14-DA11BDB1C96D");
+            var vuongId = new Guid("EC826AF8-0310-48CF-8A14-DA11BDB1C96E");
+            builder.Entity<AppUser>().HasData(
+                new AppUser()
                 {
-                    Id = 1,
+                    Id = adminId.ToString(),
                     UserName = "Admin",
                     FullName = "Nguyễn Thành Tâm",
                     Email = "tam@gmail.com",
@@ -27,30 +29,6 @@ namespace MakeFriendSolution.EF
                     Location = ELocation.TP_HCM,
                     Gender = EGender.Nam,
                     CreatedAt = new DateTime(2020, 09, 07),
-                    UpdatedAt = new DateTime(2020, 09, 07)
-                },
-                new User()
-                {
-                    Id = 2,
-                    UserName = "vuong",
-                    FullName = "Nguyên Vương",
-                    Email = "vuong@gmail.com",
-                    PassWord = "1111",
-                    PhoneNumber = "0396925225",
-                    Role = ERole.Admin,
-                    Status = EUserStatus.Active,
-                    AvatarPath = "vuong.jpg",
-                    Location = ELocation.Hà_Nội,
-                    Gender = EGender.Nam,
-                    CreatedAt = new DateTime(2020, 09, 07),
-                    UpdatedAt = new DateTime(2020, 09, 07)
-                }
-            );
-
-            builder.Entity<Profile>().HasData(
-                new Profile()
-                {
-                    Id = 1,
                     Dob = new DateTime(1999, 01, 14),
                     Height = 170,
                     Weight = 65,
@@ -70,11 +48,21 @@ namespace MakeFriendSolution.EF
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    UserId = 1
                 },
-                new Profile()
+                new AppUser()
                 {
-                    Id = 2,
+                    Id = vuongId.ToString(),
+                    UserName = "vuong",
+                    FullName = "Nguyên Vương",
+                    Email = "vuong@gmail.com",
+                    PassWord = "1111",
+                    PhoneNumber = "0396925225",
+                    Role = ERole.Admin,
+                    Status = EUserStatus.Active,
+                    AvatarPath = "vuong.jpg",
+                    Location = ELocation.Hà_Nội,
+                    Gender = EGender.Nam,
+                    CreatedAt = new DateTime(2020, 09, 07),
                     Dob = new DateTime(1999, 01, 14),
                     Height = 170,
                     Weight = 65,
@@ -94,7 +82,6 @@ namespace MakeFriendSolution.EF
                     Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Người_Yêu_Lâu_Dài,
                     Title = "Thông tin của tôi",
-                    UserId = 2
                 }
             );
         }

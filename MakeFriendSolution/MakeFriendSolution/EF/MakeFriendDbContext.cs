@@ -19,13 +19,11 @@ namespace MakeFriendSolution.EF
             modelBuilder.ApplyConfiguration(new HaveMessageConfig());
             modelBuilder.ApplyConfiguration(new UserConfig());
             modelBuilder.ApplyConfiguration(new ImageConfig());
-            modelBuilder.ApplyConfiguration(new ProfileConfig());
 
             modelBuilder.Seed();
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<AppUser> Users { get; set; }
         public DbSet<ThumbnailImage> ThumbnailImages { get; set; }
         public DbSet<HaveMessage> HaveMessages { get; set; }
     }
