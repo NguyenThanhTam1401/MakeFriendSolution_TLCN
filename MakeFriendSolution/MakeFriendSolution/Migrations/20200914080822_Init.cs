@@ -11,21 +11,10 @@ namespace MakeFriendSolution.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
-                    NormalizedUserName = table.Column<string>(nullable: true),
+                    Id = table.Column<Guid>(nullable: false),
                     Email = table.Column<string>(maxLength: 200, nullable: false),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
                     PassWord = table.Column<string>(unicode: false, maxLength: 200, nullable: false),
                     Role = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(maxLength: 200, nullable: false),
@@ -68,8 +57,8 @@ namespace MakeFriendSolution.Migrations
                     Content = table.Column<string>(maxLength: 5000, nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 1),
                     SentAt = table.Column<DateTime>(nullable: false),
-                    SenderId = table.Column<string>(nullable: true),
-                    ReceiverId = table.Column<string>(nullable: true)
+                    SenderId = table.Column<Guid>(nullable: false),
+                    ReceiverId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,7 +81,7 @@ namespace MakeFriendSolution.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: false, defaultValue: "Image title"),
                     ImagePath = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false)
@@ -105,18 +94,18 @@ namespace MakeFriendSolution.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "AvatarPath", "Body", "Character", "Children", "ConcurrencyStamp", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "EmailConfirmed", "FindPeople", "FullName", "Gender", "Height", "IAm", "Job", "LifeStyle", "Location", "LockoutEnabled", "LockoutEnd", "Marriage", "MostValuable", "NormalizedEmail", "NormalizedUserName", "PassWord", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Religion", "Role", "SecurityStamp", "Smoking", "Status", "Summary", "Target", "Title", "TwoFactorEnabled", "UserName", "Weight" },
-                values: new object[] { "ec826af8-0310-48cf-8a14-da11bdb1c96d", 0, "Tam.jpg", 0, 1, 0, "a02acc64-bac2-4963-9dae-6435b498d714", new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "tam@gmail.com", false, "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 7, 8, 37, false, null, 3, 23, null, null, "admin", null, "0396925225", false, 0, 0, "f2c38aaa-4b90-443b-ac2a-b24a6466e2b5", 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 5, "Thông tin của tôi", false, "Admin", 65 });
+                columns: new[] { "Id", "AvatarPath", "Body", "Character", "Children", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FindPeople", "FullName", "Gender", "Height", "IAm", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Role", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
+                values: new object[] { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"), "Tam.jpg", 0, 1, 0, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "tam@gmail.com", "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 7, 8, 37, 3, 23, "admin", "0396925225", 0, 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 5, "Thông tin của tôi", "Admin", 65 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "AvatarPath", "Body", "Character", "Children", "ConcurrencyStamp", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "EmailConfirmed", "FindPeople", "FullName", "Gender", "Height", "IAm", "Job", "LifeStyle", "Location", "LockoutEnabled", "LockoutEnd", "Marriage", "MostValuable", "NormalizedEmail", "NormalizedUserName", "PassWord", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Religion", "Role", "SecurityStamp", "Smoking", "Status", "Summary", "Target", "Title", "TwoFactorEnabled", "UserName", "Weight" },
-                values: new object[] { "ec826af8-0310-48cf-8a14-da11bdb1c96e", 0, "vuong.jpg", 3, 3, 2, "9825592a-1d76-484a-809b-db6e7b6061e7", new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4, "vuong@gmail.com", false, "Tìm người thương", "Nguyên Vương", 0, 170, 0, 7, 1, 38, false, null, 1, 1, null, null, "1111", null, "0396925225", false, 2, 0, "40367dba-52f5-463e-8d31-25b179bde7f4", 1, 0, "Tôi là Vương, rất vui khi được làm quen với bạn", 0, "Thông tin của tôi", false, "vuong", 65 });
+                columns: new[] { "Id", "AvatarPath", "Body", "Character", "Children", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FindPeople", "FullName", "Gender", "Height", "IAm", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Role", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
+                values: new object[] { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96e"), "vuong.jpg", 3, 3, 2, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4, "vuong@gmail.com", "Tìm người thương", "Nguyên Vương", 0, 170, 0, 7, 1, 38, 1, 1, "1111", "0396925225", 2, 0, 1, 0, "Tôi là Vương, rất vui khi được làm quen với bạn", 0, "Thông tin của tôi", "vuong", 65 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_HaveMessages_ReceiverId",

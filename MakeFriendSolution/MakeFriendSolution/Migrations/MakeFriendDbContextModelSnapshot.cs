@@ -21,11 +21,9 @@ namespace MakeFriendSolution.Migrations
 
             modelBuilder.Entity("MakeFriendSolution.Models.AppUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AvatarPath")
                         .HasColumnType("nvarchar(max)");
@@ -38,9 +36,6 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<int>("Children")
                         .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -58,9 +53,6 @@ namespace MakeFriendSolution.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<string>("FindPeople")
                         .HasColumnType("nvarchar(max)");
@@ -88,23 +80,11 @@ namespace MakeFriendSolution.Migrations
                     b.Property<int>("Location")
                         .HasColumnType("int");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("Marriage")
                         .HasColumnType("int");
 
                     b.Property<int>("MostValuable")
                         .HasColumnType("int");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PassWord")
                         .IsRequired()
@@ -112,23 +92,14 @@ namespace MakeFriendSolution.Migrations
                         .HasMaxLength(200)
                         .IsUnicode(false);
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Religion")
                         .HasColumnType("int");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Smoking")
                         .HasColumnType("int");
@@ -144,9 +115,6 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -164,19 +132,16 @@ namespace MakeFriendSolution.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ec826af8-0310-48cf-8a14-da11bdb1c96d",
-                            AccessFailedCount = 0,
+                            Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"),
                             AvatarPath = "Tam.jpg",
                             Body = 0,
                             Character = 1,
                             Children = 0,
-                            ConcurrencyStamp = "a02acc64-bac2-4963-9dae-6435b498d714",
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DrinkBeer = 4,
                             Education = 2,
                             Email = "tam@gmail.com",
-                            EmailConfirmed = false,
                             FindPeople = "Tìm người yêu",
                             FullName = "Nguyễn Thành Tâm",
                             Gender = 0,
@@ -185,39 +150,32 @@ namespace MakeFriendSolution.Migrations
                             Job = 7,
                             LifeStyle = 8,
                             Location = 37,
-                            LockoutEnabled = false,
                             Marriage = 3,
                             MostValuable = 23,
                             PassWord = "admin",
                             PhoneNumber = "0396925225",
-                            PhoneNumberConfirmed = false,
                             Religion = 0,
                             Role = 0,
-                            SecurityStamp = "f2c38aaa-4b90-443b-ac2a-b24a6466e2b5",
                             Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                             Target = 5,
                             Title = "Thông tin của tôi",
-                            TwoFactorEnabled = false,
                             UserName = "Admin",
                             Weight = 65
                         },
                         new
                         {
-                            Id = "ec826af8-0310-48cf-8a14-da11bdb1c96e",
-                            AccessFailedCount = 0,
+                            Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96e"),
                             AvatarPath = "vuong.jpg",
                             Body = 3,
                             Character = 3,
                             Children = 2,
-                            ConcurrencyStamp = "9825592a-1d76-484a-809b-db6e7b6061e7",
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DrinkBeer = 4,
                             Education = 4,
                             Email = "vuong@gmail.com",
-                            EmailConfirmed = false,
                             FindPeople = "Tìm người thương",
                             FullName = "Nguyên Vương",
                             Gender = 0,
@@ -226,21 +184,17 @@ namespace MakeFriendSolution.Migrations
                             Job = 7,
                             LifeStyle = 1,
                             Location = 38,
-                            LockoutEnabled = false,
                             Marriage = 1,
                             MostValuable = 1,
                             PassWord = "1111",
                             PhoneNumber = "0396925225",
-                            PhoneNumberConfirmed = false,
                             Religion = 2,
                             Role = 0,
-                            SecurityStamp = "40367dba-52f5-463e-8d31-25b179bde7f4",
                             Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
                             Target = 0,
                             Title = "Thông tin của tôi",
-                            TwoFactorEnabled = false,
                             UserName = "vuong",
                             Weight = 65
                         });
@@ -260,11 +214,11 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(5000);
 
-                    b.Property<string>("ReceiverId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ReceiverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SenderId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("datetime2");
@@ -305,8 +259,8 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("Image title");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -320,19 +274,23 @@ namespace MakeFriendSolution.Migrations
                     b.HasOne("MakeFriendSolution.Models.AppUser", "Receiver")
                         .WithMany("ReceiveMessages")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("MakeFriendSolution.Models.AppUser", "Sender")
                         .WithMany("SendMessages")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MakeFriendSolution.Models.ThumbnailImage", b =>
                 {
                     b.HasOne("MakeFriendSolution.Models.AppUser", "User")
                         .WithMany("ThumbnailImages")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
