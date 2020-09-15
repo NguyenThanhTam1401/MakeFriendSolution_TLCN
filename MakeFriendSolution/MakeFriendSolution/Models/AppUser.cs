@@ -46,6 +46,8 @@ namespace MakeFriendSolution.Models
         public EMostValuable MostValuable { get; set; }
         public EJob Job { get; set; }
         public EReligion Religion { get; set; }
+        public EFavoriteMovie FavoriteMovie { get; set; }
+        public EAtmosphereLike AtmosphereLike { get; set; }
         public ESmoking Smoking { get; set; }
         public EDrinkBeer DrinkBeer { get; set; }
         public EChildren Children { get; set; }

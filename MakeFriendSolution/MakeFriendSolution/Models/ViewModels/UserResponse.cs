@@ -12,20 +12,18 @@ namespace MakeFriendSolution.Models.ViewModels
         {
             Id = user.Id;
             UserName = user.UserName;
-            PassWord = user.PassWord;
             Role = user.Role.ToString();
             FullName = user.FullName;
             Gender = user.Gender.ToString();
-            AvatarPath = user.AvatarPath;
             Location = user.Location.ToString();
             Status = user.Status.ToString();
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
+            Profile = new ProfileResponse(user);
         }
 
         public Guid Id { get; set; }
         public string UserName { get; set; }
-        public string PassWord { get; set; }
         public string Role { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
@@ -35,6 +33,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public double Point { get; set; }
+        public bool HasAvatar { get; set; }
         public ProfileResponse Profile { get; set; }
     }
 }

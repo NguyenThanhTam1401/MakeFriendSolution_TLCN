@@ -48,6 +48,8 @@ namespace MakeFriendSolution.EF
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
+                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
+                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình
                 },
                 new AppUser()
                 {
@@ -82,6 +84,8 @@ namespace MakeFriendSolution.EF
                     Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Người_Yêu_Lâu_Dài,
                     Title = "Thông tin của tôi",
+                    AtmosphereLike = EAtmosphereLike.Tĩnh_Lặng,
+                    FavoriteMovie = EFavoriteMovie.Hài_Hước
                 }
             );
         }

@@ -28,6 +28,8 @@ namespace MakeFriendSolution.Models.ViewModels
             Smoking = profile.Smoking.ToString();
             DrinkBeer = profile.DrinkBeer.ToString();
             Children = profile.Children.ToString();
+            FavoriteMovie = profile.FavoriteMovie.ToString();
+            AtmosphereLike = profile.AtmosphereLike.ToString();
         }
 
         public string Title { get; set; }
@@ -51,6 +53,8 @@ namespace MakeFriendSolution.Models.ViewModels
         public string MostValuable { get; set; }
         public string Job { get; set; }
         public string Religion { get; set; }
+        public string FavoriteMovie { get; set; }
+        public string AtmosphereLike { get; set; }
         public string Smoking { get; set; }
         public string DrinkBeer { get; set; }
         public string Children { get; set; }

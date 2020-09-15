@@ -63,10 +63,22 @@ namespace MakeFriendSolution.Controllers
                 return BadRequest(message);
             }
 
-            byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
-            user.AvatarPath = Convert.ToBase64String(imageBits);
+            var userResponse = new UserResponse(user);
 
-            return Ok(user);
+            // Get image code if available
+            try
+            {
+                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+                userResponse.AvatarPath = Convert.ToBase64String(imageBits);
+                userResponse.HasAvatar = true;
+            }
+            catch
+            {
+                userResponse.HasAvatar = false;
+                userResponse.AvatarPath = user.AvatarPath;
+            }
+
+            return Ok(userResponse);
         }
 
         [HttpPost("signUp")]

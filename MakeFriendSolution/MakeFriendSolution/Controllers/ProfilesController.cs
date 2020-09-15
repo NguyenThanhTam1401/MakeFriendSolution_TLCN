@@ -50,7 +50,7 @@ namespace MakeFriendSolution.Controllers
 
             int sl = users.Count;
 
-            double[,] usersMatrix = new double[sl, 12];
+            double[,] usersMatrix = new double[sl, 14];
             for (int i = 0; i < sl; i++)
             {
                 usersMatrix[i, 0] = (double)users[i].Marriage;
@@ -65,11 +65,13 @@ namespace MakeFriendSolution.Controllers
                 usersMatrix[i, 9] = (double)users[i].Smoking;
                 usersMatrix[i, 10] = (double)users[i].DrinkBeer;
                 usersMatrix[i, 11] = (double)users[i].Children;
+                usersMatrix[i, 12] = (double)users[i].FavoriteMovie;
+                usersMatrix[i, 13] = (double)users[i].AtmosphereLike;
             }
 
             cMatrix m = new cMatrix();
             m.Row = sl;
-            m.Column = 12;
+            m.Column = 14;
             m.Matrix = usersMatrix;
 
             List<double> kq = new List<double>();

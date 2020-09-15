@@ -11,10 +11,11 @@
     <Compile Remove="Migrations\20200912075457_Init.Designer.cs" />
     <Compile Remove="Migrations\20200913110316_Init.cs" />
     <Compile Remove="Migrations\20200913110316_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200914080822_Init.cs" />
+    <Compile Remove="Migrations\20200914080822_Init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="user-content\" />
   </ItemGroup>
 
