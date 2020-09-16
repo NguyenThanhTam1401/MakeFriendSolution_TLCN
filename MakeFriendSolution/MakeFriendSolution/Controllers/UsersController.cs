@@ -35,15 +35,25 @@ namespace MakeFriendSolution.Controllers
             return await _context.Users.ToListAsync();
         }
 
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetById(Guid userId)
         {
-            Enum.TryParse("Mảnh_Mai", out EBody body);
-            var obj = new
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return NotFound("Can not find user by id = " + userId);
+            var respone = new UserResponse(user);
+            try
             {
-                body = body.ToString()
-            };
-            return Ok(obj);
+                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+                respone.AvatarPath = Convert.ToBase64String(imageBits);
+                respone.HasAvatar = true;
+            }
+            catch
+            {
+                respone.HasAvatar = false;
+                respone.AvatarPath = user.AvatarPath;
+            }
+            return Ok(respone);
         }
 
         [HttpPost("login")]

@@ -21,10 +21,17 @@ namespace MakeFriendSolution.Common
         public async Task DeleteFileAsync(string fileName)
         {
             var filePath = Path.Combine(_userContentFolder, fileName);
-            if (File.Exists(fileName))
+            try
             {
                 await Task.Run(() => File.Delete(filePath));
             }
+            catch
+            {
+            }
+            //if (!File.Exists(fileName))
+            //{
+            //    await Task.Run(() => File.Delete(filePath));
+            //}
         }
 
         public string GetFileUrl(string fileName)

@@ -19,6 +19,7 @@ namespace MakeFriendSolution.Models.ViewModels
             Status = user.Status.ToString();
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
+            Job = user.Job.ToString();
             Profile = new ProfileResponse(user);
         }
 
@@ -34,6 +35,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public string PhoneNumber { get; set; }
         public double Point { get; set; }
         public bool HasAvatar { get; set; }
+        public string Job { get; set; }
         public ProfileResponse Profile { get; set; }
     }
 }

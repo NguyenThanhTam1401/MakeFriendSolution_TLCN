@@ -1,36 +1,28 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Models.ViewModels
 {
-    public class ProfileResponse
+    public class UserRequest
     {
-        public ProfileResponse(AppUser profile)
-        {
-            Title = profile.Title;
-            Summary = profile.Summary;
-            FindPeople = profile.FindPeople;
-            Weight = profile.Weight;
-            Height = profile.Height;
-            Dob = profile.Dob;
-            IAm = profile.IAm.ToString();
-            Marriage = profile.Marriage.ToString();
-            Target = profile.Target.ToString();
-            Education = profile.Education.ToString();
-            Body = profile.Body.ToString();
-            Character = profile.Character.ToString();
-            LifeStyle = profile.LifeStyle.ToString();
-            MostValuable = profile.MostValuable.ToString();
-            Religion = profile.Religion.ToString();
-            Smoking = profile.Smoking.ToString();
-            DrinkBeer = profile.DrinkBeer.ToString();
-            FavoriteMovie = profile.FavoriteMovie.ToString();
-            AtmosphereLike = profile.AtmosphereLike.ToString();
-        }
+        public Guid Id { get; set; }
+        public string FullName { get; set; }
+        public string Gender { get; set; }
+        public IFormFile AvatarFile { get; set; }
+        public string Location { get; set; }
+        public string Status { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public double Point { get; set; }
+        public bool HasAvatar { get; set; }
+        public string Job { get; set; }
 
+        //
         public string Title { get; set; }
+
         public string Summary { get; set; }
         public string FindPeople { get; set; }
         public int Weight { get; set; }

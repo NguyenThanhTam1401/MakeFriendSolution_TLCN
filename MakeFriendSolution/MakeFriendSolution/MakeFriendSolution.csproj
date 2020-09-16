@@ -13,9 +13,20 @@
     <Compile Remove="Migrations\20200913110316_Init.Designer.cs" />
     <Compile Remove="Migrations\20200914080822_Init.cs" />
     <Compile Remove="Migrations\20200914080822_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200914115903_Init.cs" />
+    <Compile Remove="Migrations\20200914115903_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200915013855_Init.cs" />
+    <Compile Remove="Migrations\20200915013855_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200915030955_Init.cs" />
+    <Compile Remove="Migrations\20200915030955_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200915031511_Init.cs" />
+    <Compile Remove="Migrations\20200915031511_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200915032616_Init.cs" />
+    <Compile Remove="Migrations\20200915032616_Init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="user-content\" />
   </ItemGroup>
 

@@ -7,10 +7,10 @@ namespace MakeFriendSolution.Models.Enum
 {
     public enum EAtmosphereLike
     {
-        Náo_Nhiệt,
-        Vui_Tươi,
-        Bình_Yên,
         Tĩnh_Lặng,
-        Êm_Đềm
+        Êm_Đềm,
+        Bình_Yên,
+        Vui_Tươi,
+        Náo_Nhiệt
     }
 }

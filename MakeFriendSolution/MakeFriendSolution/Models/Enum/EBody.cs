@@ -7,13 +7,11 @@ namespace MakeFriendSolution.Models.Enum
 {
     public enum EBody
     {
-        Cân_Đối,
-        Cao_Lớn,
-        Mảnh_Mai,
-        Mũm_Mĩm,
         Nhỏ_Nhắn,
-        Tầm_Thước,
-        Thấp_Đậm,
+        Mảnh_Mai,
+        Cân_Đối,
+        Mũm_Mĩm,
+        Cao_Lớn,
         Vạm_Vỡ
     }
 }

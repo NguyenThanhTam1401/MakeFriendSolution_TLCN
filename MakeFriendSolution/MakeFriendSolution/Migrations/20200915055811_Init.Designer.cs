@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20200914115903_Init")]
+    [Migration("20200915055811_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,6 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Character")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Children")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -141,27 +138,26 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"),
-                            AtmosphereLike = 0,
+                            AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
-                            Body = 0,
+                            Body = 2,
                             Character = 1,
-                            Children = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DrinkBeer = 4,
                             Education = 2,
                             Email = "tam@gmail.com",
-                            FavoriteMovie = 0,
+                            FavoriteMovie = 11,
                             FindPeople = "Tìm người yêu",
                             FullName = "Nguyễn Thành Tâm",
                             Gender = 0,
                             Height = 170,
                             IAm = 0,
                             Job = 7,
-                            LifeStyle = 8,
+                            LifeStyle = 3,
                             Location = 37,
-                            Marriage = 3,
-                            MostValuable = 23,
+                            Marriage = 1,
+                            MostValuable = 2,
                             PassWord = "admin",
                             PhoneNumber = "0396925225",
                             Religion = 0,
@@ -169,9 +165,44 @@ namespace MakeFriendSolution.Migrations
                             Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 5,
+                            Target = 4,
                             Title = "Thông tin của tôi",
                             UserName = "Admin",
+                            Weight = 65
+                        },
+                        new
+                        {
+                            Id = new Guid("8bc11011-453d-4575-acb1-4bc85f5a43f7"),
+                            AtmosphereLike = 3,
+                            AvatarPath = "Tam.jpg",
+                            Body = 2,
+                            Character = 1,
+                            CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DrinkBeer = 4,
+                            Education = 2,
+                            Email = "nhung@gmail.com",
+                            FavoriteMovie = 11,
+                            FindPeople = "Tìm người yêu",
+                            FullName = "Nguyễn Huyền Nhung",
+                            Gender = 1,
+                            Height = 170,
+                            IAm = 1,
+                            Job = 7,
+                            LifeStyle = 5,
+                            Location = 37,
+                            Marriage = 1,
+                            MostValuable = 3,
+                            PassWord = "admin",
+                            PhoneNumber = "0369875463",
+                            Religion = 0,
+                            Role = 1,
+                            Smoking = 1,
+                            Status = 0,
+                            Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
+                            Target = 4,
+                            Title = "Thông tin của tôi",
+                            UserName = "HuyenNhung",
                             Weight = 65
                         },
                         new
@@ -181,13 +212,12 @@ namespace MakeFriendSolution.Migrations
                             AvatarPath = "vuong.jpg",
                             Body = 3,
                             Character = 3,
-                            Children = 2,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DrinkBeer = 4,
                             Education = 4,
                             Email = "vuong@gmail.com",
-                            FavoriteMovie = 0,
+                            FavoriteMovie = 7,
                             FindPeople = "Tìm người thương",
                             FullName = "Nguyên Vương",
                             Gender = 0,
@@ -196,8 +226,8 @@ namespace MakeFriendSolution.Migrations
                             Job = 7,
                             LifeStyle = 1,
                             Location = 38,
-                            Marriage = 1,
-                            MostValuable = 1,
+                            Marriage = 2,
+                            MostValuable = 2,
                             PassWord = "1111",
                             PhoneNumber = "0396925225",
                             Religion = 2,
@@ -205,7 +235,7 @@ namespace MakeFriendSolution.Migrations
                             Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
-                            Target = 0,
+                            Target = 3,
                             Title = "Thông tin của tôi",
                             UserName = "vuong",
                             Weight = 65

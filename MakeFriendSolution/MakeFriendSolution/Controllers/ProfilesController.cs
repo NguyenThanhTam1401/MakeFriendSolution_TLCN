@@ -10,6 +10,8 @@ using MakeFriendSolution.Models;
 using MakeFriendSolution.Common;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -18,10 +20,12 @@ namespace MakeFriendSolution.Controllers
     public class ProfilesController : ControllerBase
     {
         private readonly MakeFriendDbContext _context;
+        private readonly IStorageService _storageService;
 
-        public ProfilesController(MakeFriendDbContext context)
+        public ProfilesController(MakeFriendDbContext context, IStorageService storageService)
         {
             _context = context;
+            _storageService = storageService;
         }
 
         [HttpGet("matrix/{userId}")]
@@ -50,28 +54,26 @@ namespace MakeFriendSolution.Controllers
 
             int sl = users.Count;
 
-            double[,] usersMatrix = new double[sl, 14];
+            double[,] usersMatrix = new double[sl, 12];
             for (int i = 0; i < sl; i++)
             {
                 usersMatrix[i, 0] = (double)users[i].Marriage;
                 usersMatrix[i, 1] = (double)users[i].Target;
                 usersMatrix[i, 2] = (double)users[i].Education;
                 usersMatrix[i, 3] = (double)users[i].Body;
-                usersMatrix[i, 4] = (double)users[i].Character;
-                usersMatrix[i, 5] = (double)users[i].LifeStyle;
-                usersMatrix[i, 6] = (double)users[i].MostValuable;
-                usersMatrix[i, 7] = (double)users[i].Job;
-                usersMatrix[i, 8] = (double)users[i].Religion;
-                usersMatrix[i, 9] = (double)users[i].Smoking;
-                usersMatrix[i, 10] = (double)users[i].DrinkBeer;
-                usersMatrix[i, 11] = (double)users[i].Children;
-                usersMatrix[i, 12] = (double)users[i].FavoriteMovie;
-                usersMatrix[i, 13] = (double)users[i].AtmosphereLike;
+                usersMatrix[i, 4] = (double)users[i].Religion;
+                usersMatrix[i, 5] = (double)users[i].Smoking;
+                usersMatrix[i, 6] = (double)users[i].DrinkBeer;
+                usersMatrix[i, 7] = (double)users[i].FavoriteMovie;
+                usersMatrix[i, 8] = (double)users[i].AtmosphereLike;
+                usersMatrix[i, 9] = (double)users[i].Character;
+                usersMatrix[i, 10] = (double)users[i].LifeStyle;
+                usersMatrix[i, 11] = (double)users[i].MostValuable;
             }
 
             cMatrix m = new cMatrix();
             m.Row = sl;
-            m.Column = 14;
+            m.Column = 12;
             m.Matrix = usersMatrix;
 
             List<double> kq = new List<double>();
@@ -82,9 +84,181 @@ namespace MakeFriendSolution.Controllers
                 usersResponse[i].Point = kq[i];
             }
 
-            usersResponse.RemoveAt(0);
+            //usersResponse.RemoveAt(0);
             usersResponse = usersResponse.OrderByDescending(o => o.Point).ToList();
             return Ok(usersResponse);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UserRequest request)
+        {
+            var user = await _context.Users.FindAsync(request.Id);
+            if (user == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Can not find User with Id = " + request.Id
+                });
+            }
+
+            user = await this.BidingUserRequest(user, request);
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return BadRequest(new
+                {
+                    Message = e.InnerException
+                });
+            }
+
+            var response = new UserResponse(user);
+            try
+            {
+                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+                response.AvatarPath = Convert.ToBase64String(imageBits);
+                response.HasAvatar = true;
+            }
+            catch
+            {
+                response.HasAvatar = false;
+                response.AvatarPath = user.AvatarPath;
+            }
+            return Ok(response);
+        }
+
+        private async Task<AppUser> BidingUserRequest(AppUser user, UserRequest request)
+        {
+            if (Enum.TryParse(request.Gender, out EGender gender))
+            {
+                user.Gender = gender;
+            }
+
+            if (Enum.TryParse(request.Education, out ELocation location))
+            {
+                user.Location = location;
+            }
+
+            if (Enum.TryParse(request.IAm, out EIAm iAm))
+            {
+                user.IAm = iAm;
+            }
+
+            if (Enum.TryParse(request.Marriage, out EMarriage marriage))
+            {
+                user.Marriage = marriage;
+            }
+
+            if (Enum.TryParse(request.Target, out ETarget target))
+            {
+                user.Target = target;
+            }
+
+            if (Enum.TryParse(request.Education, out EEducation education))
+            {
+                user.Education = education;
+            }
+
+            if (Enum.TryParse(request.Body, out EBody body))
+            {
+                user.Body = body;
+            }
+
+            if (Enum.TryParse(request.Character, out ECharacter character))
+            {
+                user.Character = character;
+            }
+
+            if (Enum.TryParse(request.LifeStyle, out ELifeStyle lifeStyle))
+            {
+                user.LifeStyle = lifeStyle;
+            }
+
+            if (Enum.TryParse(request.MostValuable, out EMostValuable mostValuable))
+            {
+                user.MostValuable = mostValuable;
+            }
+
+            if (Enum.TryParse(request.Job, out EJob job))
+            {
+                user.Job = job;
+            }
+
+            if (Enum.TryParse(request.Religion, out EReligion religion))
+            {
+                user.Religion = religion;
+            }
+
+            if (Enum.TryParse(request.FavoriteMovie, out EFavoriteMovie favoriteMovie))
+            {
+                user.FavoriteMovie = favoriteMovie;
+            }
+
+            if (Enum.TryParse(request.AtmosphereLike, out EAtmosphereLike atmosphereLike))
+            {
+                user.AtmosphereLike = atmosphereLike;
+            }
+
+            if (Enum.TryParse(request.Smoking, out ESmoking smoking))
+            {
+                user.Smoking = smoking;
+            }
+
+            if (Enum.TryParse(request.DrinkBeer, out EDrinkBeer drinkBeer))
+            {
+                user.DrinkBeer = drinkBeer;
+            }
+
+            //
+
+            if (request.PhoneNumber != "" && request.PhoneNumber != null)
+            {
+                user.PhoneNumber = request.PhoneNumber;
+            }
+
+            if (request.FullName != "" && request.FullName != null)
+            {
+                user.FullName = request.FullName;
+            }
+
+            if (request.Title != "" && request.Title != null)
+            {
+                user.Title = request.Title;
+            }
+
+            if (request.Summary != "" && request.Summary != null)
+            {
+                user.Summary = request.Summary;
+            }
+
+            if (request.FindPeople != "" && request.FindPeople != null)
+            {
+                user.FindPeople = request.FindPeople;
+            }
+
+            if (request.Weight >= 20 && request.Weight <= 200)
+            {
+                user.Weight = request.Weight;
+            }
+
+            if (request.Height >= 120 && request.Height <= 200)
+            {
+                user.Height = request.Height;
+            }
+
+            if (CalculateAge(request.Dob) >= 10 && CalculateAge(request.Dob) <= 100)
+            {
+                user.Dob = request.Dob;
+            }
+
+            if (request.AvatarFile != null)
+            {
+                user.AvatarPath = await this.SaveFile(request.AvatarFile);
+            }
+            return user;
         }
 
         private int CalculateAge(DateTime birthDay)
@@ -127,6 +301,15 @@ namespace MakeFriendSolution.Controllers
             {
                 users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
             }
+        }
+
+        //Save File
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return _storageService.GetFileUrl(fileName);
         }
 
         [HttpGet("updateProfile")]

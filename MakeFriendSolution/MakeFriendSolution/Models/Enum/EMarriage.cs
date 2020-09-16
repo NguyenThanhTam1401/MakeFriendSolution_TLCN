@@ -8,8 +8,8 @@ namespace MakeFriendSolution.Models.Enum
     public enum EMarriage
     {
         Độc_Thân,
+        Đang_Yêu,
         Ly_Dị,
-        Ở_Góa,
-        Đang_Yêu
+        Ở_Góa
     }
 }

@@ -107,19 +107,36 @@ namespace MakeFriendSolution.Common
         public List<double> TinhCos()
         {
             List<double> kq = new List<double>();
-            double s;
+            double tichVoHuong;
+            double tichDoDai;
             GetLength();
             StandardizedMatrix();
 
             int i = 0;
             for (i = 0; i < this.Row; i++)
             {
-                s = 0;
+                tichVoHuong = 0;
+                tichDoDai = 1;
+
+                //double VectorA = 0;
+                //double VectorB = 0;
+
+                double lengthVectorA = 0;
+                double lengthVectorB = 0;
+
                 for (int j = 0; j < this.Column; j++)
                 {
-                    s += this.Matrix[0, j] * this.Matrix[i, j];
+                    tichVoHuong += this.Matrix[0, j] * this.Matrix[i, j];
+
+                    lengthVectorA += (this.Matrix[0, j] * this.Matrix[0, j]);
+                    lengthVectorB += (this.Matrix[i, j] * this.Matrix[i, j]);
                 }
-                kq.Add(Math.Round(s * 100, 3));
+
+                tichDoDai = Math.Sqrt(lengthVectorA) * Math.Sqrt(lengthVectorB);
+
+                double result = tichVoHuong / tichDoDai;
+
+                kq.Add(Math.Round(result * 100, 3));
             }
             return kq;
         }

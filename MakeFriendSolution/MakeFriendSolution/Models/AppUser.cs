@@ -50,7 +50,6 @@ namespace MakeFriendSolution.Models
         public EAtmosphereLike AtmosphereLike { get; set; }
         public ESmoking Smoking { get; set; }
         public EDrinkBeer DrinkBeer { get; set; }
-        public EChildren Children { get; set; }
 
         //
 
@@ -93,7 +92,6 @@ namespace MakeFriendSolution.Models
             Religion = user.Religion;
             Smoking = user.Smoking;
             DrinkBeer = user.DrinkBeer;
-            Children = user.Children;
         }
 
         public AppUser()
