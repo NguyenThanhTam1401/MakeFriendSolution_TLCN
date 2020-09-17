@@ -60,11 +60,11 @@ namespace MakeFriendSolution.Controllers
         public async Task<IActionResult> Login([FromForm] LoginRequest request)
         {
             var user = await _context.Users
-                .Where(x => x.UserName == request.UserName.Trim()).FirstOrDefaultAsync();
+                .Where(x => x.Email == request.Email.Trim()).FirstOrDefaultAsync();
 
             if (user == null)
             {
-                var message = "Can not find User with UserName is " + request.UserName;
+                var message = "Can not find User with UserName is " + request.Email;
                 return BadRequest(message);
             }
             if (user.PassWord != request.Password.Trim())
@@ -92,29 +92,19 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpPost("signUp")]
-        public async Task<IActionResult> SignUp(SignUpRequest request)
+        public async Task<IActionResult> SignUp([FromForm] SignUpRequest request)
         {
             var user = new AppUser()
             {
                 CreatedAt = DateTime.Now,
                 Email = request.Email,
+                UserName = request.Email,
                 FullName = request.FullName,
-                Gender = request.Gender,
                 PassWord = request.Password,
-                PhoneNumber = request.PhoneNumber,
                 Role = ERole.User,
                 Status = EUserStatus.Active,
-                UserName = request.UserName
+                AvatarPath = "image.jpg"
             };
-            //Save Image
-            if (request.AvartarFile != null)
-            {
-                user.AvatarPath = await this.SaveFile(request.AvartarFile);
-            }
-            else
-            {
-                user.AvatarPath = "image.jpg";
-            }
 
             try
             {
@@ -126,8 +116,8 @@ namespace MakeFriendSolution.Controllers
                 var message = e.InnerException;
                 return BadRequest(message);
             }
-            byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
-            user.AvatarPath = Convert.ToBase64String(imageBits);
+            //byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+            //user.AvatarPath = Convert.ToBase64String(imageBits);
             return Ok(user);
         }
 

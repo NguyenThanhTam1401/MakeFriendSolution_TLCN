@@ -48,7 +48,8 @@ namespace MakeFriendSolution.EF
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình
+                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
+                    IsInfoUpdated = 1
                 },
 
                 new AppUser()
@@ -85,7 +86,8 @@ namespace MakeFriendSolution.EF
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình
+                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
+                    IsInfoUpdated = 1
                 },
 
                 new AppUser()
@@ -121,7 +123,8 @@ namespace MakeFriendSolution.EF
                     Target = ETarget.Tìm_Người_Yêu_Lâu_Dài,
                     Title = "Thông tin của tôi",
                     AtmosphereLike = EAtmosphereLike.Tĩnh_Lặng,
-                    FavoriteMovie = EFavoriteMovie.Hài_Hước
+                    FavoriteMovie = EFavoriteMovie.Hài_Hước,
+                    IsInfoUpdated = 1
                 }
             );
         }

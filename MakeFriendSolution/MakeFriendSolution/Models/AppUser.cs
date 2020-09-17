@@ -23,6 +23,7 @@ namespace MakeFriendSolution.Models
         public EUserStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public int IsInfoUpdated { get; set; }
         //
 
         public string Title { get; set; }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20200915055811_Init")]
+    [Migration("20200916170043_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,11 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<int>("IAm")
                         .HasColumnType("int");
+
+                    b.Property<int>("IsInfoUpdated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("Job")
                         .HasColumnType("int");
@@ -153,6 +158,7 @@ namespace MakeFriendSolution.Migrations
                             Gender = 0,
                             Height = 170,
                             IAm = 0,
+                            IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 3,
                             Location = 37,
@@ -172,7 +178,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8bc11011-453d-4575-acb1-4bc85f5a43f7"),
+                            Id = new Guid("5d670d31-6b83-4025-b675-022a889894a6"),
                             AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
                             Body = 2,
@@ -188,6 +194,7 @@ namespace MakeFriendSolution.Migrations
                             Gender = 1,
                             Height = 170,
                             IAm = 1,
+                            IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 5,
                             Location = 37,
@@ -223,6 +230,7 @@ namespace MakeFriendSolution.Migrations
                             Gender = 0,
                             Height = 170,
                             IAm = 0,
+                            IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 1,
                             Location = 38,

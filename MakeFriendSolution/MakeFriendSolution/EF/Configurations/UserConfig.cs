@@ -17,6 +17,7 @@ namespace MakeFriendSolution.EF.Configurations
             builder.Property(x => x.PassWord).IsRequired().IsUnicode(false).HasMaxLength(200);
             builder.Property(x => x.FullName).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.IsInfoUpdated).HasDefaultValue(0);
 
             builder.HasMany(x => x.SendMessages).WithOne(a => a.Sender).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.ReceiveMessages).WithOne(a => a.Receiver).HasForeignKey(x => x.ReceiverId).OnDelete(DeleteBehavior.NoAction);
