@@ -94,11 +94,26 @@ namespace MakeFriendSolution.Migrations
                     b.Property<int>("MostValuable")
                         .HasColumnType("int");
 
+                    b.Property<int>("NumberOfPasswordConfirmations")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<string>("PassWord")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
                         .HasMaxLength(200)
                         .IsUnicode(false);
+
+                    b.Property<string>("PasswordForgottenCode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime>("PasswordForgottenPeriod")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -162,7 +177,9 @@ namespace MakeFriendSolution.Migrations
                             Location = 37,
                             Marriage = 1,
                             MostValuable = 2,
+                            NumberOfPasswordConfirmations = 0,
                             PassWord = "admin",
+                            PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
                             Religion = 0,
                             Role = 0,
@@ -176,7 +193,45 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5d670d31-6b83-4025-b675-022a889894a6"),
+                            Id = new Guid("b59715db-f5b9-4b0f-b7c4-5d399d4877ad"),
+                            AtmosphereLike = 3,
+                            AvatarPath = "Tam.jpg",
+                            Body = 2,
+                            Character = 1,
+                            CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DrinkBeer = 4,
+                            Education = 2,
+                            Email = "ng.th.tam1401@gmail.com",
+                            FavoriteMovie = 11,
+                            FindPeople = "Tìm người yêu",
+                            FullName = "Nguyễn Thành Tâm",
+                            Gender = 0,
+                            Height = 170,
+                            IAm = 0,
+                            IsInfoUpdated = 1,
+                            Job = 7,
+                            LifeStyle = 3,
+                            Location = 37,
+                            Marriage = 1,
+                            MostValuable = 2,
+                            NumberOfPasswordConfirmations = 0,
+                            PassWord = "123",
+                            PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PhoneNumber = "0396925225",
+                            Religion = 0,
+                            Role = 0,
+                            Smoking = 1,
+                            Status = 0,
+                            Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
+                            Target = 4,
+                            Title = "Thông tin của tôi",
+                            UserName = "tamxix",
+                            Weight = 65
+                        },
+                        new
+                        {
+                            Id = new Guid("46abd9be-11ec-4df5-bbdf-27bc827306df"),
                             AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
                             Body = 2,
@@ -198,7 +253,9 @@ namespace MakeFriendSolution.Migrations
                             Location = 37,
                             Marriage = 1,
                             MostValuable = 3,
+                            NumberOfPasswordConfirmations = 0,
                             PassWord = "admin",
+                            PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0369875463",
                             Religion = 0,
                             Role = 1,
@@ -234,7 +291,9 @@ namespace MakeFriendSolution.Migrations
                             Location = 38,
                             Marriage = 2,
                             MostValuable = 2,
+                            NumberOfPasswordConfirmations = 0,
                             PassWord = "1111",
+                            PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
                             Religion = 2,
                             Role = 0,

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Models.Enum
 {
-    public enum EUserStatus
+    public enum EOperationType
     {
-        Active,
-        Inactive,
-        IsVerifying
+        None = 0,
+        SignUp = 1,
+        UpdateConfirmMail = 2
     }
 }

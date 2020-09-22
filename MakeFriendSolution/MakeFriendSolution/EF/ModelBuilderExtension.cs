@@ -51,6 +51,42 @@ namespace MakeFriendSolution.EF
                     FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = 1
                 },
+                new AppUser()
+                {
+                    Id = Guid.NewGuid(),
+                    UserName = "tamxix",
+                    FullName = "Nguyễn Thành Tâm",
+                    Email = "ng.th.tam1401@gmail.com",
+                    PassWord = "123",
+                    PhoneNumber = "0396925225",
+                    Role = ERole.Admin,
+                    Status = EUserStatus.Active,
+                    AvatarPath = "Tam.jpg",
+                    Location = ELocation.TP_HCM,
+                    Gender = EGender.Nam,
+                    CreatedAt = new DateTime(2020, 09, 07),
+                    Dob = new DateTime(1999, 01, 14),
+                    Height = 170,
+                    Weight = 65,
+                    FindPeople = "Tìm người yêu",
+                    Body = EBody.Cân_Đối,
+                    Character = ECharacter.Chung_Thủy,
+                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
+                    Education = EEducation.Cao_Đẳng,
+                    IAm = EIAm.Nam_Tìm_Nữ,
+                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
+                    Marriage = EMarriage.Đang_Yêu,
+                    MostValuable = EMostValuable.Bạn_Bè,
+                    Religion = EReligion.Không_Có_Đạo,
+                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
+                    Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
+                    Target = ETarget.Tìm_Bạn_Đời,
+                    Title = "Thông tin của tôi",
+                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
+                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
+                    IsInfoUpdated = 1
+                },
 
                 new AppUser()
                 {

@@ -36,6 +36,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public double Point { get; set; }
         public bool HasAvatar { get; set; }
         public string Job { get; set; }
+        public string Token { get; set; }
         public ProfileResponse Profile { get; set; }
     }
 }

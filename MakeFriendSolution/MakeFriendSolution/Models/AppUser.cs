@@ -24,6 +24,10 @@ namespace MakeFriendSolution.Models
         public DateTime CreatedAt { get; set; }
 
         public int IsInfoUpdated { get; set; }
+        public string PasswordForgottenCode { get; set; }
+        public DateTime PasswordForgottenPeriod { get; set; }
+        public int NumberOfPasswordConfirmations { get; set; }
+
         //
 
         public string Title { get; set; }
