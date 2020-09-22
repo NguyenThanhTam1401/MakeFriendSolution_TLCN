@@ -137,8 +137,10 @@ namespace MakeFriendSolution.Controllers
             if (DateTime.Now < user.PasswordForgottenPeriod)
             {
                 string time = user.PasswordForgottenPeriod.ToShortTimeString();
-                return BadRequest(new
+                var UserData = this.GetForgotPasswordUserResponse(user);
+                return Ok(new
                 {
+                    UserData = UserData,
                     Message = "Vui lòng nhập mã xác nhận trong email của bạn. Để nhận mã mới vui lòng xác nhận lại email sau " + time
                 });
             }
@@ -173,8 +175,11 @@ namespace MakeFriendSolution.Controllers
 
             if (result == MessageMail.MailSent)
             {
+                var userData = this.GetForgotPasswordUserResponse(user);
+
                 return Ok(new
                 {
+                    UserData = userData,
                     Message = "Mã xác nhận đã được gửi vào mail của bạn, nhập mã để thay đổi mật khẩu, mã sẽ hết hiệu lực sau " + user.PasswordForgottenPeriod.ToShortTimeString()
                 });
             }
@@ -221,6 +226,7 @@ namespace MakeFriendSolution.Controllers
                         });
                     }
                     user.Status = EUserStatus.Active;
+                    user.NumberOfPasswordConfirmations = 3;
 
                     _context.Users.Update(user);
                     await _context.SaveChangesAsync();
@@ -631,6 +637,29 @@ namespace MakeFriendSolution.Controllers
                 Email = claims[3].Value
             };
             return info;
+        }
+
+        private Object GetForgotPasswordUserResponse(AppUser user)
+        {
+            var avatarPath = user.AvatarPath;
+            bool hasAvatar = false;
+            try
+            {
+                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+                avatarPath = Convert.ToBase64String(imageBits);
+                hasAvatar = true;
+            }
+            catch
+            {
+            }
+
+            return new
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                AvatarPath = avatarPath,
+                HasAvatar = hasAvatar
+            };
         }
     }
 }
