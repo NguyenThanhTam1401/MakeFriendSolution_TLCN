@@ -1,4 +1,5 @@
 ﻿using MakeFriendSolution.Models;
+using MakeFriendSolution.Models.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -21,6 +22,7 @@ namespace MakeFriendSolution.EF.Configurations
             builder.Property(x => x.NumberOfPasswordConfirmations).HasDefaultValue(0);
             builder.Property(x => x.PasswordForgottenPeriod).HasDefaultValue(new DateTime(2000, 1, 1));
             builder.Property(x => x.PasswordForgottenCode).HasDefaultValue("");
+            builder.Property(x => x.TypeAccount).HasDefaultValue(ETypeAccount.System);
 
             builder.HasMany(x => x.SendMessages).WithOne(a => a.Sender).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.ReceiveMessages).WithOne(a => a.Receiver).HasForeignKey(x => x.ReceiverId).OnDelete(DeleteBehavior.NoAction);

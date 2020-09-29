@@ -17,6 +17,7 @@ namespace MakeFriendSolution.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     PassWord = table.Column<string>(unicode: false, maxLength: 200, nullable: false),
                     Role = table.Column<int>(nullable: false),
+                    TypeAccount = table.Column<int>(nullable: false, defaultValue: 0),
                     FullName = table.Column<string>(maxLength: 200, nullable: false),
                     Gender = table.Column<int>(nullable: false),
                     AvatarPath = table.Column<string>(nullable: true),
@@ -108,8 +109,8 @@ namespace MakeFriendSolution.Migrations
                 values: new object[,]
                 {
                     { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "tam@gmail.com", 11, "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 1, 7, 3, 37, 1, 2, "admin", "0396925225", 0, 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "Admin", 65 },
-                    { new Guid("b59715db-f5b9-4b0f-b7c4-5d399d4877ad"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "ng.th.tam1401@gmail.com", 11, "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 1, 7, 3, 37, 1, 2, "123", "0396925225", 0, 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "tamxix", 65 },
-                    { new Guid("46abd9be-11ec-4df5-bbdf-27bc827306df"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "nhung@gmail.com", 11, "Tìm người yêu", "Nguyễn Huyền Nhung", 1, 170, 1, 1, 7, 5, 37, 1, 3, "admin", "0369875463", 0, 1, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "HuyenNhung", 65 },
+                    { new Guid("afa5c352-fd48-4172-83b7-40fb8f664f9f"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "ng.th.tam1401@gmail.com", 11, "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 1, 7, 3, 37, 1, 2, "123", "0396925225", 0, 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "tamxix", 65 },
+                    { new Guid("275aea40-0189-4f1b-9058-2ca10f4455e3"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "nhung@gmail.com", 11, "Tìm người yêu", "Nguyễn Huyền Nhung", 1, 170, 1, 1, 7, 5, 37, 1, 3, "admin", "0369875463", 0, 1, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "HuyenNhung", 65 },
                     { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96e"), 0, "vuong.jpg", 3, 3, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4, "vuong@gmail.com", 7, "Tìm người thương", "Nguyên Vương", 0, 170, 0, 1, 7, 1, 38, 2, 2, "1111", "0396925225", 2, 0, 1, 0, "Tôi là Vương, rất vui khi được làm quen với bạn", 3, "Thông tin của tôi", "vuong", 65 }
                 });
 

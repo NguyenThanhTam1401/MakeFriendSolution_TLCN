@@ -16,6 +16,7 @@ namespace MakeFriendSolution.Models
         public string PhoneNumber { get; set; }
         public string PassWord { get; set; }
         public ERole Role { get; set; }
+        public ETypeAccount TypeAccount { get; set; }
         public string FullName { get; set; }
         public EGender Gender { get; set; }
         public string AvatarPath { get; set; }

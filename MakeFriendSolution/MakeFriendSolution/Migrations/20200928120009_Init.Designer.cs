@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20200921151333_Init")]
+    [Migration("20200928120009_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,6 +141,11 @@ namespace MakeFriendSolution.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TypeAccount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("varchar(50)")
@@ -190,12 +195,13 @@ namespace MakeFriendSolution.Migrations
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                             Target = 4,
                             Title = "Thông tin của tôi",
+                            TypeAccount = 0,
                             UserName = "Admin",
                             Weight = 65
                         },
                         new
                         {
-                            Id = new Guid("b59715db-f5b9-4b0f-b7c4-5d399d4877ad"),
+                            Id = new Guid("afa5c352-fd48-4172-83b7-40fb8f664f9f"),
                             AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
                             Body = 2,
@@ -228,12 +234,13 @@ namespace MakeFriendSolution.Migrations
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                             Target = 4,
                             Title = "Thông tin của tôi",
+                            TypeAccount = 0,
                             UserName = "tamxix",
                             Weight = 65
                         },
                         new
                         {
-                            Id = new Guid("46abd9be-11ec-4df5-bbdf-27bc827306df"),
+                            Id = new Guid("275aea40-0189-4f1b-9058-2ca10f4455e3"),
                             AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
                             Body = 2,
@@ -266,6 +273,7 @@ namespace MakeFriendSolution.Migrations
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                             Target = 4,
                             Title = "Thông tin của tôi",
+                            TypeAccount = 0,
                             UserName = "HuyenNhung",
                             Weight = 65
                         },
@@ -304,6 +312,7 @@ namespace MakeFriendSolution.Migrations
                             Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
                             Target = 3,
                             Title = "Thông tin của tôi",
+                            TypeAccount = 0,
                             UserName = "vuong",
                             Weight = 65
                         });
