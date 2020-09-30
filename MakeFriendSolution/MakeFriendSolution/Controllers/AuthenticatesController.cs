@@ -130,6 +130,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
+            //Trong thời hạn xác nhận mã
             if (DateTime.Now < user.PasswordForgottenPeriod)
             {
                 string time = user.PasswordForgottenPeriod.ToShortTimeString();
@@ -144,6 +145,7 @@ namespace MakeFriendSolution.Controllers
             Random random = new Random();
             user.PasswordForgottenCode = random.Next(1000, 9999).ToString();
             user.PasswordForgottenPeriod = DateTime.Now.AddMinutes(15);
+            user.NumberOfPasswordConfirmations = 3;
             try
             {
                 _context.Users.Update(user);
@@ -194,11 +196,6 @@ namespace MakeFriendSolution.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(userId.ToString())) return BadRequest(new
-                {
-                    Message = "Invalid userId"
-                });
-
                 LoginInfo loginInfo = new LoginInfo()
                 {
                     UserId = userId
@@ -222,7 +219,6 @@ namespace MakeFriendSolution.Controllers
                         });
                     }
                     user.Status = EUserStatus.Active;
-                    user.NumberOfPasswordConfirmations = 3;
 
                     _context.Users.Update(user);
                     await _context.SaveChangesAsync();
@@ -299,9 +295,10 @@ namespace MakeFriendSolution.Controllers
             }
             if (user.PassWord != request.Password.Trim())
             {
-                return BadRequest(new { 
+                return BadRequest(new
+                {
                     Message = "Password is not correct!"
-            });
+                });
             }
 
             if (user.Status == EUserStatus.IsVerifying)
@@ -351,6 +348,13 @@ namespace MakeFriendSolution.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("facebooklogin")]
+        public async Task<IActionResult> FacebookLogin([FromForm] FacebookLoginRequest request)
+        {
+            return Ok();
+        }
+
+        [AllowAnonymous]
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp([FromForm] LoginInfo request)
         {
@@ -370,7 +374,7 @@ namespace MakeFriendSolution.Controllers
                     PassWord = request.Password,
                     Role = ERole.User,
                     Status = EUserStatus.IsVerifying,
-                    AvatarPath = "image.jpg"
+                    AvatarPath = "image.png"
                 };
 
                 try
@@ -439,21 +443,18 @@ namespace MakeFriendSolution.Controllers
         private async Task<LoginInfo> CheckRecordExistence(LoginInfo info)
         {
             LoginInfo loginInfo = null;
-            if (!string.IsNullOrEmpty(info.UserName) || !string.IsNullOrEmpty(info.UserId.ToString()))
-            {
-                loginInfo = new LoginInfo();
-                loginInfo = await this.GetLoginUser(info);
 
-                if (loginInfo != null)
+            loginInfo = await this.GetLoginUser(info);
+
+            if (loginInfo != null)
+            {
+                if (!loginInfo.IsMailConfirmed)
                 {
-                    if (!loginInfo.IsMailConfirmed)
-                    {
-                        loginInfo.Message = MessageMail.VerifyMail;
-                    }
-                    else
-                    {
-                        loginInfo.Message = MessageMail.UserAlreadyCreated;
-                    }
+                    loginInfo.Message = MessageMail.VerifyMail;
+                }
+                else
+                {
+                    loginInfo.Message = MessageMail.UserAlreadyCreated;
                 }
             }
 
@@ -538,7 +539,20 @@ namespace MakeFriendSolution.Controllers
 
         private async Task<LoginInfo> GetLoginUser(LoginInfo info)
         {
-            var user = await _context.Users.Where(x => x.UserName == info.UserName || x.Id == info.UserId).FirstOrDefaultAsync();
+            AppUser user = new AppUser();
+
+            if (!string.IsNullOrEmpty(info.Email))
+            {
+                user = await _context.Users.Where(x => x.Email == info.Email.Trim()).FirstOrDefaultAsync();
+            }
+            else if (!string.IsNullOrEmpty(info.UserName))
+            {
+                user = await _context.Users.Where(x => x.UserName == info.UserName.Trim()).FirstOrDefaultAsync();
+            }
+            else
+            {
+                user = await _context.Users.FindAsync(info.UserId);
+            }
 
             if (user == null)
                 return null;
