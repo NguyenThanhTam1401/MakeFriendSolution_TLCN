@@ -26,5 +26,6 @@ namespace MakeFriendSolution.EF
         public DbSet<AppUser> Users { get; set; }
         public DbSet<ThumbnailImage> ThumbnailImages { get; set; }
         public DbSet<HaveMessage> HaveMessages { get; set; }
+        public DbSet<Follow> Follows { get; set; }
     }
 }

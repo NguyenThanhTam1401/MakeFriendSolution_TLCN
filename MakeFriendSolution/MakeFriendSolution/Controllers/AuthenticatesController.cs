@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using MakeFriendSolution.Common;
+﻿using MakeFriendSolution.Common;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -293,6 +292,15 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find User with UserName is " + request.Email
                 });
             }
+
+            if (user.TypeAccount != ETypeAccount.System)
+            {
+                return BadRequest(new
+                {
+                    Message = "Please login with " + user.TypeAccount.ToString()
+                });
+            }
+
             if (user.PassWord != request.Password.Trim())
             {
                 return BadRequest(new
@@ -327,31 +335,64 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var userResponse = new UserResponse(user);
+            var userResponse = new UserResponse(user, _storageService);
 
             userResponse.Token = this.GenerateJSONWebToken(user);
-
-            // Get image code if available
-            try
-            {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
-                userResponse.AvatarPath = Convert.ToBase64String(imageBits);
-                userResponse.HasAvatar = true;
-            }
-            catch
-            {
-                userResponse.HasAvatar = false;
-                userResponse.AvatarPath = user.AvatarPath;
-            }
 
             return Ok(userResponse);
         }
 
         [AllowAnonymous]
-        [HttpPost("facebooklogin")]
+        [HttpPost("facebook")]
         public async Task<IActionResult> FacebookLogin([FromForm] FacebookLoginRequest request)
         {
-            return Ok();
+            var user = await _context.Users.Where(x => x.Email == request.Email.Trim()).FirstOrDefaultAsync();
+
+            //Email chưa được sử dụng trong hệ thống, đăng ký tài khoản mới
+            if (user == null)
+            {
+                var newUser = new AppUser()
+                {
+                    Email = request.Email,
+                    FullName = request.FullName,
+                    UserName = request.Email,
+                    AvatarPath = request.Avatar,
+                    IsInfoUpdated = 0,
+                    TypeAccount = ETypeAccount.Facebook,
+                    PassWord = Guid.NewGuid().ToString()
+                };
+
+                try
+                {
+                    _context.Users.Add(newUser);
+                    await _context.SaveChangesAsync();
+                    var response = new UserResponse(newUser, _storageService);
+                    return Ok(response);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(new
+                    {
+                        Message = e.Message
+                    });
+                }
+            }
+            else // Email đã có trong hệ thống, tiến hành đăng nhập
+            {
+                if (user.Status == EUserStatus.Inactive)
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Your account has been locked!"
+                    });
+                }
+
+                var userResponse = new UserResponse(user, _storageService);
+
+                userResponse.Token = this.GenerateJSONWebToken(user);
+
+                return Ok(userResponse);
+            }
         }
 
         [AllowAnonymous]

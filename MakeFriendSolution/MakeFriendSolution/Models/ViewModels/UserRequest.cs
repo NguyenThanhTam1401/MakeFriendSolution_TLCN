@@ -13,11 +13,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public string Gender { get; set; }
         public IFormFile AvatarFile { get; set; }
         public string Location { get; set; }
-        public string Status { get; set; }
-        public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public double Point { get; set; }
-        public bool HasAvatar { get; set; }
         public string Job { get; set; }
 
         //

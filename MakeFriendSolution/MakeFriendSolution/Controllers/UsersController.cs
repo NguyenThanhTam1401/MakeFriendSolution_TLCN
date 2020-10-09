@@ -44,6 +44,108 @@ namespace MakeFriendSolution.Controllers
             return await _context.Users.ToListAsync();
         }
 
+        [HttpGet("pagingUsers")]
+        public async Task<IActionResult> HomeDisplayUser([FromQuery] PagingRequest request)
+        {
+            var users = await _context.Users
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active)
+                .OrderByDescending(x => x.CreatedAt)
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize).ToListAsync();
+
+            var userDisplays = new List<UserDisplay>();
+
+            foreach (var user in users)
+            {
+                var userDisplay = new UserDisplay(user, this._storageService);
+
+                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, false, Guid.Empty);
+                userDisplay.NumberOfFollowers = followResult.Item1;
+                userDisplay.Followed = followResult.Item2;
+
+                userDisplays.Add(userDisplay);
+            }
+
+            return Ok(userDisplays);
+        }
+
+        private async Task<(int, bool)> GetNumberOfFollowers(Guid userId, bool isLogin, Guid currentUserId)
+        {
+            var numberOfFollowers = await _context.Follows.Where(x => x.ToUserId == userId).CountAsync();
+            bool followed = false;
+            if (isLogin)
+            {
+                followed = await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
+            }
+
+            return (numberOfFollowers, followed);
+        }
+
+        [HttpPut("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.ConfirmPassword) || string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
+            {
+                return BadRequest(new
+                {
+                    Message = "Vui lòng điền đầy đủ thông tin"
+                });
+            }
+
+            var user = await _context.Users.Where(x => x.Email == request.Email).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Can not find user with email = " + request.Email
+                });
+            }
+
+            if (user.Status != Models.Enum.EUserStatus.Active)
+            {
+                return BadRequest(new
+                {
+                    Message = "Account is not active"
+                });
+            }
+
+            if (user.PassWord != request.OldPassword.Trim())
+            {
+                return BadRequest(new
+                {
+                    Message = "Password is not correct"
+                });
+            }
+
+            if (request.NewPassword != request.ConfirmPassword)
+            {
+                return BadRequest(new
+                {
+                    Message = "Confirm password is not correct"
+                });
+            }
+
+            try
+            {
+                user.PassWord = request.NewPassword;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return StatusCode(501, new
+                {
+                    Message = e.Message
+                });
+            }
+
+            return Ok(new
+            {
+                Message = "Update password success"
+            });
+        }
+
         [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById(Guid userId)
@@ -51,18 +153,8 @@ namespace MakeFriendSolution.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 return NotFound("Can not find user by id = " + userId);
-            var respone = new UserResponse(user);
-            try
-            {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
-                respone.AvatarPath = Convert.ToBase64String(imageBits);
-                respone.HasAvatar = true;
-            }
-            catch
-            {
-                respone.HasAvatar = false;
-                respone.AvatarPath = user.AvatarPath;
-            }
+            var respone = new UserResponse(user, _storageService);
+
             var data = this.GetDataFromToken();
             return Ok(data);
         }

@@ -9,8 +9,9 @@ namespace MakeFriendSolution.Models.ViewModels
     {
         public ProfileResponse(AppUser profile)
         {
+            Job = profile.Job.ToString();
+            Location = profile.Location.ToString();
             Title = profile.Title;
-            Summary = profile.Summary;
             FindPeople = profile.FindPeople;
             Weight = profile.Weight;
             Height = profile.Height;
@@ -31,12 +32,13 @@ namespace MakeFriendSolution.Models.ViewModels
         }
 
         public string Title { get; set; }
-        public string Summary { get; set; }
         public string FindPeople { get; set; }
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
         public string IAm { get; set; }
+        public string Job { get; set; }
+        public string Location { get; set; }
 
         /// <summary>
         /// Dưới đây là các thông số dùng để tính toán

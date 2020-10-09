@@ -62,6 +62,8 @@ namespace MakeFriendSolution.Models
         public ICollection<ThumbnailImage> ThumbnailImages { get; set; }
         public ICollection<HaveMessage> SendMessages { get; set; }
         public ICollection<HaveMessage> ReceiveMessages { get; set; }
+        public ICollection<Follow> Followed { get; set; }
+        public ICollection<Follow> BeingFollowed { get; set; }
 
         public AppUser(AppUser user)
         {

@@ -48,7 +48,7 @@ namespace MakeFriendSolution.Controllers
 
             foreach (var item in users)
             {
-                UserResponse userResponse = new UserResponse(item);
+                UserResponse userResponse = new UserResponse(item, _storageService);
                 usersResponse.Add(userResponse);
             }
 
@@ -90,7 +90,7 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UserRequest request)
+        public async Task<IActionResult> Update([FromForm] UserRequest request)
         {
             var user = await _context.Users.FindAsync(request.Id);
             if (user == null)
@@ -115,18 +115,8 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var response = new UserResponse(user);
-            try
-            {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
-                response.AvatarPath = Convert.ToBase64String(imageBits);
-                response.HasAvatar = true;
-            }
-            catch
-            {
-                response.HasAvatar = false;
-                response.AvatarPath = user.AvatarPath;
-            }
+            var response = new UserResponse(user, _storageService);
+
             return Ok(response);
         }
 
@@ -137,7 +127,7 @@ namespace MakeFriendSolution.Controllers
                 user.Gender = gender;
             }
 
-            if (Enum.TryParse(request.Education, out ELocation location))
+            if (Enum.TryParse(request.Location, out ELocation location))
             {
                 user.Location = location;
             }
@@ -309,7 +299,7 @@ namespace MakeFriendSolution.Controllers
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return _storageService.GetFileUrl(fileName);
+            return fileName;
         }
 
         [HttpGet("updateProfile")]
