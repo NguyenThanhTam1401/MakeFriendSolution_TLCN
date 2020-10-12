@@ -22,11 +22,13 @@ namespace MakeFriendSolution.Controllers
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
+        private readonly ISessionService _sessionService;
 
-        public ImagesController(MakeFriendDbContext context, IStorageService storageService)
+        public ImagesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
         {
             _context = context;
             _storageService = storageService;
+            _sessionService = sessionService;
         }
 
         [HttpGet("all")]
@@ -110,6 +112,15 @@ namespace MakeFriendSolution.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] ImageRequest request)
         {
+            var sessionUser = _sessionService.GetSessionUser();
+            if (sessionUser.UserId != request.UserId)
+            {
+                return StatusCode(401, new
+                {
+                    Message = "This userId is not yours"
+                });
+            }
+
             var userExist = await _context.Users.AnyAsync(x => x.Id == request.UserId);
             if (!userExist)
             {
@@ -148,6 +159,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPut("{imageId}")]
         public async Task<IActionResult> UpdateById(int imageId, [FromForm] ImageRequest request)
         {
@@ -183,6 +195,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpDelete("{imageId}")]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
