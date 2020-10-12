@@ -27,6 +27,12 @@ namespace MakeFriendSolution.EF.Configurations
 
             builder.HasMany(x => x.SendMessages).WithOne(a => a.Sender).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.ReceiveMessages).WithOne(a => a.Receiver).HasForeignKey(x => x.ReceiverId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.BeingFollowedBy).WithOne(a => a.ToUser).HasForeignKey(x => x.ToUserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.Followed).WithOne(a => a.FromUser).HasForeignKey(x => x.FromUserId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.BeingFavoritedBy).WithOne(a => a.ToUser).HasForeignKey(x => x.ToUserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.Favorited).WithOne(a => a.FromUser).HasForeignKey(x => x.FromUserId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

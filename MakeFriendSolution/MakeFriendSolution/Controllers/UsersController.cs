@@ -15,6 +15,8 @@ using MakeFriendSolution.Services;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -26,14 +28,15 @@ namespace MakeFriendSolution.Controllers
         private readonly IStorageService _storageService;
         private readonly IMailService _mailService;
         private readonly IConfiguration _config;
-        private LoginInfo _loginInfo = new LoginInfo();
+        private ISessionService _sessionService;
 
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config)
+        public UsersController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService)
         {
             _context = context;
             _storageService = storageService;
             _mailService = mailService;
             _config = config;
+            _sessionService = sessionService;
         }
 
         // GET: api/Users
@@ -55,13 +58,25 @@ namespace MakeFriendSolution.Controllers
 
             var userDisplays = new List<UserDisplay>();
 
+            //Get Session user - Check login
+            var isLogin = true;
+            var sessionUser = _sessionService.GetSessionUser();
+            if (sessionUser == null)
+            {
+                isLogin = false;
+            }
+
             foreach (var user in users)
             {
                 var userDisplay = new UserDisplay(user, this._storageService);
 
-                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, false, Guid.Empty);
+                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, isLogin, sessionUser.UserId);
                 userDisplay.NumberOfFollowers = followResult.Item1;
                 userDisplay.Followed = followResult.Item2;
+
+                var favoriteResult = await this.GetNumberOfFavoritors(userDisplay.Id, isLogin, sessionUser.UserId);
+                userDisplay.NumberOfFavoritors = favoriteResult.Item1;
+                userDisplay.Favorited = favoriteResult.Item2;
 
                 userDisplays.Add(userDisplay);
             }
@@ -69,18 +84,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(userDisplays);
         }
 
-        private async Task<(int, bool)> GetNumberOfFollowers(Guid userId, bool isLogin, Guid currentUserId)
-        {
-            var numberOfFollowers = await _context.Follows.Where(x => x.ToUserId == userId).CountAsync();
-            bool followed = false;
-            if (isLogin)
-            {
-                followed = await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-            }
-
-            return (numberOfFollowers, followed);
-        }
-
+        [Authorize]
         [HttpPut("changePassword")]
         public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordRequest request)
         {
@@ -153,39 +157,243 @@ namespace MakeFriendSolution.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 return NotFound("Can not find user by id = " + userId);
+
             var respone = new UserResponse(user, _storageService);
-
-            var data = this.GetDataFromToken();
-            return Ok(data);
-        }
-
-        private bool UserExists(Guid id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
-
-        //Save File
-        private async Task<string> SaveFile(IFormFile file)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return _storageService.GetFileUrl(fileName);
-        }
-
-        private LoginInfo GetDataFromToken()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claims = identity.Claims.ToList();
-
-            LoginInfo info = new LoginInfo()
+            var sessionUser = _sessionService.GetSessionUser();
+            if (sessionUser == null)
             {
-                UserId = new Guid(claims[0].Value),
-                FullName = claims[1].Value,
-                UserName = claims[2].Value,
-                Email = claims[3].Value
-            };
-            return info;
+                return BadRequest(new
+                {
+                    Message = "Can not read session"
+                });
+            }
+            //Get Follow & Favorite
+            var follow = await this.GetNumberOfFollowers(userId, true, sessionUser.UserId);
+
+            respone.NumberOfFollowers = follow.Item1;
+            respone.Followed = follow.Item2;
+
+            var favorite = await this.GetNumberOfFavoritors(userId, true, sessionUser.UserId);
+
+            respone.NumberOfFollowers = follow.Item1;
+            respone.Followed = follow.Item2;
+
+            respone.NumberOfFavoriting = favorite.Item1;
+            respone.Favorited = favorite.Item2;
+
+            return Ok(respone);
+        }
+
+        [Authorize]
+        [HttpPost("follow")]
+        public async Task<IActionResult> Follow([FromForm] Guid userId)
+        {
+            var sessionUser = _sessionService.GetSessionUser();
+
+            if (sessionUser == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not read session"
+                });
+            }
+
+            if (sessionUser.UserId == userId)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not follow yourself"
+                });
+            }
+
+            var followed = await _context.Follows
+                .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
+                .FirstOrDefaultAsync();
+
+            var message = "";
+
+            if (followed == null)
+            {
+                var follow = new Follow()
+                {
+                    Content = "",
+                    FromUserId = sessionUser.UserId,
+                    ToUserId = userId
+                };
+
+                _context.Follows.Add(follow);
+                message = "Followed";
+            }
+            else
+            {
+                _context.Follows.Remove(followed);
+                message = "Unfollowed";
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(501, new
+                {
+                    Message = e.Message
+                });
+            }
+            return Ok(message);
+        }
+
+        [Authorize]
+        [HttpPost("favorite")]
+        public async Task<IActionResult> Favorite([FromForm] Guid userId)
+        {
+            var sessionUser = _sessionService.GetSessionUser();
+
+            if (sessionUser == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not read session"
+                });
+            }
+
+            if (sessionUser.UserId == userId)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not favorite yourself"
+                });
+            }
+
+            var favorited = await _context.Favorites
+                .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
+                .FirstOrDefaultAsync();
+
+            var message = "";
+
+            if (favorited == null)
+            {
+                var favorite = new Favorite()
+                {
+                    Content = "",
+                    FromUserId = sessionUser.UserId,
+                    ToUserId = userId
+                };
+
+                _context.Favorites.Add(favorite);
+                message = "Favorited";
+            }
+            else
+            {
+                _context.Favorites.Remove(favorited);
+                message = "Unfavorited";
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(501, new
+                {
+                    Message = e.Message
+                });
+            }
+            return Ok(message);
+        }
+
+        [Authorize]
+        [HttpGet("follow/{userId}")]
+        public async Task<IActionResult> GetFollowers(Guid userId)
+        {
+            var sessionUser = _sessionService.GetSessionUser();
+            if (sessionUser == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not read session"
+                });
+            }
+
+            if (userId != sessionUser.UserId)
+            {
+                return StatusCode(401);
+            }
+
+            var followers = await _context.Follows.Where(x => x.FromUserId == userId).Include(x => x.ToUser).ToListAsync();
+            var response = followers.Select(x => new UserDisplay(x.ToUser, _storageService));
+            foreach (var item in response)
+            {
+                var follow = await this.GetNumberOfFollowers(item.Id, true, sessionUser.UserId);
+                item.NumberOfFollowers = follow.Item1;
+                item.Followed = follow.Item2;
+
+                var favorite = await this.GetNumberOfFavoritors(item.Id, true, sessionUser.UserId);
+                item.NumberOfFavoritors = favorite.Item1;
+                item.Favorited = favorite.Item2;
+            }
+
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("favorite/{userId}")]
+        public async Task<IActionResult> GetFavoritors(Guid userId)
+        {
+            var sessionUser = _sessionService.GetSessionUser();
+            if (sessionUser == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not read session"
+                });
+            }
+
+            if (userId != sessionUser.UserId)
+            {
+                return StatusCode(401);
+            }
+
+            var favoritors = await _context.Favorites.Where(x => x.FromUserId == userId).Include(x => x.ToUser).ToListAsync();
+            var response = favoritors.Select(x => new UserDisplay(x.ToUser, _storageService));
+            foreach (var item in response)
+            {
+                var follow = await this.GetNumberOfFollowers(item.Id, true, sessionUser.UserId);
+                item.NumberOfFollowers = follow.Item1;
+                item.Followed = follow.Item2;
+
+                var favorite = await this.GetNumberOfFavoritors(item.Id, true, sessionUser.UserId);
+                item.NumberOfFavoritors = favorite.Item1;
+                item.Favorited = favorite.Item2;
+            }
+
+            return Ok(response);
+        }
+
+        private async Task<(int, bool)> GetNumberOfFollowers(Guid userId, bool isLogin, Guid currentUserId)
+        {
+            var numberOfFollowers = await _context.Follows.Where(x => x.ToUserId == userId).CountAsync();
+            bool followed = false;
+            if (isLogin)
+            {
+                followed = await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
+            }
+
+            return (numberOfFollowers, followed);
+        }
+
+        private async Task<(int, bool)> GetNumberOfFavoritors(Guid userId, bool isLogin, Guid currentUserId)
+        {
+            var numberOfFavoritors = await _context.Favorites.Where(x => x.ToUserId == userId).CountAsync();
+            bool favorited = false;
+            if (isLogin)
+            {
+                favorited = await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
+            }
+
+            return (numberOfFavoritors, favorited);
         }
     }
 }

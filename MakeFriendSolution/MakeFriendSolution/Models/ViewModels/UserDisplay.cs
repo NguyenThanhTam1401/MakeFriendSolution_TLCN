@@ -17,6 +17,10 @@ namespace MakeFriendSolution.Models.ViewModels
         public string Summary { get; set; }
         public int NumberOfFollowers { get; set; } = 0;
         public bool Followed { get; set; } = false;
+
+        public int NumberOfFavoritors { get; set; } = 0;
+        public bool Favorited { get; set; } = false;
+
         private IStorageService _storageService { get; set; }
 
         public UserDisplay()

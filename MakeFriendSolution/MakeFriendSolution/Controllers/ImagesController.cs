@@ -8,6 +8,7 @@ using MakeFriendSolution.Common;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ namespace MakeFriendSolution.Controllers
             return await _context.ThumbnailImages.ToListAsync();
         }
 
+        [AllowAnonymous]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetImageByUserId(Guid userId)
         {
@@ -82,6 +84,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet("{imageId}")]
         public async Task<IActionResult> GetById(int imageId)
         {
@@ -103,6 +106,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(imageResponse);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] ImageRequest request)
         {

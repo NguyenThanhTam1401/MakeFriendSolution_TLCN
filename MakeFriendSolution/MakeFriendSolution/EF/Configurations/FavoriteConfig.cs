@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.EF.Configurations
 {
-    public class FollowConfig : IEntityTypeConfiguration<Follow>
+    public class FavoriteConfig : IEntityTypeConfiguration<Favorite>
     {
-        public void Configure(EntityTypeBuilder<Follow> builder)
+        public void Configure(EntityTypeBuilder<Favorite> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();

@@ -61,8 +61,12 @@ namespace MakeFriendSolution.Models.ViewModels
         public string Summary { get; set; }
         public int NumberOfFollowing { get; set; }
         public int NumberOfFollowers { get; set; }
-        public string Token { get; set; }
+        public int NumberOfFavoriting { get; set; }
+        public int NumberOfFavoritors { get; set; }
+        public bool Followed { get; set; }
+        public bool Favorited { get; set; }
         public int IsInfoUpdated { get; set; }
+        public string Token { get; set; }
         public ProfileResponse Profile { get; set; }
     }
 }

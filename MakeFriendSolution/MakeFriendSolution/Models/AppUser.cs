@@ -63,7 +63,9 @@ namespace MakeFriendSolution.Models
         public ICollection<HaveMessage> SendMessages { get; set; }
         public ICollection<HaveMessage> ReceiveMessages { get; set; }
         public ICollection<Follow> Followed { get; set; }
-        public ICollection<Follow> BeingFollowed { get; set; }
+        public ICollection<Follow> BeingFollowedBy { get; set; }
+        public ICollection<Favorite> Favorited { get; set; }
+        public ICollection<Favorite> BeingFavoritedBy { get; set; }
 
         public AppUser(AppUser user)
         {

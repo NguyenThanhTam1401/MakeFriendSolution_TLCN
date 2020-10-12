@@ -5,10 +5,12 @@ using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,14 +29,17 @@ namespace MakeFriendSolution.Controllers
         private readonly IStorageService _storageService;
         private readonly IMailService _mailService;
         private readonly IConfiguration _config;
+
+        private ISessionService _sessionService;
         private LoginInfo _loginInfo = new LoginInfo();
 
-        public AuthenticatesController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config)
+        public AuthenticatesController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService)
         {
             _context = context;
             _storageService = storageService;
             _mailService = mailService;
             _config = config;
+            _sessionService = sessionService;
         }
 
         [AllowAnonymous]
@@ -339,6 +344,8 @@ namespace MakeFriendSolution.Controllers
 
             userResponse.Token = this.GenerateJSONWebToken(user);
 
+            _sessionService.SetSessionUser(user);
+
             return Ok(userResponse);
         }
 
@@ -390,6 +397,8 @@ namespace MakeFriendSolution.Controllers
                 var userResponse = new UserResponse(user, _storageService);
 
                 userResponse.Token = this.GenerateJSONWebToken(user);
+
+                _sessionService.SetSessionUser(user);
 
                 return Ok(userResponse);
             }
@@ -613,5 +622,12 @@ namespace MakeFriendSolution.Controllers
 
             return loginInfo;
         }
+
+        [HttpGet("session")]
+        public IActionResult GetSession()
+        {
+            return Ok(_sessionService.GetSessionUser());
+        }
+
     }
 }

@@ -27,5 +27,6 @@ namespace MakeFriendSolution.EF
         public DbSet<ThumbnailImage> ThumbnailImages { get; set; }
         public DbSet<HaveMessage> HaveMessages { get; set; }
         public DbSet<Follow> Follows { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
     }
 }
