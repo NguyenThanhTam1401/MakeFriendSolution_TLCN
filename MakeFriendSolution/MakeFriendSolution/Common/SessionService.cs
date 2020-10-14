@@ -57,6 +57,9 @@ namespace MakeFriendSolution.Common
             var identity = Context.User.Identity as ClaimsIdentity;
             IList<Claim> claims = identity.Claims.ToList();
 
+            if (claims.Count == 0)
+                return null;
+
             LoginInfo info = new LoginInfo()
             {
                 UserId = new Guid(claims[0].Value),
@@ -65,6 +68,11 @@ namespace MakeFriendSolution.Common
                 Email = claims[3].Value
             };
             return info;
+        }
+
+        public void Logout()
+        {
+            this.Context.Session.Clear();
         }
     }
 }

@@ -19,6 +19,9 @@ namespace MakeFriendSolution.EF
             modelBuilder.ApplyConfiguration(new HaveMessageConfig());
             modelBuilder.ApplyConfiguration(new UserConfig());
             modelBuilder.ApplyConfiguration(new ImageConfig());
+            modelBuilder.ApplyConfiguration(new LikeImageConfig());
+            modelBuilder.ApplyConfiguration(new FollowConfig());
+            modelBuilder.ApplyConfiguration(new FavoriteConfig());
 
             modelBuilder.Seed();
         }
@@ -28,5 +31,6 @@ namespace MakeFriendSolution.EF
         public DbSet<HaveMessage> HaveMessages { get; set; }
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<LikeImage> LikeImages { get; set; }
     }
 }

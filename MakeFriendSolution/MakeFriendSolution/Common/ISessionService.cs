@@ -13,6 +13,9 @@ namespace MakeFriendSolution.Common
 
         LoginInfo GetSessionUser();
 
-        public LoginInfo GetDataFromToken();
+        LoginInfo GetDataFromToken();
+
+        void Logout();
+
     }
 }

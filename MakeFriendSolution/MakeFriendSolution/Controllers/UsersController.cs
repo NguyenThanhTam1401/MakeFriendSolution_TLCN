@@ -60,10 +60,14 @@ namespace MakeFriendSolution.Controllers
 
             //Get Session user - Check login
             var isLogin = true;
-            var sessionUser = _sessionService.GetSessionUser();
+            var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
             {
                 isLogin = false;
+                sessionUser = new LoginInfo()
+                {
+                    UserId = Guid.NewGuid()
+                };
             }
 
             foreach (var user in users)
@@ -159,7 +163,7 @@ namespace MakeFriendSolution.Controllers
                 return NotFound("Can not find user by id = " + userId);
 
             var respone = new UserResponse(user, _storageService);
-            var sessionUser = _sessionService.GetSessionUser();
+            var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
             {
                 return BadRequest(new
@@ -188,13 +192,13 @@ namespace MakeFriendSolution.Controllers
         [HttpPost("follow")]
         public async Task<IActionResult> Follow([FromForm] Guid userId)
         {
-            var sessionUser = _sessionService.GetSessionUser();
+            var sessionUser = _sessionService.GetDataFromToken();
 
             if (sessionUser == null)
             {
                 return BadRequest(new
                 {
-                    Message = "Can not read session"
+                    Message = "Can not read token"
                 });
             }
 
@@ -241,14 +245,17 @@ namespace MakeFriendSolution.Controllers
                     Message = e.Message
                 });
             }
-            return Ok(message);
+            return Ok(new
+            {
+                Message = message
+            });
         }
 
         [Authorize]
         [HttpPost("favorite")]
         public async Task<IActionResult> Favorite([FromForm] Guid userId)
         {
-            var sessionUser = _sessionService.GetSessionUser();
+            var sessionUser = _sessionService.GetDataFromToken();
 
             if (sessionUser == null)
             {
@@ -301,14 +308,17 @@ namespace MakeFriendSolution.Controllers
                     Message = e.Message
                 });
             }
-            return Ok(message);
+            return Ok(new
+            {
+                Message = message
+            });
         }
 
         [Authorize]
         [HttpGet("follow/{userId}")]
         public async Task<IActionResult> GetFollowers(Guid userId)
         {
-            var sessionUser = _sessionService.GetSessionUser();
+            var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
             {
                 return BadRequest(new
@@ -342,7 +352,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("favorite/{userId}")]
         public async Task<IActionResult> GetFavoritors(Guid userId)
         {
-            var sessionUser = _sessionService.GetSessionUser();
+            var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
             {
                 return BadRequest(new

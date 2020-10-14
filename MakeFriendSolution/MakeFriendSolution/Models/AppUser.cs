@@ -66,6 +66,7 @@ namespace MakeFriendSolution.Models
         public ICollection<Follow> BeingFollowedBy { get; set; }
         public ICollection<Favorite> Favorited { get; set; }
         public ICollection<Favorite> BeingFavoritedBy { get; set; }
+        public ICollection<LikeImage> LikeImages { get; set; }
 
         public AppUser(AppUser user)
         {

@@ -228,6 +228,76 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+        [AllowAnonymous]
+        [HttpPost("like")]
+        public async Task<IActionResult> LikeImage([FromForm] int imageId, [FromForm] Guid userId)
+        {
+            var userInfo = _sessionService.GetDataFromToken();
+            if (userId != userInfo.UserId)
+            {
+                return StatusCode(401, new
+                {
+                    Message = "userId is not correct"
+                });
+            }
+
+            if (!await _context.ThumbnailImages.AnyAsync(x => x.Id == imageId))
+            {
+                return BadRequest(new
+                {
+                    Message = "Image id is not correct"
+                });
+            }
+
+            if (!await _context.Users.AnyAsync(x => x.Id == userId))
+            {
+                return BadRequest(new
+                {
+                    Message = "User id is not correct"
+                });
+            }
+
+            var like = await _context.LikeImages
+                .Where(x => x.UserId == userId && x.ImageId == imageId)
+                .FirstOrDefaultAsync();
+
+            var message = "";
+
+            if (like == null)
+            {
+                var likeImage = new LikeImage()
+                {
+                    ImageId = imageId,
+                    UserId = userId
+                };
+
+                _context.LikeImages.Add(likeImage);
+                message = "Liked";
+            }
+            else
+            {
+                _context.LikeImages.Remove(like);
+                message = "Unliked";
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(501, new
+                {
+                    Message = e.Message
+                });
+            }
+
+            return Ok(new
+            {
+                Message = message
+            });
+        }
+
         //Save File
         private async Task<string> SaveFile(IFormFile file)
         {

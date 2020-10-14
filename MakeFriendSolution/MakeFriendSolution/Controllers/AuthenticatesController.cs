@@ -344,7 +344,7 @@ namespace MakeFriendSolution.Controllers
 
             userResponse.Token = this.GenerateJSONWebToken(user);
 
-            _sessionService.SetSessionUser(user);
+            //_sessionService.SetSessionUser(user);
 
             return Ok(userResponse);
         }
@@ -398,7 +398,7 @@ namespace MakeFriendSolution.Controllers
 
                 userResponse.Token = this.GenerateJSONWebToken(user);
 
-                _sessionService.SetSessionUser(user);
+                //_sessionService.SetSessionUser(user);
 
                 return Ok(userResponse);
             }
@@ -488,6 +488,14 @@ namespace MakeFriendSolution.Controllers
                     Message = MessageMail.UserCreatedVerifyMail
                 });
             }
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            //_sessionService.Logout();
+            return Ok("logged out");
         }
 
         private async Task<LoginInfo> CheckRecordExistence(LoginInfo info)
@@ -626,8 +634,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("session")]
         public IActionResult GetSession()
         {
-            return Ok(_sessionService.GetSessionUser());
+            return Ok(_sessionService.GetDataFromToken());
         }
-
     }
 }
