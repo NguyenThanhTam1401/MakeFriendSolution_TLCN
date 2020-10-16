@@ -498,6 +498,13 @@ namespace MakeFriendSolution.Controllers
             return Ok("logged out");
         }
 
+        [Authorize]
+        [HttpPost("validateToken")]
+        public IActionResult CheckToken()
+        {
+            return Ok();
+        }
+
         private async Task<LoginInfo> CheckRecordExistence(LoginInfo info)
         {
             LoginInfo loginInfo = null;

@@ -20,6 +20,7 @@ namespace MakeFriendSolution.Models.ViewModels
 
         public int NumberOfFavoritors { get; set; } = 0;
         public bool Favorited { get; set; } = false;
+        public int NumberOfImages { get; set; }
 
         private IStorageService _storageService { get; set; }
 

@@ -104,7 +104,7 @@ namespace MakeFriendSolution.Common
             }
         }
 
-        public List<double> TinhCos()
+        public List<double> SimilarityCalculate()
         {
             List<double> kq = new List<double>();
             double tichVoHuong;

@@ -1,4 +1,5 @@
 ﻿using MakeFriendSolution.Models.Enum;
+using MakeFriendSolution.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Models
 {
-    public class FilterUserViewModel
+    public class FilterUserViewModel : PagingRequest
     {
         public string Location { get; set; }
         public string FullName { get; set; }

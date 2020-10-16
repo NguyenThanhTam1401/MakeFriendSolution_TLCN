@@ -77,7 +77,7 @@ namespace MakeFriendSolution.Controllers
             m.Matrix = usersMatrix;
 
             List<double> kq = new List<double>();
-            kq = m.TinhCos();
+            kq = m.SimilarityCalculate();
 
             for (int i = 0; i < kq.Count; i++)
             {

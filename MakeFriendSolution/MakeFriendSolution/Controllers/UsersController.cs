@@ -17,6 +17,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+using MakeFriendSolution.Models.Enum;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -47,8 +48,9 @@ namespace MakeFriendSolution.Controllers
             return await _context.Users.ToListAsync();
         }
 
-        [HttpGet("pagingUsers")]
-        public async Task<IActionResult> HomeDisplayUser([FromQuery] PagingRequest request)
+        [AllowAnonymous]
+        [HttpGet("newUsers")]
+        public async Task<IActionResult> GetNewestUsers([FromQuery] PagingRequest request)
         {
             var users = await _context.Users
                 .Where(x => x.Status == Models.Enum.EUserStatus.Active)
@@ -56,36 +58,89 @@ namespace MakeFriendSolution.Controllers
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToListAsync();
 
-            var userDisplays = new List<UserDisplay>();
-
-            //Get Session user - Check login
-            var isLogin = true;
-            var sessionUser = _sessionService.GetDataFromToken();
-            if (sessionUser == null)
-            {
-                isLogin = false;
-                sessionUser = new LoginInfo()
-                {
-                    UserId = Guid.NewGuid()
-                };
-            }
-
-            foreach (var user in users)
-            {
-                var userDisplay = new UserDisplay(user, this._storageService);
-
-                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, isLogin, sessionUser.UserId);
-                userDisplay.NumberOfFollowers = followResult.Item1;
-                userDisplay.Followed = followResult.Item2;
-
-                var favoriteResult = await this.GetNumberOfFavoritors(userDisplay.Id, isLogin, sessionUser.UserId);
-                userDisplay.NumberOfFavoritors = favoriteResult.Item1;
-                userDisplay.Favorited = favoriteResult.Item2;
-
-                userDisplays.Add(userDisplay);
-            }
+            var userDisplays = await this.GetUserDisplay(users);
 
             return Ok(userDisplays);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("favoritest")]
+        public async Task<IActionResult> GetFavoritestUsers([FromQuery] PagingRequest request)
+        {
+            var users = await _context.Users
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active).ToListAsync();
+
+            //Get user display
+            var userDisplays = await this.GetUserDisplay(users);
+
+            var response = userDisplays
+                .OrderByDescending(x => x.NumberOfFavoritors)
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize).ToList();
+
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("similar")]
+        public async Task<IActionResult> GetMatrix(Guid userId, [FromQuery] FilterUserViewModel filter)
+        {
+            var usersResponse = new List<UserResponse>();
+
+            var user = await _context.Users
+                .Where(x => x.Id == userId)
+                .FirstOrDefaultAsync();
+
+            var users = await _context.Users
+                .Where(x => x.Id != userId && x.IAm != user.IAm)
+                .ToListAsync();
+
+            //FilterUsers
+            FilterUers(ref users, filter);
+
+            users.Insert(0, user);
+
+            foreach (var item in users)
+            {
+                UserResponse userResponse = new UserResponse(item, _storageService);
+                usersResponse.Add(userResponse);
+            }
+
+            int sl = users.Count;
+
+            double[,] usersMatrix = new double[sl, 12];
+            for (int i = 0; i < sl; i++)
+            {
+                usersMatrix[i, 0] = (double)users[i].Marriage;
+                usersMatrix[i, 1] = (double)users[i].Target;
+                usersMatrix[i, 2] = (double)users[i].Education;
+                usersMatrix[i, 3] = (double)users[i].Body;
+                usersMatrix[i, 4] = (double)users[i].Religion;
+                usersMatrix[i, 5] = (double)users[i].Smoking;
+                usersMatrix[i, 6] = (double)users[i].DrinkBeer;
+                usersMatrix[i, 7] = (double)users[i].FavoriteMovie;
+                usersMatrix[i, 8] = (double)users[i].AtmosphereLike;
+                usersMatrix[i, 9] = (double)users[i].Character;
+                usersMatrix[i, 10] = (double)users[i].LifeStyle;
+                usersMatrix[i, 11] = (double)users[i].MostValuable;
+            }
+
+            cMatrix m = new cMatrix();
+            m.Row = sl;
+            m.Column = 12;
+            m.Matrix = usersMatrix;
+
+            List<double> kq = new List<double>();
+            kq = m.SimilarityCalculate();
+
+            for (int i = 0; i < kq.Count; i++)
+            {
+                usersResponse[i].Point = kq[i];
+            }
+
+            //usersResponse.RemoveAt(0);
+            usersResponse = usersResponse.OrderByDescending(o => o.Point).ToList();
+            return Ok(usersResponse);
         }
 
         [Authorize]
@@ -404,6 +459,87 @@ namespace MakeFriendSolution.Controllers
             }
 
             return (numberOfFavoritors, favorited);
+        }
+
+        public async Task<int> GetNumberOfImages(Guid userId)
+        {
+            return await _context.ThumbnailImages.Where(x => x.UserId == userId).CountAsync();
+        }
+
+        private int CalculateAge(DateTime birthDay)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - birthDay.Year;
+            if (birthDay > today.AddYears(-age))
+                age--;
+
+            return age;
+        }
+
+        private void FilterUers(ref List<AppUser> users, FilterUserViewModel filter)
+        {
+            if (filter.Location != null && filter.Location != "")
+            {
+                if (Enum.TryParse(filter.Location.Trim(), out ELocation locate))
+                {
+                    users = users.Where(x => x.Location == locate).ToList();
+                }
+            }
+
+            if (filter.FullName != null && filter.FullName.Trim() != "")
+            {
+                users = users.Where(x => x.FullName.Contains(filter.FullName.Trim())).ToList();
+            }
+
+            if (filter.Gender != null && filter.Gender.Trim() != "")
+            {
+                if (Enum.TryParse(filter.Gender.Trim(), out EGender gender))
+                    users = users.Where(x => x.Gender == gender).ToList();
+            }
+
+            if (filter.FromAge != 0)
+            {
+                users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
+            }
+
+            if (filter.ToAge != 0)
+            {
+                users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
+            }
+        }
+
+        private async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users)
+        {
+            var userDisplays = new List<UserDisplay>();
+            //Get Session user - Check login
+            var isLogin = true;
+            var sessionUser = _sessionService.GetDataFromToken();
+            if (sessionUser == null)
+            {
+                isLogin = false;
+                sessionUser = new LoginInfo()
+                {
+                    UserId = Guid.NewGuid()
+                };
+            }
+
+            foreach (var user in users)
+            {
+                var userDisplay = new UserDisplay(user, this._storageService);
+
+                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, isLogin, sessionUser.UserId);
+                userDisplay.NumberOfFollowers = followResult.Item1;
+                userDisplay.Followed = followResult.Item2;
+
+                var favoriteResult = await this.GetNumberOfFavoritors(userDisplay.Id, isLogin, sessionUser.UserId);
+                userDisplay.NumberOfFavoritors = favoriteResult.Item1;
+                userDisplay.Favorited = favoriteResult.Item2;
+
+                userDisplay.NumberOfImages = await this.GetNumberOfImages(user.Id);
+
+                userDisplays.Add(userDisplay);
+            }
+            return userDisplays;
         }
     }
 }

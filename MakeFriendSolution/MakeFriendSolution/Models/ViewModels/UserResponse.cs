@@ -63,6 +63,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public int NumberOfFollowers { get; set; }
         public int NumberOfFavoriting { get; set; }
         public int NumberOfFavoritors { get; set; }
+        public int NumberOfImages { get; set; }
         public bool Followed { get; set; }
         public bool Favorited { get; set; }
         public int IsInfoUpdated { get; set; }
