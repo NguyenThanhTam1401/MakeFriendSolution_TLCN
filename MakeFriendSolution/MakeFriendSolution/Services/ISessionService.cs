@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MakeFriendSolution.Common
+namespace MakeFriendSolution.Services
 {
     public interface ISessionService
     {
@@ -16,6 +16,5 @@ namespace MakeFriendSolution.Common
         LoginInfo GetDataFromToken();
 
         void Logout();
-
     }
 }

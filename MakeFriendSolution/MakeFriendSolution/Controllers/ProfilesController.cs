@@ -12,6 +12,7 @@ using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
 using System.Net.Http.Headers;
 using System.IO;
+using MakeFriendSolution.Services;
 
 namespace MakeFriendSolution.Controllers
 {

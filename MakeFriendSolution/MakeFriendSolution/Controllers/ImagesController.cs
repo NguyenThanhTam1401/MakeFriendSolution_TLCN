@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using MakeFriendSolution.Common;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
+using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -56,9 +56,8 @@ namespace MakeFriendSolution.Controllers
             {
                 try
                 {
-                    var imageResponse = new ImageResponse(item);
-                    byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(item.ImagePath)}");
-                    imageResponse.ImagePath = Convert.ToBase64String(imageBits);
+                    var imageResponse = new ImageResponse(item, _storageService);
+                    imageResponse.NumberOfLikes = await GetNumberOfLikes(item.Id);
                     response.Add(imageResponse);
                 }
                 catch
@@ -100,10 +99,8 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var imageResponse = new ImageResponse(image);
-
-            byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(image.ImagePath)}");
-            imageResponse.ImagePath = Convert.ToBase64String(imageBits);
+            var imageResponse = new ImageResponse(image, _storageService);
+            imageResponse.NumberOfLikes = await GetNumberOfLikes(image.Id);
 
             return Ok(imageResponse);
         }
@@ -152,9 +149,8 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var response = new ImageResponse(image);
-            byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(image.ImagePath)}");
-            response.ImagePath = Convert.ToBase64String(imageBits);
+            var response = new ImageResponse(image, _storageService);
+            response.NumberOfLikes = await GetNumberOfLikes(image.Id);
 
             return Ok(response);
         }
@@ -188,9 +184,8 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var response = new ImageResponse(image);
-            byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(image.ImagePath)}");
-            response.ImagePath = Convert.ToBase64String(imageBits);
+            var response = new ImageResponse(image, _storageService);
+            response.NumberOfLikes = await GetNumberOfLikes(image.Id);
 
             return Ok(response);
         }
@@ -296,6 +291,11 @@ namespace MakeFriendSolution.Controllers
             {
                 Message = message
             });
+        }
+
+        private async Task<int> GetNumberOfLikes(int imageId)
+        {
+            return await _context.ThumbnailImages.Where(x => x.Id == imageId).Include(x => x.LikeImages).CountAsync();
         }
 
         //Save File

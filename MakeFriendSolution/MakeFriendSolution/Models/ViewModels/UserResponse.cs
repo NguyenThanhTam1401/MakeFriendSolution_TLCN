@@ -1,5 +1,5 @@
-﻿using MakeFriendSolution.Common;
-using MakeFriendSolution.Models.Enum;
+﻿using MakeFriendSolution.Models.Enum;
+using MakeFriendSolution.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +66,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public int NumberOfImages { get; set; }
         public bool Followed { get; set; }
         public bool Favorited { get; set; }
+        public bool Blocked { get; set; } = false;
         public int IsInfoUpdated { get; set; }
         public string Token { get; set; }
         public ProfileResponse Profile { get; set; }

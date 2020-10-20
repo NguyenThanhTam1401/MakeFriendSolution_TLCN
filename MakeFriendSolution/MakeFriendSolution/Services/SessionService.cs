@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MakeFriendSolution.Common
+namespace MakeFriendSolution.Services
 {
     public class SessionService : ISessionService
     {
@@ -33,9 +33,9 @@ namespace MakeFriendSolution.Common
             var user = new
             {
                 UserId = userInfo.Id,
-                Email = userInfo.Email,
-                UserName = userInfo.UserName,
-                FullName = userInfo.FullName
+                userInfo.Email,
+                userInfo.UserName,
+                userInfo.FullName
             };
             Context.Session.SetString("SessionUser", JsonConvert.SerializeObject(user));
         }
@@ -72,7 +72,7 @@ namespace MakeFriendSolution.Common
 
         public void Logout()
         {
-            this.Context.Session.Clear();
+            Context.Session.Clear();
         }
     }
 }

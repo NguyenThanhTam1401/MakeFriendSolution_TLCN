@@ -33,6 +33,9 @@ namespace MakeFriendSolution.EF.Configurations
 
             builder.HasMany(x => x.BeingFavoritedBy).WithOne(a => a.ToUser).HasForeignKey(x => x.ToUserId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.Favorited).WithOne(a => a.FromUser).HasForeignKey(x => x.FromUserId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.BeingFavoritedBy).WithOne(a => a.ToUser).HasForeignKey(x => x.ToUserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.BlockedByUsers).WithOne(a => a.FromUser).HasForeignKey(x => x.FromUserId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

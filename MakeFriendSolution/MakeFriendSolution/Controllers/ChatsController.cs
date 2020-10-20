@@ -70,6 +70,27 @@ namespace MakeFriendSolution.Controllers
             return Ok(responses);
         }
 
+        [HttpGet("friends/{userId}")]
+        private async Task<IActionResult> GetFriendList(Guid userId, [FromQuery] PagingRequest pagingRequest)
+        {
+            var friends = new List<UserDisplay>();
+
+            var user = await _context.Users.Where(x => x.Id == userId)
+                .Include(x => x.SendMessages)
+                .Include(x => x.ReceiveMessages)
+                .FirstOrDefaultAsync();
+
+            foreach (HaveMessage send in user.SendMessages)
+            {
+                if (!friends.Any(x => x.Id == send.ReceiverId))
+                {
+                    //var sendUser 
+                    //var friend = new
+                }
+            }
+            return Ok();
+        }
+
         private async Task<HaveMessage> SaveMessage(CreateMessageRequest message)
         {
             var newMessage = new HaveMessage()

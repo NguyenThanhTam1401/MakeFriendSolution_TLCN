@@ -240,6 +240,8 @@ namespace MakeFriendSolution.Controllers
             respone.NumberOfFavoriting = favorite.Item1;
             respone.Favorited = favorite.Item2;
 
+            respone.Blocked = await this.GetBlockStatus(sessionUser.UserId, userId);
+
             return Ok(respone);
         }
 
@@ -459,6 +461,11 @@ namespace MakeFriendSolution.Controllers
             }
 
             return (numberOfFavoritors, favorited);
+        }
+
+        private async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)
+        {
+            return await _context.BlockUsers.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == toUserId);
         }
 
         public async Task<int> GetNumberOfImages(Guid userId)
