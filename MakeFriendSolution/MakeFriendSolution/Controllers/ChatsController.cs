@@ -6,6 +6,7 @@ using MakeFriendSolution.EF;
 using MakeFriendSolution.HubConfig;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
+using MakeFriendSolution.Services;
 using MakeFriendSolution.TimerFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -21,11 +22,13 @@ namespace MakeFriendSolution.Controllers
     {
         private readonly IHubContext<ChartHub> _hub;
         private readonly MakeFriendDbContext _context;
+        private readonly IStorageService _storageService;
 
-        public ChatsController(IHubContext<ChartHub> hub, MakeFriendDbContext context)
+        public ChatsController(IHubContext<ChartHub> hub, MakeFriendDbContext context, IStorageService storageService)
         {
             _hub = hub;
             _context = context;
+            _storageService = storageService;
         }
 
         public async Task<IActionResult> Post([FromForm] CreateMessageRequest request)
@@ -71,24 +74,53 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpGet("friends/{userId}")]
-        private async Task<IActionResult> GetFriendList(Guid userId, [FromQuery] PagingRequest pagingRequest)
+        public async Task<IActionResult> GetFriendList(Guid userId, [FromQuery] PagingRequest request)
         {
-            var friends = new List<UserDisplay>();
+            var messages = new List<HaveMessage>();
 
-            var user = await _context.Users.Where(x => x.Id == userId)
-                .Include(x => x.SendMessages)
-                .Include(x => x.ReceiveMessages)
-                .FirstOrDefaultAsync();
+            var recentMessages = await _context.HaveMessages
+                .Where(x => x.SenderId == userId || x.ReceiverId == userId)
+                .OrderByDescending(x => x.SentAt)
+                .ToListAsync();
 
-            foreach (HaveMessage send in user.SendMessages)
+            foreach (HaveMessage message in recentMessages)
             {
-                if (!friends.Any(x => x.Id == send.ReceiverId))
+                if (!messages.Any(x => x.ReceiverId == message.ReceiverId || x.SenderId == message.SenderId || x.ReceiverId == message.SenderId || x.SenderId == message.ReceiverId))
                 {
-                    //var sendUser 
-                    //var friend = new
+                    messages.Add(message);
                 }
             }
-            return Ok();
+            messages = messages
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize).ToList();
+            var friendList = new List<FriendResponse>();
+            foreach (HaveMessage message in messages)
+            {
+                AppUser user = new AppUser();
+                if (message.SenderId == userId)
+                {
+                    user = await _context.Users.FindAsync(message.ReceiverId);
+                }
+                else
+                {
+                    user = await _context.Users.FindAsync(message.SenderId);
+                }
+
+                var userDisplay = new UserDisplay(user, _storageService);
+                var messageResponses = new List<MessageResponse>();
+                var messageResponse = new MessageResponse(message);
+                messageResponses.Add(messageResponse);
+
+                var friend = new FriendResponse()
+                {
+                    Messages = messageResponses,
+                    User = userDisplay
+                };
+
+                friendList.Add(friend);
+            }
+
+            return Ok(friendList);
         }
 
         private async Task<HaveMessage> SaveMessage(CreateMessageRequest message)
