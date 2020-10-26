@@ -8,6 +8,7 @@ using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using MakeFriendSolution.TimerFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +69,14 @@ namespace MakeFriendSolution.Controllers
             foreach (var item in messages)
             {
                 MessageResponse res = new MessageResponse(item);
+                if (item.SenderId == request.SenderId)
+                {
+                    res.Type = "sent";
+                }
+                else
+                {
+                    res.Type = "received";
+                }
                 responses.Add(res);
             }
             return Ok(responses);
@@ -76,25 +85,51 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("friends/{userId}")]
         public async Task<IActionResult> GetFriendList(Guid userId, [FromQuery] PagingRequest request)
         {
-            var messages = new List<HaveMessage>();
-
+            var messages = new List<MessageResponse>();
+            var tempMessages = new List<MessageResponse>();
+            var userList = new List<Guid>();
             var recentMessages = await _context.HaveMessages
                 .Where(x => x.SenderId == userId || x.ReceiverId == userId)
                 .OrderByDescending(x => x.SentAt)
                 .ToListAsync();
 
-            foreach (HaveMessage message in recentMessages)
+            foreach (var item in recentMessages)
             {
-                if (!messages.Any(x => x.ReceiverId == message.ReceiverId || x.SenderId == message.SenderId || x.ReceiverId == message.SenderId || x.SenderId == message.ReceiverId))
+                var m = new MessageResponse(item);
+                if (item.SenderId == userId)
                 {
-                    messages.Add(message);
+                    m.Type = "sent";
+                }
+                else
+                {
+                    m.Type = "received";
+                }
+                tempMessages.Add(m);
+            }
+
+            foreach (MessageResponse message in tempMessages)
+            {
+                if (message.Type == "sent")
+                {
+                    if (!messages.Any(x => x.ReceiverId == message.ReceiverId || x.ReceiverId == message.SenderId))
+                    {
+                        messages.Add(message);
+                    }
+                }
+                else
+                {
+                    if (!messages.Any(x => x.SenderId == message.ReceiverId || x.SenderId == message.SenderId))
+                    {
+                        messages.Add(message);
+                    }
                 }
             }
+
             messages = messages
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
             var friendList = new List<FriendResponse>();
-            foreach (HaveMessage message in messages)
+            foreach (MessageResponse message in messages)
             {
                 AppUser user = new AppUser();
                 if (message.SenderId == userId)
@@ -108,8 +143,7 @@ namespace MakeFriendSolution.Controllers
 
                 var userDisplay = new UserDisplay(user, _storageService);
                 var messageResponses = new List<MessageResponse>();
-                var messageResponse = new MessageResponse(message);
-                messageResponses.Add(messageResponse);
+                messageResponses.Add(message);
 
                 var friend = new FriendResponse()
                 {
@@ -121,6 +155,20 @@ namespace MakeFriendSolution.Controllers
             }
 
             return Ok(friendList);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("display/{userId}")]
+        public async Task<IActionResult> GetDisplayUser(Guid userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            UserDisplay response = new UserDisplay(user, _storageService);
+
+            return Ok(response);
         }
 
         private async Task<HaveMessage> SaveMessage(CreateMessageRequest message)
