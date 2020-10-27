@@ -24,9 +24,9 @@ namespace MakeFriendSolution.Models.ViewModels
             PhoneNumber = user.PhoneNumber;
             Summary = user.Summary;
             IsInfoUpdated = user.IsInfoUpdated;
-
             if (IsInfoUpdated != 0)
             {
+                Age = this.CalculateAge(user.Dob);
                 Profile = new ProfileResponse(user);
             }
 
@@ -48,6 +48,16 @@ namespace MakeFriendSolution.Models.ViewModels
             }
         }
 
+        private int CalculateAge(DateTime birthDay)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - birthDay.Year;
+            if (birthDay > today.AddYears(-age))
+                age--;
+
+            return age;
+        }
+
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
@@ -67,6 +77,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public bool Followed { get; set; }
         public bool Favorited { get; set; }
         public bool Blocked { get; set; } = false;
+        public int Age { get; set; }
         public int IsInfoUpdated { get; set; }
         public string Token { get; set; }
         public ProfileResponse Profile { get; set; }
