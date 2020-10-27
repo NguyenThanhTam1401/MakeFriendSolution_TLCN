@@ -326,5 +326,205 @@ namespace MakeFriendSolution.Controllers
             }
             return Ok("Profiles had been updated!");
         }
+
+        [HttpGet("features")]
+        public IActionResult GetFeatures()
+        {
+            var AtmosphereLike = new List<string>();
+            List<EAtmosphereLike> AtmosphereLikes = Enum.GetValues(typeof(EAtmosphereLike))
+                    .Cast<EAtmosphereLike>()
+                    .ToList();
+            foreach (var item in AtmosphereLikes)
+            {
+                AtmosphereLike.Add(item.ToString());
+            }
+
+            var Body = new List<string>();
+            List<EBody> Bodys = Enum.GetValues(typeof(EBody))
+                    .Cast<EBody>()
+                    .ToList();
+            foreach (var item in Bodys)
+            {
+                Body.Add(item.ToString());
+            }
+
+            var Character = new List<string>();
+            List<ECharacter> Characters = Enum.GetValues(typeof(ECharacter))
+                    .Cast<ECharacter>()
+                    .ToList();
+            foreach (var item in Characters)
+            {
+                Character.Add(item.ToString());
+            }
+
+            var DrinkBeer = new List<string>();
+            List<EDrinkBeer> DrinkBeers = Enum.GetValues(typeof(EDrinkBeer))
+                    .Cast<EDrinkBeer>()
+                    .ToList();
+            foreach (var item in DrinkBeers)
+            {
+                DrinkBeer.Add(item.ToString());
+            }
+
+            var Education = new List<string>();
+            List<EEducation> Educations = Enum.GetValues(typeof(EEducation))
+                    .Cast<EEducation>()
+                    .ToList();
+            foreach (var item in Educations)
+            {
+                Education.Add(item.ToString());
+            }
+
+            var FavoriteMovie = new List<string>();
+            List<EFavoriteMovie> FavoriteMovies = Enum.GetValues(typeof(EFavoriteMovie))
+                    .Cast<EFavoriteMovie>()
+                    .ToList();
+            foreach (var item in FavoriteMovies)
+            {
+                FavoriteMovie.Add(item.ToString());
+            }
+
+            var Gender = new List<string>();
+            List<EGender> Genders = Enum.GetValues(typeof(EGender))
+                    .Cast<EGender>()
+                    .ToList();
+            foreach (var item in Genders)
+            {
+                Gender.Add(item.ToString());
+            }
+
+            var IAm = new List<string>();
+            List<EIAm> IAms = Enum.GetValues(typeof(EIAm))
+                    .Cast<EIAm>()
+                    .ToList();
+            foreach (var item in IAms)
+            {
+                IAm.Add(item.ToString());
+            }
+
+            var Job = new List<string>();
+            List<EJob> Jobs = Enum.GetValues(typeof(EJob))
+                    .Cast<EJob>()
+                    .ToList();
+            foreach (var item in Jobs)
+            {
+                Job.Add(item.ToString());
+            }
+
+            var LifeStyle = new List<string>();
+            List<ELifeStyle> LifeStyles = Enum.GetValues(typeof(ELifeStyle))
+                    .Cast<ELifeStyle>()
+                    .ToList();
+            foreach (var item in LifeStyles)
+            {
+                LifeStyle.Add(item.ToString());
+            }
+
+            var Location = new List<string>();
+            List<ELocation> Locations = Enum.GetValues(typeof(ELocation))
+                    .Cast<ELocation>()
+                    .ToList();
+            foreach (var item in Locations)
+            {
+                Location.Add(item.ToString());
+            }
+
+            var Marriage = new List<string>();
+            List<EMarriage> Marriages = Enum.GetValues(typeof(EMarriage))
+                    .Cast<EMarriage>()
+                    .ToList();
+            foreach (var item in Marriages)
+            {
+                Marriage.Add(item.ToString());
+            }
+
+            var MostValuable = new List<string>();
+            List<EMostValuable> MostValuables = Enum.GetValues(typeof(EMostValuable))
+                    .Cast<EMostValuable>()
+                    .ToList();
+            foreach (var item in MostValuables)
+            {
+                MostValuable.Add(item.ToString());
+            }
+
+            var OperationType = new List<string>();
+            List<EOperationType> OperationTypes = Enum.GetValues(typeof(EOperationType))
+                    .Cast<EOperationType>()
+                    .ToList();
+            foreach (var item in OperationTypes)
+            {
+                OperationType.Add(item.ToString());
+            }
+
+            var Religion = new List<string>();
+            List<EReligion> Religions = Enum.GetValues(typeof(EReligion))
+                    .Cast<EReligion>()
+                    .ToList();
+            foreach (var item in Religions)
+            {
+                Religion.Add(item.ToString());
+            }
+
+            var Smoking = new List<string>();
+            List<ESmoking> Smokings = Enum.GetValues(typeof(ESmoking))
+                    .Cast<ESmoking>()
+                    .ToList();
+            foreach (var item in Smokings)
+            {
+                Smoking.Add(item.ToString());
+            }
+
+            var Target = new List<string>();
+            List<ETarget> Targets = Enum.GetValues(typeof(ETarget))
+                    .Cast<ETarget>()
+                    .ToList();
+            foreach (var item in Targets)
+            {
+                Target.Add(item.ToString());
+            }
+
+            var TypeAccount = new List<string>();
+            List<ETypeAccount> TypeAccounts = Enum.GetValues(typeof(ETypeAccount))
+                    .Cast<ETypeAccount>()
+                    .ToList();
+            foreach (var item in TypeAccounts)
+            {
+                TypeAccount.Add(item.ToString());
+            }
+
+            var UserStatus = new List<string>();
+            List<EUserStatus> UserStatuses = Enum.GetValues(typeof(EUserStatus))
+                    .Cast<EUserStatus>()
+                    .ToList();
+            foreach (var item in UserStatuses)
+            {
+                UserStatus.Add(item.ToString());
+            }
+
+            var response = new
+            {
+                AtmosphereLike,
+                Body,
+                Character,
+                DrinkBeer,
+                Education,
+                FavoriteMovie,
+                Gender,
+                IAm,
+                Job,
+                LifeStyle,
+                Location,
+                Marriage,
+                MostValuable,
+                OperationType,
+                Religion,
+                Smoking,
+                Target,
+                TypeAccount,
+                UserStatus
+            };
+
+            return Ok(response);
+        }
     }
 }
