@@ -13,6 +13,7 @@ using MakeFriendSolution.Models.ViewModels;
 using System.Net.Http.Headers;
 using System.IO;
 using MakeFriendSolution.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -326,7 +327,7 @@ namespace MakeFriendSolution.Controllers
             }
             return Ok("Profiles had been updated!");
         }
-
+        [AllowAnonymous]
         [HttpGet("features")]
         public IActionResult GetFeatures()
         {

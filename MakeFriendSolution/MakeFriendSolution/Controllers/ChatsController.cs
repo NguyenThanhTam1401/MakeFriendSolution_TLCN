@@ -158,17 +158,43 @@ namespace MakeFriendSolution.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("display/{userId}")]
-        public async Task<IActionResult> GetDisplayUser(Guid userId)
+        [HttpGet("chatFriend")]
+        public async Task<IActionResult> GetDisplayUser(Guid userId, Guid friendId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _context.Users.FindAsync(friendId);
             if (user == null)
             {
                 return NotFound();
             }
-            UserDisplay response = new UserDisplay(user, _storageService);
+            UserDisplay userResponse = new UserDisplay(user, _storageService);
 
-            return Ok(response);
+            var messages = await _context.HaveMessages
+                .Where(x => (x.SenderId == userId && x.ReceiverId == friendId)
+                    || (x.SenderId == friendId && x.ReceiverId == friendId))
+                .OrderByDescending(x => x.SentAt)
+                .Take(20).ToListAsync();
+
+            List<MessageResponse> messageResponses = new List<MessageResponse>();
+
+            foreach (var item in messages)
+            {
+                MessageResponse res = new MessageResponse(item);
+                if (item.SenderId == userId)
+                {
+                    res.Type = "sent";
+                }
+                else
+                {
+                    res.Type = "received";
+                }
+                messageResponses.Add(res);
+            }
+            var friendResponse = new FriendResponse()
+            {
+                User = userResponse,
+                Messages = messageResponses
+            };
+            return Ok(friendResponse);
         }
 
         private async Task<HaveMessage> SaveMessage(CreateMessageRequest message)

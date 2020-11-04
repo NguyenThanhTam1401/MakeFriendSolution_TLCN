@@ -239,7 +239,7 @@ namespace MakeFriendSolution.Controllers
 
             respone.NumberOfFavoriting = favorite.Item1;
             respone.Favorited = favorite.Item2;
-
+            respone.NumberOfImages = await this.GetNumberOfImages(user.Id);
             respone.Blocked = await this.GetBlockStatus(sessionUser.UserId, userId);
 
             return Ok(respone);

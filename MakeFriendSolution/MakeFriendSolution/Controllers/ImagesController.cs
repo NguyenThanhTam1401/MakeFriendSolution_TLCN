@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -109,8 +108,8 @@ namespace MakeFriendSolution.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] ImageRequest request)
         {
-            var sessionUser = _sessionService.GetSessionUser();
-            if (sessionUser.UserId != request.UserId)
+            var userInfo = _sessionService.GetDataFromToken();
+            if (userInfo.UserId != request.UserId)
             {
                 return StatusCode(401, new
                 {
@@ -126,19 +125,25 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find user with id = " + request.UserId
                 });
             }
-            var image = new ThumbnailImage();
-            image.CreatedAt = DateTime.Now;
-            image.Title = request.Title;
-            image.UserId = request.UserId;
-
-            if (request.Image != null)
+            var imagesResponse = new List<ImageResponse>();
+            var newImages = new List<ThumbnailImage>();
+            for (int i = 0; i < request.Images.Count; i++)
             {
-                image.ImagePath = await this.SaveFile(request.Image);
-            }
+                var image = new ThumbnailImage();
+                image.CreatedAt = DateTime.Now;
+                image.Title = request.Title;
+                image.UserId = request.UserId;
 
+                if (request.Images[i] != null)
+                {
+                    image.ImagePath = await this.SaveFile(request.Images[i]);
+                }
+
+                newImages.Add(image);
+            }
             try
             {
-                _context.ThumbnailImages.Add(image);
+                _context.ThumbnailImages.AddRange(newImages);
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -149,46 +154,47 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var response = new ImageResponse(image, _storageService);
-            response.NumberOfLikes = await GetNumberOfLikes(image.Id);
-
-            return Ok(response);
+            foreach (var image in newImages)
+            {
+                imagesResponse.Add(new ImageResponse(image, _storageService));
+            }
+            return Ok(imagesResponse);
         }
 
-        [Authorize]
-        [HttpPut("{imageId}")]
-        public async Task<IActionResult> UpdateById(int imageId, [FromForm] ImageRequest request)
-        {
-            var image = await _context.ThumbnailImages.FindAsync(imageId);
-            if (request.Title != "" && request.Title != null)
-            {
-                image.Title = request.Title;
-            }
+        //[Authorize]
+        //[HttpPut("{imageId}")]
+        //public async Task<IActionResult> UpdateById(int imageId, [FromForm] ImageRequest request)
+        //{
+        //    var image = await _context.ThumbnailImages.FindAsync(imageId);
+        //    if (request.Title != "" && request.Title != null)
+        //    {
+        //        image.Title = request.Title;
+        //    }
 
-            if (request.Image != null)
-            {
-                await _storageService.DeleteFileAsync(image.ImagePath);
-                image.ImagePath = await this.SaveFile(request.Image);
-            }
+        //    if (request.Image != null)
+        //    {
+        //        await _storageService.DeleteFileAsync(image.ImagePath);
+        //        image.ImagePath = await this.SaveFile(request.Image);
+        //    }
 
-            try
-            {
-                _context.ThumbnailImages.Update(image);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException e)
-            {
-                return StatusCode(501, new
-                {
-                    Message = e.InnerException
-                });
-            }
+        //    try
+        //    {
+        //        _context.ThumbnailImages.Update(image);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException e)
+        //    {
+        //        return StatusCode(501, new
+        //        {
+        //            Message = e.InnerException
+        //        });
+        //    }
 
-            var response = new ImageResponse(image, _storageService);
-            response.NumberOfLikes = await GetNumberOfLikes(image.Id);
+        //    var response = new ImageResponse(image, _storageService);
+        //    response.NumberOfLikes = await GetNumberOfLikes(image.Id);
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
 
         [Authorize]
         [HttpDelete("{imageId}")]
