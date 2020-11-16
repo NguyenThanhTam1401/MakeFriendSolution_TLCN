@@ -24,11 +24,8 @@ namespace MakeFriendSolution.Models.ViewModels
             PhoneNumber = user.PhoneNumber;
             Summary = user.Summary;
             IsInfoUpdated = user.IsInfoUpdated;
-            if (IsInfoUpdated != 0)
-            {
-                Age = this.CalculateAge(user.Dob);
-                Profile = new ProfileResponse(user);
-            }
+            Age = this.CalculateAge(user.Dob);
+            Profile = new ProfileResponse(user);
 
             GetImagePath(user);
         }
@@ -78,7 +75,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public bool Favorited { get; set; }
         public bool Blocked { get; set; } = false;
         public int Age { get; set; }
-        public int IsInfoUpdated { get; set; }
+        public bool IsInfoUpdated { get; set; }
         public string Token { get; set; }
         public ProfileResponse Profile { get; set; }
     }

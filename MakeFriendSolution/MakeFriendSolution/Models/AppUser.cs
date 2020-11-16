@@ -25,7 +25,7 @@ namespace MakeFriendSolution.Models
         public EUserStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public int IsInfoUpdated { get; set; }
+        public bool IsInfoUpdated { get; set; }
         public string PasswordForgottenCode { get; set; }
         public DateTime PasswordForgottenPeriod { get; set; }
         public int NumberOfPasswordConfirmations { get; set; }

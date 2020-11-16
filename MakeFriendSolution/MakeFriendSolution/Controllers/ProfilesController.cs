@@ -40,7 +40,7 @@ namespace MakeFriendSolution.Controllers
                 .FirstOrDefaultAsync();
 
             var users = await _context.Users
-                .Where(x => x.Id != userId && x.FindPeople == user.Gender && x.Status == EUserStatus.Active && x.IsInfoUpdated != 0)
+                .Where(x => x.Id != userId && x.FindPeople == user.Gender && x.Status == EUserStatus.Active && x.IsInfoUpdated)
                 .ToListAsync();
 
             //FilterUsers
@@ -108,6 +108,7 @@ namespace MakeFriendSolution.Controllers
             user = await this.BidingUserRequest(user, request);
             try
             {
+                user.IsInfoUpdated = true;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
             }

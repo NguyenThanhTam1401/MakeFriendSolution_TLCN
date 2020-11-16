@@ -351,9 +351,9 @@ namespace MakeFriendSolution.Controllers
 
         [AllowAnonymous]
         [HttpPost("facebook")]
-        public async Task<IActionResult> FacebookLogin([FromForm] FacebookLoginRequest request)
+        public IActionResult FacebookLogin([FromForm] FacebookLoginRequest request)
         {
-            var user = await _context.Users.Where(x => x.Email == request.Email.Trim()).FirstOrDefaultAsync();
+            var user = _context.Users.Where(x => x.Email == request.Email.Trim()).FirstOrDefault();
 
             //Email chưa được sử dụng trong hệ thống, đăng ký tài khoản mới
             if (user == null)
@@ -364,7 +364,7 @@ namespace MakeFriendSolution.Controllers
                     FullName = request.FullName,
                     UserName = request.Email,
                     AvatarPath = request.Avatar,
-                    IsInfoUpdated = 0,
+                    IsInfoUpdated = false,
                     TypeAccount = ETypeAccount.Facebook,
                     PassWord = Guid.NewGuid().ToString()
                 };
@@ -372,8 +372,9 @@ namespace MakeFriendSolution.Controllers
                 try
                 {
                     _context.Users.Add(newUser);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     var response = new UserResponse(newUser, _storageService);
+                    response.Token = this.GenerateJSONWebToken(newUser);
                     return Ok(response);
                 }
                 catch (Exception e)

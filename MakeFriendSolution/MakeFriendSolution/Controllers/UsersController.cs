@@ -68,7 +68,7 @@ namespace MakeFriendSolution.Controllers
         public async Task<IActionResult> GetFavoritestUsers([FromQuery] PagingRequest request)
         {
             var users = await _context.Users
-                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated != 0)
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
                 .ToListAsync();
 
             //Get user display
