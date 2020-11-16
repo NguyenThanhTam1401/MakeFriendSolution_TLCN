@@ -24,7 +24,6 @@ namespace MakeFriendSolution.Models.ViewModels
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
-        public string IAm { get; set; }
 
         /// <summary>
         /// Dưới đây là các thông số dùng để tính toán

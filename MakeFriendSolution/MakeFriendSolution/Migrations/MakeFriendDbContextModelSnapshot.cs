@@ -57,8 +57,8 @@ namespace MakeFriendSolution.Migrations
                     b.Property<int>("FavoriteMovie")
                         .HasColumnType("int");
 
-                    b.Property<string>("FindPeople")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FindPeople")
+                        .HasColumnType("int");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -69,9 +69,6 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IAm")
                         .HasColumnType("int");
 
                     b.Property<int>("IsInfoUpdated")
@@ -173,11 +170,10 @@ namespace MakeFriendSolution.Migrations
                             Education = 2,
                             Email = "tam@gmail.com",
                             FavoriteMovie = 11,
-                            FindPeople = "Tìm người yêu",
+                            FindPeople = 0,
                             FullName = "Nguyễn Thành Tâm",
-                            Gender = 0,
+                            Gender = 1,
                             Height = 170,
-                            IAm = 0,
                             IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 3,
@@ -201,7 +197,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("90ad66b4-0a10-4981-b742-9371a30029a5"),
+                            Id = new Guid("88c5ecd0-4f7e-4ee9-99fe-40f838f4b45d"),
                             AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
                             Body = 2,
@@ -212,11 +208,10 @@ namespace MakeFriendSolution.Migrations
                             Education = 2,
                             Email = "ng.th.tam1401@gmail.com",
                             FavoriteMovie = 11,
-                            FindPeople = "Tìm người yêu",
+                            FindPeople = 0,
                             FullName = "Nguyễn Thành Tâm",
-                            Gender = 0,
+                            Gender = 1,
                             Height = 170,
-                            IAm = 0,
                             IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 3,
@@ -240,7 +235,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cb41f54e-0570-433b-b948-9750f72f2b87"),
+                            Id = new Guid("6bbfe978-951e-416c-bc74-ded30e78f42b"),
                             AtmosphereLike = 3,
                             AvatarPath = "Tam.jpg",
                             Body = 2,
@@ -251,11 +246,10 @@ namespace MakeFriendSolution.Migrations
                             Education = 2,
                             Email = "nhung@gmail.com",
                             FavoriteMovie = 11,
-                            FindPeople = "Tìm người yêu",
+                            FindPeople = 1,
                             FullName = "Nguyễn Huyền Nhung",
-                            Gender = 1,
+                            Gender = 0,
                             Height = 170,
-                            IAm = 1,
                             IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 5,
@@ -290,11 +284,10 @@ namespace MakeFriendSolution.Migrations
                             Education = 4,
                             Email = "vuong@gmail.com",
                             FavoriteMovie = 7,
-                            FindPeople = "Tìm người thương",
+                            FindPeople = 0,
                             FullName = "Nguyên Vương",
-                            Gender = 0,
+                            Gender = 1,
                             Height = 170,
-                            IAm = 0,
                             IsInfoUpdated = 1,
                             Job = 7,
                             LifeStyle = 1,

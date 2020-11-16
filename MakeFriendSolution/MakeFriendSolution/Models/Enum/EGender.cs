@@ -7,7 +7,7 @@ namespace MakeFriendSolution.Models.Enum
 {
     public enum EGender
     {
-        Nam,
-        Nữ
+        Nữ,
+        Nam
     }
 }

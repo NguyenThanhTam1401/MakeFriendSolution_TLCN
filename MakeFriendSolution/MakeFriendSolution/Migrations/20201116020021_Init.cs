@@ -30,11 +30,10 @@ namespace MakeFriendSolution.Migrations
                     NumberOfPasswordConfirmations = table.Column<int>(nullable: false, defaultValue: 0),
                     Title = table.Column<string>(nullable: true),
                     Summary = table.Column<string>(nullable: true),
-                    FindPeople = table.Column<string>(nullable: true),
                     Weight = table.Column<int>(nullable: false),
                     Height = table.Column<int>(nullable: false),
                     Dob = table.Column<DateTime>(nullable: false),
-                    IAm = table.Column<int>(nullable: false),
+                    FindPeople = table.Column<int>(nullable: false),
                     Marriage = table.Column<int>(nullable: false),
                     Target = table.Column<int>(nullable: false),
                     Education = table.Column<int>(nullable: false),
@@ -206,22 +205,22 @@ namespace MakeFriendSolution.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AtmosphereLike", "AvatarPath", "Body", "Character", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FavoriteMovie", "FindPeople", "FullName", "Gender", "Height", "IAm", "IsInfoUpdated", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
+                columns: new[] { "Id", "AtmosphereLike", "AvatarPath", "Body", "Character", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FavoriteMovie", "FindPeople", "FullName", "Gender", "Height", "IsInfoUpdated", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
                 values: new object[,]
                 {
-                    { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "tam@gmail.com", 11, "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 1, 7, 3, 37, 1, 2, "admin", "0396925225", 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "Admin", 65 },
-                    { new Guid("90ad66b4-0a10-4981-b742-9371a30029a5"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "ng.th.tam1401@gmail.com", 11, "Tìm người yêu", "Nguyễn Thành Tâm", 0, 170, 0, 1, 7, 3, 37, 1, 2, "123", "0396925225", 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "tamxix", 65 }
+                    { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "tam@gmail.com", 11, 0, "Nguyễn Thành Tâm", 1, 170, 1, 7, 3, 37, 1, 2, "admin", "0396925225", 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "Admin", 65 },
+                    { new Guid("88c5ecd0-4f7e-4ee9-99fe-40f838f4b45d"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "ng.th.tam1401@gmail.com", 11, 0, "Nguyễn Thành Tâm", 1, 170, 1, 7, 3, 37, 1, 2, "123", "0396925225", 0, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "tamxix", 65 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AtmosphereLike", "AvatarPath", "Body", "Character", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FavoriteMovie", "FindPeople", "FullName", "Gender", "Height", "IAm", "IsInfoUpdated", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Role", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
-                values: new object[] { new Guid("cb41f54e-0570-433b-b948-9750f72f2b87"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "nhung@gmail.com", 11, "Tìm người yêu", "Nguyễn Huyền Nhung", 1, 170, 1, 1, 7, 5, 37, 1, 3, "admin", "0369875463", 0, 1, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "HuyenNhung", 65 });
+                columns: new[] { "Id", "AtmosphereLike", "AvatarPath", "Body", "Character", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FavoriteMovie", "FindPeople", "FullName", "Gender", "Height", "IsInfoUpdated", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Role", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
+                values: new object[] { new Guid("6bbfe978-951e-416c-bc74-ded30e78f42b"), 3, "Tam.jpg", 2, 1, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, "nhung@gmail.com", 11, 1, "Nguyễn Huyền Nhung", 0, 170, 1, 7, 5, 37, 1, 3, "admin", "0369875463", 0, 1, 1, 0, "Tôi là Tâm, rất vui khi được làm quen với bạn", 4, "Thông tin của tôi", "HuyenNhung", 65 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AtmosphereLike", "AvatarPath", "Body", "Character", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FavoriteMovie", "FindPeople", "FullName", "Gender", "Height", "IAm", "IsInfoUpdated", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
-                values: new object[] { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96e"), 0, "vuong.jpg", 3, 3, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4, "vuong@gmail.com", 7, "Tìm người thương", "Nguyên Vương", 0, 170, 0, 1, 7, 1, 38, 2, 2, "1111", "0396925225", 2, 1, 0, "Tôi là Vương, rất vui khi được làm quen với bạn", 3, "Thông tin của tôi", "vuong", 65 });
+                columns: new[] { "Id", "AtmosphereLike", "AvatarPath", "Body", "Character", "CreatedAt", "Dob", "DrinkBeer", "Education", "Email", "FavoriteMovie", "FindPeople", "FullName", "Gender", "Height", "IsInfoUpdated", "Job", "LifeStyle", "Location", "Marriage", "MostValuable", "PassWord", "PhoneNumber", "Religion", "Smoking", "Status", "Summary", "Target", "Title", "UserName", "Weight" },
+                values: new object[] { new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96e"), 0, "vuong.jpg", 3, 3, new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 4, "vuong@gmail.com", 7, 0, "Nguyên Vương", 1, 170, 1, 7, 1, 38, 2, 2, "1111", "0396925225", 2, 1, 0, "Tôi là Vương, rất vui khi được làm quen với bạn", 3, "Thông tin của tôi", "vuong", 65 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BlockUsers_FromUserId",

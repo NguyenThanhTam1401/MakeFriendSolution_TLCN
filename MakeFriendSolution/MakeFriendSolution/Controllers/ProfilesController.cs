@@ -23,36 +23,30 @@ namespace MakeFriendSolution.Controllers
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
+        private ISessionService _sessionService;
 
-        public ProfilesController(MakeFriendDbContext context, IStorageService storageService)
+        public ProfilesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
         {
             _context = context;
             _storageService = storageService;
+            _sessionService = sessionService;
         }
 
-        [HttpGet("matrix/{userId}")]
+        [HttpGet("similar/{userId}")]
         public async Task<IActionResult> GetMatrix(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
-            var usersResponse = new List<UserResponse>();
-
             var user = await _context.Users
                 .Where(x => x.Id == userId)
                 .FirstOrDefaultAsync();
 
             var users = await _context.Users
-                .Where(x => x.Id != userId && x.IAm != user.IAm)
+                .Where(x => x.Id != userId && x.FindPeople == user.Gender && x.Status == EUserStatus.Active && x.IsInfoUpdated != 0)
                 .ToListAsync();
 
             //FilterUsers
             FilterUers(ref users, filter);
 
             users.Insert(0, user);
-
-            foreach (var item in users)
-            {
-                UserResponse userResponse = new UserResponse(item, _storageService);
-                usersResponse.Add(userResponse);
-            }
 
             int sl = users.Count;
 
@@ -81,14 +75,22 @@ namespace MakeFriendSolution.Controllers
             List<double> kq = new List<double>();
             kq = m.SimilarityCalculate();
 
+            //users.RemoveAt(0);
+
             for (int i = 0; i < kq.Count; i++)
             {
-                usersResponse[i].Point = kq[i];
+                users[i].Point = kq[i];
             }
 
-            //usersResponse.RemoveAt(0);
-            usersResponse = usersResponse.OrderByDescending(o => o.Point).ToList();
-            return Ok(usersResponse);
+            users = users.OrderByDescending(o => o.Point).ToList();
+
+            users = users
+                .Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize).ToList();
+
+            var usersDisplay = await this.GetUserDisplay(users);
+
+            return Ok(usersDisplay);
         }
 
         [HttpPut]
@@ -134,9 +136,9 @@ namespace MakeFriendSolution.Controllers
                 user.Location = location;
             }
 
-            if (Enum.TryParse(request.IAm, out EIAm iAm))
+            if (Enum.TryParse(request.FindPeople, out EGender findPeople))
             {
-                user.IAm = iAm;
+                user.FindPeople = findPeople;
             }
 
             if (Enum.TryParse(request.Marriage, out EMarriage marriage))
@@ -224,11 +226,6 @@ namespace MakeFriendSolution.Controllers
             if (request.Summary != "" && request.Summary != null)
             {
                 user.Summary = request.Summary;
-            }
-
-            if (request.FindPeople != "" && request.FindPeople != null)
-            {
-                user.FindPeople = request.FindPeople;
             }
 
             if (request.Weight >= 20 && request.Weight <= 200)
@@ -327,6 +324,7 @@ namespace MakeFriendSolution.Controllers
             }
             return Ok("Profiles had been updated!");
         }
+
         [AllowAnonymous]
         [HttpGet("features")]
         public IActionResult GetFeatures()
@@ -394,13 +392,13 @@ namespace MakeFriendSolution.Controllers
                 Gender.Add(item.ToString());
             }
 
-            var IAm = new List<string>();
-            List<EIAm> IAms = Enum.GetValues(typeof(EIAm))
-                    .Cast<EIAm>()
+            var FindPeople = new List<string>();
+            List<EGender> findPeople = Enum.GetValues(typeof(EGender))
+                    .Cast<EGender>()
                     .ToList();
-            foreach (var item in IAms)
+            foreach (var item in findPeople)
             {
-                IAm.Add(item.ToString());
+                Gender.Add(item.ToString());
             }
 
             var Job = new List<string>();
@@ -511,7 +509,7 @@ namespace MakeFriendSolution.Controllers
                 Education,
                 FavoriteMovie,
                 Gender,
-                IAm,
+                FindPeople,
                 Job,
                 LifeStyle,
                 Location,
@@ -526,6 +524,69 @@ namespace MakeFriendSolution.Controllers
             };
 
             return Ok(response);
+        }
+
+        private async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users)
+        {
+            var userDisplays = new List<UserDisplay>();
+            //Get Session user - Check login
+            var isLogin = true;
+            var sessionUser = _sessionService.GetDataFromToken();
+            if (sessionUser == null)
+            {
+                isLogin = false;
+                sessionUser = new LoginInfo()
+                {
+                    UserId = Guid.NewGuid()
+                };
+            }
+
+            foreach (var user in users)
+            {
+                var userDisplay = new UserDisplay(user, this._storageService);
+
+                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, isLogin, sessionUser.UserId);
+                userDisplay.NumberOfFollowers = followResult.Item1;
+                userDisplay.Followed = followResult.Item2;
+
+                var favoriteResult = await this.GetNumberOfFavoritors(userDisplay.Id, isLogin, sessionUser.UserId);
+                userDisplay.NumberOfFavoritors = favoriteResult.Item1;
+                userDisplay.Favorited = favoriteResult.Item2;
+
+                userDisplay.NumberOfImages = await this.GetNumberOfImages(user.Id);
+
+                userDisplays.Add(userDisplay);
+            }
+            return userDisplays;
+        }
+
+        private async Task<(int, bool)> GetNumberOfFollowers(Guid userId, bool isLogin, Guid currentUserId)
+        {
+            var numberOfFollowers = await _context.Follows.Where(x => x.ToUserId == userId).CountAsync();
+            bool followed = false;
+            if (isLogin)
+            {
+                followed = await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
+            }
+
+            return (numberOfFollowers, followed);
+        }
+
+        private async Task<(int, bool)> GetNumberOfFavoritors(Guid userId, bool isLogin, Guid currentUserId)
+        {
+            var numberOfFavoritors = await _context.Favorites.Where(x => x.ToUserId == userId).CountAsync();
+            bool favorited = false;
+            if (isLogin)
+            {
+                favorited = await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
+            }
+
+            return (numberOfFavoritors, favorited);
+        }
+
+        public async Task<int> GetNumberOfImages(Guid userId)
+        {
+            return await _context.ThumbnailImages.Where(x => x.UserId == userId).CountAsync();
         }
     }
 }

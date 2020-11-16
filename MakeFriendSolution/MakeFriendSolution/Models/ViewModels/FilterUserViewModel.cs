@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MakeFriendSolution.Models
+namespace MakeFriendSolution.Models.ViewModels
 {
     public class FilterUserViewModel : PagingRequest
     {

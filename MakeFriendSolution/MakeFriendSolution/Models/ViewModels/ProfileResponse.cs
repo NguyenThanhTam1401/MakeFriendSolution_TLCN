@@ -12,11 +12,10 @@ namespace MakeFriendSolution.Models.ViewModels
             Job = profile.Job.ToString();
             Location = profile.Location.ToString();
             Title = profile.Title;
-            FindPeople = profile.FindPeople;
+            FindPeople = profile.FindPeople.ToString();
             Weight = profile.Weight;
             Height = profile.Height;
             Dob = profile.Dob;
-            IAm = profile.IAm.ToString();
             Marriage = profile.Marriage.ToString();
             Target = profile.Target.ToString();
             Education = profile.Education.ToString();

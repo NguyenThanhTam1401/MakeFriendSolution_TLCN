@@ -68,7 +68,8 @@ namespace MakeFriendSolution.Controllers
         public async Task<IActionResult> GetFavoritestUsers([FromQuery] PagingRequest request)
         {
             var users = await _context.Users
-                .Where(x => x.Status == Models.Enum.EUserStatus.Active).ToListAsync();
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated != 0)
+                .ToListAsync();
 
             //Get user display
             var userDisplays = await this.GetUserDisplay(users);
@@ -92,7 +93,7 @@ namespace MakeFriendSolution.Controllers
                 .FirstOrDefaultAsync();
 
             var users = await _context.Users
-                .Where(x => x.Id != userId && x.IAm != user.IAm)
+                .Where(x => x.Id != userId && x.Gender == user.FindPeople)
                 .ToListAsync();
 
             //FilterUsers

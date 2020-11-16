@@ -116,10 +116,6 @@ namespace MakeFriendSolution.Common
             for (i = 0; i < this.Row; i++)
             {
                 tichVoHuong = 0;
-                tichDoDai = 1;
-
-                //double VectorA = 0;
-                //double VectorB = 0;
 
                 double lengthVectorA = 0;
                 double lengthVectorB = 0;

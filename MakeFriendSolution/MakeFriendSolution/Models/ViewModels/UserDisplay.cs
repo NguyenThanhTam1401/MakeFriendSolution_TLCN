@@ -21,7 +21,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public int NumberOfFavoritors { get; set; } = 0;
         public bool Favorited { get; set; } = false;
         public int NumberOfImages { get; set; }
-
+        public double Point { get; set; } = 0;
         private IStorageService _storageService { get; set; }
 
         public UserDisplay()
@@ -36,7 +36,7 @@ namespace MakeFriendSolution.Models.ViewModels
             CreatedAt = user.CreatedAt;
             Summary = user.Summary;
             Dob = user.Dob;
-
+            Point = user.Point;
             GetImagePath(user);
         }
 

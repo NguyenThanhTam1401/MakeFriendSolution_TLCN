@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,6 @@ namespace MakeFriendSolution.Models
 
         public string Title { get; set; }
         public string Summary { get; set; }
-        public string FindPeople { get; set; }
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
@@ -42,7 +42,7 @@ namespace MakeFriendSolution.Models
         /// Dưới đây là các thông số dùng để tính toán
         /// </summary>
 
-        public EIAm IAm { get; set; }
+        public EGender FindPeople { get; set; }
         public EMarriage Marriage { get; set; }
         public ETarget Target { get; set; }
         public EEducation Education { get; set; }
@@ -69,6 +69,9 @@ namespace MakeFriendSolution.Models
         public ICollection<BlockUser> UserWasBlock { get; set; }
         public ICollection<BlockUser> BlockedByUsers { get; set; }
 
+        [NotMapped]
+        public double Point { get; set; } = 0;
+
         public AppUser(AppUser user)
         {
             Id = user.Id;
@@ -92,7 +95,6 @@ namespace MakeFriendSolution.Models
             Weight = user.Weight;
             Height = user.Height;
             Dob = user.Dob;
-            IAm = user.IAm;
             Marriage = user.Marriage;
             Target = user.Target;
             Education = user.Education;
