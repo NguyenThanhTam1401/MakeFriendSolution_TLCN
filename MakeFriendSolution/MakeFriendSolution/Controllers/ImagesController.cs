@@ -245,10 +245,10 @@ namespace MakeFriendSolution.Controllers
 
         [AllowAnonymous]
         [HttpPost("like")]
-        public async Task<IActionResult> LikeImage([FromForm] int imageId, [FromForm] Guid userId)
+        public async Task<IActionResult> LikeImage([FromForm] LikeImageRequest request)
         {
             var userInfo = _sessionService.GetDataFromToken();
-            if (userId != userInfo.UserId)
+            if (request.UserId != userInfo.UserId)
             {
                 return StatusCode(401, new
                 {
@@ -256,7 +256,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            if (!await _context.ThumbnailImages.AnyAsync(x => x.Id == imageId))
+            if (!await _context.ThumbnailImages.AnyAsync(x => x.Id == request.ImageId))
             {
                 return BadRequest(new
                 {
@@ -264,7 +264,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            if (!await _context.Users.AnyAsync(x => x.Id == userId))
+            if (!await _context.Users.AnyAsync(x => x.Id == request.UserId))
             {
                 return BadRequest(new
                 {
@@ -273,7 +273,7 @@ namespace MakeFriendSolution.Controllers
             }
 
             var like = await _context.LikeImages
-                .Where(x => x.UserId == userId && x.ImageId == imageId)
+                .Where(x => x.UserId == request.UserId && x.ImageId == request.ImageId)
                 .FirstOrDefaultAsync();
 
             var message = "";
@@ -282,8 +282,8 @@ namespace MakeFriendSolution.Controllers
             {
                 var likeImage = new LikeImage()
                 {
-                    ImageId = imageId,
-                    UserId = userId
+                    ImageId = request.ImageId,
+                    UserId = request.UserId
                 };
 
                 _context.LikeImages.Add(likeImage);
