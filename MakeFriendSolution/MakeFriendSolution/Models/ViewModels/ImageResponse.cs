@@ -14,6 +14,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public Guid UserId { get; set; }
         public string Title { get; set; }
         public int NumberOfLikes { get; set; }
+        public bool liked { get; set; } = false;
         public string ImagePath { get; set; }
         public bool HasImage { get; set; }
         public DateTime CreatedAt { get; set; }

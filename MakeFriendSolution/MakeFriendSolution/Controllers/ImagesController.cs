@@ -65,6 +65,15 @@ namespace MakeFriendSolution.Controllers
                 }
             }
 
+            var userInfo = _sessionService.GetDataFromToken();
+            if (userInfo != null)
+            {
+                foreach (var item in response)
+                {
+                    item.liked = await this.IsLiked(userInfo.UserId, item.Id);
+                }
+            }
+
             if (errorImages.Count > 0)
             {
                 try
@@ -82,6 +91,11 @@ namespace MakeFriendSolution.Controllers
             }
 
             return Ok(response);
+        }
+
+        private async Task<bool> IsLiked(Guid userId, int imageId)
+        {
+            return await _context.LikeImages.AnyAsync(x => x.UserId == userId && x.ImageId == imageId);
         }
 
         [AllowAnonymous]
