@@ -211,6 +211,39 @@ namespace MakeFriendSolution.Controllers
         }
 
         [Authorize]
+        [HttpPut("avatar")]
+        public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarRequest request)
+        {
+            var user = await _context.Users.FindAsync(request.UserId);
+            if (user.Status != EUserStatus.Active)
+            {
+                return BadRequest(new
+                {
+                    Message = "Account is not active!"
+                });
+            }
+            var oldAvatar = user.AvatarPath;
+
+            if (request.Avatar == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "File is required!"
+                });
+            }
+
+            user.AvatarPath = await this.SaveFile(request.Avatar);
+
+            await _storageService.DeleteFileAsync(oldAvatar);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            var response = new UserResponse(user, _storageService);
+            return Ok(response);
+        }
+
+        [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById(Guid userId)
         {
@@ -238,7 +271,7 @@ namespace MakeFriendSolution.Controllers
             respone.NumberOfFollowers = follow.Item1;
             respone.Followed = follow.Item2;
 
-            respone.NumberOfFavoriting = favorite.Item1;
+            respone.NumberOfFavoritors = favorite.Item1;
             respone.Favorited = favorite.Item2;
             respone.NumberOfImages = await this.GetNumberOfImages(user.Id);
             respone.Blocked = await this.GetBlockStatus(sessionUser.UserId, userId);
@@ -424,7 +457,12 @@ namespace MakeFriendSolution.Controllers
                 return StatusCode(401);
             }
 
-            var favoritors = await _context.Favorites.Where(x => x.FromUserId == userId).Include(x => x.ToUser).ToListAsync();
+            var favoritors = await _context
+                .Favorites
+                .Where(x => x.FromUserId == userId)
+                .Include(x => x.ToUser)
+                .ToListAsync();
+
             var response = favoritors.Select(x => new UserDisplay(x.ToUser, _storageService));
             foreach (var item in response)
             {
@@ -442,7 +480,7 @@ namespace MakeFriendSolution.Controllers
 
         private async Task<(int, bool)> GetNumberOfFollowers(Guid userId, bool isLogin, Guid currentUserId)
         {
-            var numberOfFollowers = await _context.Follows.Where(x => x.ToUserId == userId).CountAsync();
+            var numberOfFollowers = await _context.Follows.Where(x => x.FromUserId == userId).CountAsync();
             bool followed = false;
             if (isLogin)
             {
@@ -548,6 +586,15 @@ namespace MakeFriendSolution.Controllers
                 userDisplays.Add(userDisplay);
             }
             return userDisplays;
+        }
+
+        //Save File
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
         }
     }
 }

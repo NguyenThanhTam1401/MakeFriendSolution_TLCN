@@ -66,9 +66,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public double Point { get; set; }
         public bool HasAvatar { get; set; }
         public string Summary { get; set; }
-        public int NumberOfFollowing { get; set; }
         public int NumberOfFollowers { get; set; }
-        public int NumberOfFavoriting { get; set; }
         public int NumberOfFavoritors { get; set; }
         public int NumberOfImages { get; set; }
         public bool Followed { get; set; }
