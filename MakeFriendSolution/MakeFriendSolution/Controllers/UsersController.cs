@@ -53,10 +53,18 @@ namespace MakeFriendSolution.Controllers
         public async Task<IActionResult> GetNewestUsers([FromQuery] PagingRequest request)
         {
             var users = await _context.Users
-                .Where(x => x.Status == Models.Enum.EUserStatus.Active)
-                .OrderByDescending(x => x.CreatedAt)
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
+                .ToListAsync();
+
+            var loginInfo = _sessionService.GetDataFromToken();
+            if (loginInfo != null)
+            {
+                users = users.Where(x => x.Id != loginInfo.UserId).ToList();
+            }
+
+            users = users.OrderByDescending(x => x.CreatedAt)
                 .Skip((request.PageIndex - 1) * request.PageSize)
-                .Take(request.PageSize).ToListAsync();
+                .Take(request.PageSize).ToList();
 
             var userDisplays = await this.GetUserDisplay(users);
 
@@ -71,6 +79,11 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
                 .ToListAsync();
 
+            var loginInfo = _sessionService.GetDataFromToken();
+            if (loginInfo != null)
+            {
+                users = users.Where(x => x.Id != loginInfo.UserId).ToList();
+            }
             //Get user display
             var userDisplays = await this.GetUserDisplay(users);
 
@@ -79,7 +92,12 @@ namespace MakeFriendSolution.Controllers
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
 
-            return Ok(response);
+            var pageTotal = users.Count / request.PageSize;
+            return Ok(new
+            {
+                data = response,
+                pageTotal = pageTotal
+            });
         }
 
         [AllowAnonymous]
