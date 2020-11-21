@@ -40,13 +40,19 @@ namespace MakeFriendSolution.Controllers
                 return BadRequest("Can not save message!");
             }
 
+            var sender = await _context.Users.FindAsync(request.SenderId);
+
+            var display = new UserDisplay(sender, _storageService);
+
             var response = new
             {
                 SenderId = result.SenderId,
                 ReceiverId = result.ReceiverId,
                 Content = result.Content,
                 SentAt = result.SentAt,
-                Id = result.Id
+                Id = result.Id,
+                hasAvatar = display.HasAvatar,
+                Avatar = display.AvatarPath
             };
 
             //var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferchartdata", response));
