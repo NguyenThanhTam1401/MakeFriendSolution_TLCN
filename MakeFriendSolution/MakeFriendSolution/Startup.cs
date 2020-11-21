@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.HubConfig;
+using MakeFriendSolution.Middlewares;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,7 +48,7 @@ namespace MakeFriendSolution
             });
 
             services.AddSignalR();
-
+            
             services.AddDbContext<MakeFriendDbContext>(options =>
     options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")));
 
@@ -86,6 +87,8 @@ namespace MakeFriendSolution
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+            services.AddTransient<AccessMiddleware>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,12 +107,13 @@ namespace MakeFriendSolution
             app.UseAuthorization();
 
             app.UseSession();
-
+            app.UseMiddleware<AccessMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChartHub>("/chatHub");
             });
+
         }
     }
 }

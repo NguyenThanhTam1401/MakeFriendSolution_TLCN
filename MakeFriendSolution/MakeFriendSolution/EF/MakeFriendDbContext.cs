@@ -23,7 +23,7 @@ namespace MakeFriendSolution.EF
             modelBuilder.ApplyConfiguration(new FollowConfig());
             modelBuilder.ApplyConfiguration(new FavoriteConfig());
             modelBuilder.ApplyConfiguration(new BlockUserConfig());
-
+            modelBuilder.ApplyConfiguration(new AccessConfig());
             modelBuilder.Seed();
         }
 
@@ -34,5 +34,6 @@ namespace MakeFriendSolution.EF
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<LikeImage> LikeImages { get; set; }
         public DbSet<BlockUser> BlockUsers { get; set; }
+        public DbSet<Access> Accesses { get; set; }
     }
 }
