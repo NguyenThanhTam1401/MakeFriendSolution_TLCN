@@ -51,6 +51,7 @@ namespace MakeFriendSolution.Controllers
                 Content = result.Content,
                 SentAt = result.SentAt,
                 Id = result.Id,
+                FullName = display.FullName,
                 hasAvatar = display.HasAvatar,
                 Avatar = display.AvatarPath
             };

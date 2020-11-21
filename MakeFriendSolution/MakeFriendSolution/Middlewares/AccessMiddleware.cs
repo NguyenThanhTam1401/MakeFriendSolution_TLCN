@@ -1,4 +1,5 @@
 ﻿using MakeFriendSolution.EF;
+using MakeFriendSolution.Models;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,14 @@ namespace MakeFriendSolution.Middlewares
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             var access = _context.Accesses.FirstOrDefault();
+            if (access == null)
+            {
+                access = new Access();
+                access.AuthorizeCount = 0;
+                access.UnauthorizeCount = 0;
+                _context.Accesses.Add(access);
+                await _context.SaveChangesAsync();
+            }
             var identity = context.User.Identity as ClaimsIdentity;
             IList<Claim> claims = identity.Claims.ToList();
 
