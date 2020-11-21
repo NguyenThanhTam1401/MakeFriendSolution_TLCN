@@ -8,6 +8,7 @@ namespace MakeFriendSolution.Models
     public class Access
     {
         public int Id { get; set; }
+        public DateTime Date { get; set; }
         public int AuthorizeCount { get; set; }
         public int UnauthorizeCount { get; set; }
     }

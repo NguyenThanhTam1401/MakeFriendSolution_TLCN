@@ -1,6 +1,8 @@
 ﻿using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -19,12 +21,15 @@ namespace MakeFriendSolution.Middlewares
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var access = _context.Accesses.FirstOrDefault();
+            var now = DateTime.Now;
+            var access = await _context.Accesses.Where(x => x.Date.Date == now.Date).FirstOrDefaultAsync();
+
             if (access == null)
             {
                 access = new Access();
                 access.AuthorizeCount = 0;
                 access.UnauthorizeCount = 0;
+                access.Date = DateTime.Now.Date;
                 _context.Accesses.Add(access);
                 await _context.SaveChangesAsync();
             }
