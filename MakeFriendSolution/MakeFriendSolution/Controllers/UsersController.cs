@@ -252,7 +252,10 @@ namespace MakeFriendSolution.Controllers
 
             user.AvatarPath = await this.SaveFile(request.Avatar);
 
-            await _storageService.DeleteFileAsync(oldAvatar);
+            if(oldAvatar != "image.png")
+            {
+                await _storageService.DeleteFileAsync(oldAvatar);
+            }
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();

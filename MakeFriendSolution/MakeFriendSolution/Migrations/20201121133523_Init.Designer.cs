@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20201121091211_Init")]
+    [Migration("20201121133523_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,9 @@ namespace MakeFriendSolution.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UnauthorizeCount")
                         .ValueGeneratedOnAdd()
@@ -679,7 +682,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("55a1618f-abd8-4972-ae02-b9cf1ab2e6d9"),
+                            Id = new Guid("d37438c1-050a-4d3f-b1e7-3a2ddfd54386"),
                             AtmosphereLike = 3,
                             AvatarPath = "nhung2.jpg",
                             Body = 2,
@@ -717,7 +720,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8f8c15dd-9831-491e-bc5d-2786a510baa4"),
+                            Id = new Guid("352e0d36-f7b6-4278-b4d1-364102569ee3"),
                             AtmosphereLike = 0,
                             AvatarPath = "vuong.jpg",
                             Body = 3,
@@ -755,7 +758,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("55816cde-5a3a-4769-a5c2-80cf5f3cee47"),
+                            Id = new Guid("d4e8c074-da22-4b58-8279-108f772cdba7"),
                             AtmosphereLike = 3,
                             AvatarPath = "hieu.jpg",
                             Body = 2,
@@ -793,7 +796,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("38f986e0-2549-4c27-ac66-55916422af97"),
+                            Id = new Guid("53ecd0b1-a855-425c-a546-d1ee73d17102"),
                             AtmosphereLike = 3,
                             AvatarPath = "tien.jpg",
                             Body = 2,
@@ -831,7 +834,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d7b489b4-368b-46da-9359-52b00fe16867"),
+                            Id = new Guid("b9874512-bc94-4080-aac8-465cc8502146"),
                             AtmosphereLike = 3,
                             AvatarPath = "dinh.jpg",
                             Body = 2,
@@ -869,7 +872,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("569abcf7-cb03-4d54-b006-e239eb30f900"),
+                            Id = new Guid("5cebfb4f-4051-436f-b259-69400db414a0"),
                             AtmosphereLike = 3,
                             AvatarPath = "dat.jpg",
                             Body = 2,
@@ -907,7 +910,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d2527d31-99b5-4810-b12c-ba0f080de179"),
+                            Id = new Guid("cbe08ca9-5a90-486e-9466-724ddcbab6ca"),
                             AtmosphereLike = 3,
                             AvatarPath = "son.jpg",
                             Body = 2,
@@ -945,7 +948,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("494f726a-36c3-49d7-b0b9-ebfa41bc73dc"),
+                            Id = new Guid("1fd2bea6-57a9-472b-9b73-fb70135fc581"),
                             AtmosphereLike = 3,
                             AvatarPath = "duc.jpg",
                             Body = 2,
@@ -983,7 +986,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ffbae934-b3a7-4897-8099-f64dcee55d95"),
+                            Id = new Guid("4a70c71d-0ce5-4ab9-b1e3-709ff0e21be7"),
                             AtmosphereLike = 3,
                             AvatarPath = "nhung.jpg",
                             Body = 2,
@@ -1021,7 +1024,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a142e55c-fd1f-4b9e-9dd7-fff4177a3136"),
+                            Id = new Guid("48461a98-5a35-4666-9721-d319089f9b6f"),
                             AtmosphereLike = 3,
                             AvatarPath = "diem.jpg",
                             Body = 2,
@@ -1059,7 +1062,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("99657a02-5101-44f8-b96e-15871441f20e"),
+                            Id = new Guid("cc047192-7327-4018-995c-e6cebf10672f"),
                             AtmosphereLike = 3,
                             AvatarPath = "han.jpg",
                             Body = 2,
@@ -1097,7 +1100,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("be2a936b-c612-4877-a6cd-f3291ded0235"),
+                            Id = new Guid("499557aa-e36b-43a0-b68e-8beb7553dea7"),
                             AtmosphereLike = 3,
                             AvatarPath = "mai.jpg",
                             Body = 2,
@@ -1135,7 +1138,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f5fc2cd9-d6b0-4694-88ec-822dce666481"),
+                            Id = new Guid("03e8ca15-8072-44c3-b969-adbfbeca7987"),
                             AtmosphereLike = 3,
                             AvatarPath = "nhung2.jpg",
                             Body = 2,
@@ -1173,7 +1176,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2a7d6946-4da4-44a3-8d6a-ec06368a00b5"),
+                            Id = new Guid("8840dc0a-fda0-43fa-aae3-2af27f466ed4"),
                             AtmosphereLike = 0,
                             AvatarPath = "vuong.jpg",
                             Body = 3,
@@ -1211,7 +1214,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("70599229-5f70-43ff-939a-771c71977314"),
+                            Id = new Guid("b1bb2f46-2214-49ac-9cb5-4d284b764605"),
                             AtmosphereLike = 3,
                             AvatarPath = "hieu.jpg",
                             Body = 2,
@@ -1249,7 +1252,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b58df0cd-e276-41fe-9990-2a0290d74fb2"),
+                            Id = new Guid("35055822-4ea8-484e-b10d-ca59e789e9d6"),
                             AtmosphereLike = 3,
                             AvatarPath = "tien.jpg",
                             Body = 2,
@@ -1287,7 +1290,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0b28d639-40e8-40a1-856f-95b87d796d80"),
+                            Id = new Guid("6d0a0016-a120-403b-a85d-9d35b9fc99a4"),
                             AtmosphereLike = 3,
                             AvatarPath = "dinh.jpg",
                             Body = 2,
@@ -1325,7 +1328,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("508c0a22-5c4a-49fc-abb3-27989f0dacf9"),
+                            Id = new Guid("d00a1d50-f197-4b0f-a6f6-e67b25b692c3"),
                             AtmosphereLike = 3,
                             AvatarPath = "dat.jpg",
                             Body = 2,
@@ -1363,7 +1366,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b6b1aeb7-4d79-40cc-9f89-ca5a11b10d01"),
+                            Id = new Guid("29875f1c-a9ae-4dfa-80c9-715c7ad50a39"),
                             AtmosphereLike = 3,
                             AvatarPath = "son.jpg",
                             Body = 2,
@@ -1401,7 +1404,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e761d884-1b1d-4d46-b759-1ccd3fc05a02"),
+                            Id = new Guid("06ba809e-1682-49d4-9e4b-e45fb9509567"),
                             AtmosphereLike = 3,
                             AvatarPath = "duc.jpg",
                             Body = 2,
@@ -1439,7 +1442,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("277cc9e0-85d3-43aa-8fed-924fcd616632"),
+                            Id = new Guid("278235a3-cf90-4012-a6ef-7b7cac09b546"),
                             AtmosphereLike = 3,
                             AvatarPath = "nhung.jpg",
                             Body = 2,
@@ -1477,7 +1480,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("be3a8b41-735e-417f-a2d6-8a1ce492cab0"),
+                            Id = new Guid("61459010-968a-4136-a0d3-911e01b653ad"),
                             AtmosphereLike = 3,
                             AvatarPath = "diem.jpg",
                             Body = 2,
@@ -1515,7 +1518,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b96b2030-11f3-48ab-bca0-e96c78a8a3e6"),
+                            Id = new Guid("73efa5e4-a76f-41d3-93ca-7de10e667218"),
                             AtmosphereLike = 3,
                             AvatarPath = "han.jpg",
                             Body = 2,
@@ -1553,7 +1556,7 @@ namespace MakeFriendSolution.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dba9f471-d67e-4e01-b9d8-b5facfdd782d"),
+                            Id = new Guid("75d8371f-7064-42f0-8fb0-69d7b2c15659"),
                             AtmosphereLike = 3,
                             AvatarPath = "mai.jpg",
                             Body = 2,
