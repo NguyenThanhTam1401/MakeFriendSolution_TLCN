@@ -89,6 +89,7 @@ namespace MakeFriendSolution.Controllers
 
             var response = userDisplays
                 .OrderByDescending(x => x.NumberOfFavoritors)
+                .ThenBy(x=>x.FullName)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
 
@@ -508,7 +509,7 @@ namespace MakeFriendSolution.Controllers
 
         private async Task<bool> IsFollowed(Guid userId, Guid currentUserId)
         {
-            return await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
+            return await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
         }
 
         private async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)

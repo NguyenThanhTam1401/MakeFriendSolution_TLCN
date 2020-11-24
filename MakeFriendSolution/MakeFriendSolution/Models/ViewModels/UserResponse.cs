@@ -24,6 +24,9 @@ namespace MakeFriendSolution.Models.ViewModels
             PhoneNumber = user.PhoneNumber;
             Summary = user.Summary;
             IsInfoUpdated = user.IsInfoUpdated;
+            NumberOfFavoritors = user.NumberOfLikes;
+            NumberOfFollowers = user.NumberOfFiends;
+            NumberOfImages = user.NumberOfImages;
             Age = this.CalculateAge(user.Dob);
             Profile = new ProfileResponse(user);
 
