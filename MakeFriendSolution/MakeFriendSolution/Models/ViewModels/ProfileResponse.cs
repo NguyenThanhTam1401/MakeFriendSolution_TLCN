@@ -28,14 +28,21 @@ namespace MakeFriendSolution.Models.ViewModels
             DrinkBeer = profile.DrinkBeer.ToString();
             FavoriteMovie = profile.FavoriteMovie.ToString();
             AtmosphereLike = profile.AtmosphereLike.ToString();
-        }
+
+            Shopping = profile.Shopping.ToString();
+            Travel = profile.Travel.ToString();
+            Game = profile.Game.ToString();
+            Cook = profile.Cook.ToString();
+            LikeTechnology = profile.LikeTechnology.ToString();
+            LikePet = profile.LikePet.ToString();
+            PlaySport = profile.PlaySport.ToString();
+    }
 
         public string Title { get; set; }
         public string FindPeople { get; set; }
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
-        public string IAm { get; set; }
         public string Job { get; set; }
         public string Location { get; set; }
 
@@ -56,5 +63,14 @@ namespace MakeFriendSolution.Models.ViewModels
         public string AtmosphereLike { get; set; }
         public string Smoking { get; set; }
         public string DrinkBeer { get; set; }
+
+        //
+        public string Shopping { get; set; }
+        public string Travel { get; set; }
+        public string Game { get; set; }
+        public string Cook { get; set; }
+        public string LikeTechnology { get; set; }
+        public string LikePet { get; set; }
+        public string PlaySport { get; set; }
     }
 }

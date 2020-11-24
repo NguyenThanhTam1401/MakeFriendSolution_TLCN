@@ -42,5 +42,15 @@ namespace MakeFriendSolution.Models.ViewModels
         public string AtmosphereLike { get; set; }
         public string Smoking { get; set; }
         public string DrinkBeer { get; set; }
+
+        //
+
+        public string Shopping { get; set; }
+        public string Travel { get; set; }
+        public string Game { get; set; }
+        public string Cook { get; set; }
+        public string LikeTechnology { get; set; }
+        public string LikePet { get; set; }
+        public string PlaySport { get; set; }
     }
 }

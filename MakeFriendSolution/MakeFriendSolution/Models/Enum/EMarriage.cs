@@ -9,6 +9,7 @@ namespace MakeFriendSolution.Models.Enum
     {
         Độc_Thân,
         Đang_Yêu,
+        Đã_Kết_Hôn,
         Ly_Dị,
         Ở_Góa
     }

@@ -24,6 +24,9 @@ namespace MakeFriendSolution.EF.Configurations
             builder.Property(x => x.PasswordForgottenCode).HasDefaultValue("");
             builder.Property(x => x.TypeAccount).HasDefaultValue(ETypeAccount.System);
             builder.Property(x => x.Role).HasDefaultValue(ERole.User);
+            builder.Property(x => x.NumberOfFiends).HasDefaultValue(0);
+            builder.Property(x => x.NumberOfImages).HasDefaultValue(0);
+            builder.Property(x => x.NumberOfLikes).HasDefaultValue(0);
 
             builder.HasMany(x => x.SendMessages).WithOne(a => a.Sender).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.ReceiveMessages).WithOne(a => a.Receiver).HasForeignKey(x => x.ReceiverId).OnDelete(DeleteBehavior.NoAction);

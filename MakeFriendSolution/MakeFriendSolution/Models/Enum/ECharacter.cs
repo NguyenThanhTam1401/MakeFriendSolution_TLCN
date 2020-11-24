@@ -16,7 +16,6 @@ namespace MakeFriendSolution.Models.Enum
         Mạnh_Mẽ,
         Mơ_Mộng,
         Ngọt_Ngào,
-        Nhân_Hậu,
         Rụt_Rè,
         Sôi_Nổi,
         Thật_Thà,

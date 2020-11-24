@@ -11,16 +11,11 @@ namespace MakeFriendSolution.Models.Enum
         Giản_Dị,
         Khép_Kín,
         Lạc_Quan_Yêu_Đời,
-        Tấp_Nập,
-        Lãng_mạn,
         Lành_Mạnh,
         Lập_Dị,
         Năng_Động,
         Sống_Tình_Cảm,
         Sống_Tự_Do,
-        Sống_Về_Đêm,
-        Sống_Thực_Tế,
-        Trí_Thức,
-        Tự_Lập
+        Sống_Thực_Tế
     }
 }

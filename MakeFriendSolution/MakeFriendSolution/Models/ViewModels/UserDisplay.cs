@@ -22,13 +22,13 @@ namespace MakeFriendSolution.Models.ViewModels
         public bool Favorited { get; set; } = false;
         public int NumberOfImages { get; set; }
         public double Point { get; set; } = 0;
-        private IStorageService _storageService { get; set; }
+        public IStorageService _storageService { get; set; }
 
         public UserDisplay()
         {
         }
 
-        public UserDisplay(AppUser user, IStorageService storageService)
+        public UserDisplay(AppUser user, IStorageService storageService, bool nonImage = false)
         {
             this._storageService = storageService;
             Id = user.Id;
@@ -37,21 +37,27 @@ namespace MakeFriendSolution.Models.ViewModels
             Summary = user.Summary;
             Dob = user.Dob;
             Point = user.Point;
-            GetImagePath(user);
+            AvatarPath = user.AvatarPath;
+            NumberOfFavoritors = user.NumberOfLikes;
+            NumberOfFollowers = user.NumberOfFiends;
+            NumberOfImages = user.NumberOfImages;
+            if (!nonImage)
+            {
+                GetImagePath();
+            }
         }
 
-        private void GetImagePath(AppUser user)
+        public void GetImagePath()
         {
             try
             {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(this.AvatarPath)}");
                 this.AvatarPath = Convert.ToBase64String(imageBits);
                 this.HasAvatar = true;
             }
             catch
             {
                 this.HasAvatar = false;
-                this.AvatarPath = user.AvatarPath;
             }
         }
     }

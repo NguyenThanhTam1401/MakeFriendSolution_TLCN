@@ -24,6 +24,10 @@ namespace MakeFriendSolution.Models
         public ELocation Location { get; set; }
         public EUserStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        //
+        public int NumberOfFiends { get; set; }
+        public int NumberOfLikes { get; set; }
+        public int NumberOfImages { get; set; }
 
         public bool IsInfoUpdated { get; set; }
         public string PasswordForgottenCode { get; set; }
@@ -54,6 +58,13 @@ namespace MakeFriendSolution.Models
         public EReligion Religion { get; set; }
         public EFavoriteMovie FavoriteMovie { get; set; }
         public EAtmosphereLike AtmosphereLike { get; set; }
+        public EShopping Shopping { get; set; }
+        public ETravel Travel { get; set; }
+        public EGame Game { get; set; }
+        public ECook Cook { get; set; }
+        public ELikeTechnology LikeTechnology { get; set; }
+        public ELikePet LikePet { get; set; }
+        public EPlaySport PlaySport { get; set; }
         public ESmoking Smoking { get; set; }
         public EDrinkBeer DrinkBeer { get; set; }
 

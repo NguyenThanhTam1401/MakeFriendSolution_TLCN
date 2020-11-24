@@ -16,8 +16,6 @@ namespace MakeFriendSolution.Models.Enum
         Công_Danh_Sự_Nghiệp,
         Của_Cải_Vật_Chất,
         Danh_Dự_Uy_Tín,
-        Đạo_Đức,
-        Lao_Động_Chân_Chính,
         Lòng_Chung_Thủy,
         Lòng_Nhân_Hậu,
         Niềm_Vui_Mỗi_Ngày,

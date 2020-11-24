@@ -131,8 +131,8 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var userExist = await _context.Users.AnyAsync(x => x.Id == request.UserId);
-            if (!userExist)
+            var user = await _context.Users.FindAsync(request.UserId);
+            if (user == null)
             {
                 return NotFound(new
                 {
@@ -155,8 +155,12 @@ namespace MakeFriendSolution.Controllers
 
                 newImages.Add(image);
             }
+
+            user.NumberOfImages += newImages.Count;
+
             try
             {
+                _context.Users.Update(user);
                 _context.ThumbnailImages.AddRange(newImages);
                 await _context.SaveChangesAsync();
             }
@@ -223,10 +227,12 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find image with id = " + imageId
                 });
             }
-
+            var user = await _context.Users.FindAsync(image.User);
+            user.NumberOfImages--;
             try
             {
                 await _storageService.DeleteFileAsync(image.ImagePath);
+                _context.Users.Update(user);
                 _context.ThumbnailImages.Remove(image);
                 await _context.SaveChangesAsync();
             }

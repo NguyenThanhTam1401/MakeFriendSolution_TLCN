@@ -85,12 +85,19 @@ namespace MakeFriendSolution.Controllers
                 users = users.Where(x => x.Id != loginInfo.UserId).ToList();
             }
             //Get user display
-            var userDisplays = await this.GetUserDisplay(users);
+            var userDisplays = await this.GetUserDisplay(users, true);
 
             var response = userDisplays
                 .OrderByDescending(x => x.NumberOfFavoritors)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
+
+            foreach (UserDisplay item in response)
+            {
+                item.GetImagePath();
+                item.Followed = await this.IsFollowed(item.Id, loginInfo.UserId);
+                item.Favorited = await this.IsLiked(item.Id, loginInfo.UserId);
+            }
 
             var pageTotal = users.Count / request.PageSize;
             return Ok(new
@@ -282,19 +289,9 @@ namespace MakeFriendSolution.Controllers
                 });
             }
             //Get Follow & Favorite
-            var follow = await this.GetNumberOfFollowers(userId, true, sessionUser.UserId);
+            respone.Followed = await this.IsFollowed(userId, sessionUser.UserId);
+            respone.Favorited = await this.IsLiked(userId, sessionUser.UserId);
 
-            respone.NumberOfFollowers = follow.Item1;
-            respone.Followed = follow.Item2;
-
-            var favorite = await this.GetNumberOfFavoritors(userId, true, sessionUser.UserId);
-
-            respone.NumberOfFollowers = follow.Item1;
-            respone.Followed = follow.Item2;
-
-            respone.NumberOfFavoritors = favorite.Item1;
-            respone.Favorited = favorite.Item2;
-            respone.NumberOfImages = await this.GetNumberOfImages(user.Id);
             respone.Blocked = await this.GetBlockStatus(sessionUser.UserId, userId);
 
             return Ok(respone);
@@ -326,6 +323,8 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
                 .FirstOrDefaultAsync();
 
+            var user = await _context.Users.FindAsync(sessionUser.UserId);
+
             var message = "";
 
             if (followed == null)
@@ -336,12 +335,17 @@ namespace MakeFriendSolution.Controllers
                     FromUserId = sessionUser.UserId,
                     ToUserId = userId
                 };
+                user.NumberOfFiends++;
 
+                _context.Users.Update(user);
                 _context.Follows.Add(follow);
                 message = "Followed";
             }
             else
             {
+                user.NumberOfFiends--;
+
+                _context.Users.Update(user);
                 _context.Follows.Remove(followed);
                 message = "Unfollowed";
             }
@@ -389,6 +393,8 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
                 .FirstOrDefaultAsync();
 
+            var user = await _context.Users.FindAsync(userId);
+
             var message = "";
 
             if (favorited == null)
@@ -399,12 +405,17 @@ namespace MakeFriendSolution.Controllers
                     FromUserId = sessionUser.UserId,
                     ToUserId = userId
                 };
+                user.NumberOfLikes++;
 
+                _context.Users.Update(user);
                 _context.Favorites.Add(favorite);
                 message = "Favorited";
             }
             else
             {
+                user.NumberOfLikes--;
+
+                _context.Users.Update(user);
                 _context.Favorites.Remove(favorited);
                 message = "Unfavorited";
             }
@@ -428,7 +439,7 @@ namespace MakeFriendSolution.Controllers
 
         [Authorize]
         [HttpGet("follow/{userId}")]
-        public async Task<IActionResult> GetFollowers(Guid userId)
+        public async Task<IActionResult> GetFriends(Guid userId)
         {
             var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
@@ -448,13 +459,9 @@ namespace MakeFriendSolution.Controllers
             var response = followers.Select(x => new UserDisplay(x.ToUser, _storageService));
             foreach (var item in response)
             {
-                var follow = await this.GetNumberOfFollowers(item.Id, true, sessionUser.UserId);
-                item.NumberOfFollowers = follow.Item1;
-                item.Followed = follow.Item2;
+                item.Followed = await this.IsFollowed(item.Id, sessionUser.UserId);
 
-                var favorite = await this.GetNumberOfFavoritors(item.Id, true, sessionUser.UserId);
-                item.NumberOfFavoritors = favorite.Item1;
-                item.Favorited = favorite.Item2;
+                item.Favorited = await this.IsLiked(item.Id, sessionUser.UserId);
             }
 
             return Ok(response);
@@ -487,40 +494,21 @@ namespace MakeFriendSolution.Controllers
             var response = favoritors.Select(x => new UserDisplay(x.ToUser, _storageService));
             foreach (var item in response)
             {
-                var follow = await this.GetNumberOfFollowers(item.Id, true, sessionUser.UserId);
-                item.NumberOfFollowers = follow.Item1;
-                item.Followed = follow.Item2;
-
-                var favorite = await this.GetNumberOfFavoritors(item.Id, true, sessionUser.UserId);
-                item.NumberOfFavoritors = favorite.Item1;
-                item.Favorited = favorite.Item2;
+                item.Followed = await this.IsFollowed(item.Id, sessionUser.UserId);
+                item.Favorited = await this.IsLiked(item.Id, sessionUser.UserId);
             }
 
             return Ok(response);
         }
 
-        private async Task<(int, bool)> GetNumberOfFollowers(Guid userId, bool isLogin, Guid currentUserId)
+        private async Task<bool> IsLiked(Guid userId, Guid currentUserId)
         {
-            var numberOfFollowers = await _context.Follows.Where(x => x.FromUserId == userId).CountAsync();
-            bool followed = false;
-            if (isLogin)
-            {
-                followed = await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-            }
-
-            return (numberOfFollowers, followed);
+            return await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
         }
 
-        private async Task<(int, bool)> GetNumberOfFavoritors(Guid userId, bool isLogin, Guid currentUserId)
+        private async Task<bool> IsFollowed(Guid userId, Guid currentUserId)
         {
-            var numberOfFavoritors = await _context.Favorites.Where(x => x.ToUserId == userId).CountAsync();
-            bool favorited = false;
-            if (isLogin)
-            {
-                favorited = await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-            }
-
-            return (numberOfFavoritors, favorited);
+            return await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
         }
 
         private async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)
@@ -575,7 +563,7 @@ namespace MakeFriendSolution.Controllers
             }
         }
 
-        private async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users)
+        private async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users, bool nonImage = false)
         {
             var userDisplays = new List<UserDisplay>();
             //Get Session user - Check login
@@ -592,17 +580,13 @@ namespace MakeFriendSolution.Controllers
 
             foreach (var user in users)
             {
-                var userDisplay = new UserDisplay(user, this._storageService);
+                var userDisplay = new UserDisplay(user, this._storageService, nonImage);
 
-                var followResult = await this.GetNumberOfFollowers(userDisplay.Id, isLogin, sessionUser.UserId);
-                userDisplay.NumberOfFollowers = followResult.Item1;
-                userDisplay.Followed = followResult.Item2;
-
-                var favoriteResult = await this.GetNumberOfFavoritors(userDisplay.Id, isLogin, sessionUser.UserId);
-                userDisplay.NumberOfFavoritors = favoriteResult.Item1;
-                userDisplay.Favorited = favoriteResult.Item2;
-
-                userDisplay.NumberOfImages = await this.GetNumberOfImages(user.Id);
+                if (!nonImage)
+                {
+                    userDisplay.Followed = await this.IsFollowed(user.Id, sessionUser.UserId);
+                    userDisplay.Favorited = await this.IsLiked(user.Id, sessionUser.UserId);
+                }
 
                 userDisplays.Add(userDisplay);
             }
