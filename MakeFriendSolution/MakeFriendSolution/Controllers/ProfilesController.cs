@@ -14,6 +14,7 @@ using System.Net.Http.Headers;
 using System.IO;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
+using MakeFriendSolution.Application;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -24,18 +25,19 @@ namespace MakeFriendSolution.Controllers
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
         private ISessionService _sessionService;
+        private readonly IUserApplication _userApplication;
 
-        public ProfilesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
+        public ProfilesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication)
         {
             _context = context;
             _storageService = storageService;
             _sessionService = sessionService;
+            _userApplication = userApplication;
         }
         [AllowAnonymous]
         [HttpGet("data")]
         public IActionResult GenerateData()
         {
-            int n = 10000;
             var tenNam = new List<string>();
             var tenNu = new List<string>();
             var ho = Constain.ho;
@@ -105,11 +107,10 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.NumberOfLikes = random.Next(0, 300);
 
                 user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
                
-
-
                 int day = random.Next(1, 28);
                 int month = random.Next(1, 12);
                 int year = random.Next(1970, 2006);
@@ -167,6 +168,7 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.NumberOfLikes = random.Next(0, 300);
 
                 user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
 
@@ -214,12 +216,12 @@ namespace MakeFriendSolution.Controllers
 
             var users = new List<AppUser>();
 
-            var userAgeGroup = GetAgeGroup(user.Dob);
+            var userAgeGroup = _userApplication.GetAgeGroup(user.Dob);
             int userAgeValue = Convert.ToInt32(userAgeGroup);
 
             foreach (var item in tempUsers)
             {
-                var ageGroup = GetAgeGroup(item.Dob);
+                var ageGroup = _userApplication.GetAgeGroup(item.Dob);
                 int ageValue = Convert.ToInt32(ageGroup);
 
                 if (Math.Abs(userAgeValue - ageValue) <= 1)
@@ -229,7 +231,7 @@ namespace MakeFriendSolution.Controllers
             }
 
             //FilterUsers
-            FilterUers(ref users, filter);
+            _userApplication.FilterUers(ref users, filter);
 
             users.Insert(0, user);
 
@@ -280,7 +282,7 @@ namespace MakeFriendSolution.Controllers
                 .Skip((filter.PageIndex - 1) * filter.PageSize)
                 .Take(filter.PageSize).ToList();
 
-            var usersDisplay = await this.GetUserDisplay(users);
+            var usersDisplay = await _userApplication.GetUserDisplay(users);
 
             return Ok(usersDisplay);
         }
@@ -297,7 +299,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            user = await this.BidingUserRequest(user, request);
+            user = await _userApplication.BidingUserRequest(user, request);
             try
             {
                 user.IsInfoUpdated = true;
@@ -317,204 +319,6 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
-        private async Task<AppUser> BidingUserRequest(AppUser user, UserRequest request)
-        {
-            if (Enum.TryParse(request.Gender, out EGender gender))
-            {
-                user.Gender = gender;
-            }
-
-            if (Enum.TryParse(request.Cook, out ECook cook))
-            {
-                user.Cook = cook;
-            }
-
-            if (Enum.TryParse(request.Game, out EGame game))
-            {
-                user.Game = game;
-            }
-
-            if (Enum.TryParse(request.Travel, out ETravel travel))
-            {
-                user.Travel = travel;
-            }
-
-            if (Enum.TryParse(request.Shopping, out EShopping shopping))
-            {
-                user.Shopping = shopping;
-            }
-
-            if (Enum.TryParse(request.LikePet, out ELikePet pet))
-            {
-                user.LikePet = pet;
-            }
-
-            if (Enum.TryParse(request.LikeTechnology, out ELikeTechnology technology))
-            {
-                user.LikeTechnology = technology;
-            }
-
-            if (Enum.TryParse(request.PlaySport, out EPlaySport playSport))
-            {
-                user.PlaySport = playSport;
-            }
-
-            if (Enum.TryParse(request.Character, out ECharacter character))
-            {
-                user.Character = character;
-            }
-
-            if (Enum.TryParse(request.LifeStyle, out ELifeStyle lifeStyle))
-            {
-                user.LifeStyle = lifeStyle;
-            }
-
-            if (Enum.TryParse(request.MostValuable, out EMostValuable mostValuable))
-            {
-                user.MostValuable = mostValuable;
-            }
-
-            if (Enum.TryParse(request.Job, out EJob job))
-            {
-                user.Job = job;
-            }
-
-            if (Enum.TryParse(request.Religion, out EReligion religion))
-            {
-                user.Religion = religion;
-            }
-
-            if (Enum.TryParse(request.FavoriteMovie, out EFavoriteMovie favoriteMovie))
-            {
-                user.FavoriteMovie = favoriteMovie;
-            }
-
-            if (Enum.TryParse(request.AtmosphereLike, out EAtmosphereLike atmosphereLike))
-            {
-                user.AtmosphereLike = atmosphereLike;
-            }
-
-            if (Enum.TryParse(request.Smoking, out ESmoking smoking))
-            {
-                user.Smoking = smoking;
-            }
-
-            if (Enum.TryParse(request.DrinkBeer, out EDrinkBeer drinkBeer))
-            {
-                user.DrinkBeer = drinkBeer;
-            }
-
-            //
-
-            if (request.PhoneNumber != "" && request.PhoneNumber != null)
-            {
-                user.PhoneNumber = request.PhoneNumber;
-            }
-
-            if (request.FullName != "" && request.FullName != null)
-            {
-                user.FullName = request.FullName;
-            }
-
-            if (request.Title != "" && request.Title != null)
-            {
-                user.Title = request.Title;
-            }
-
-            if (request.Summary != "" && request.Summary != null)
-            {
-                user.Summary = request.Summary;
-            }
-
-            if (request.Weight >= 20 && request.Weight <= 200)
-            {
-                user.Weight = request.Weight;
-            }
-
-            if (request.Height >= 120 && request.Height <= 200)
-            {
-                user.Height = request.Height;
-            }
-
-            if (CalculateAge(request.Dob) >= 10 && CalculateAge(request.Dob) <= 100)
-            {
-                user.Dob = request.Dob;
-            }
-
-            if (request.AvatarFile != null)
-            {
-                user.AvatarPath = await this.SaveFile(request.AvatarFile);
-            }
-            return user;
-        }
-
-        private int CalculateAge(DateTime birthDay)
-        {
-            var today = DateTime.Today;
-            var age = today.Year - birthDay.Year;
-            if (birthDay > today.AddYears(-age))
-                age--;
-
-            return age;
-        }
-
-        private void FilterUers(ref List<AppUser> users, FilterUserViewModel filter)
-        {
-            if (filter.Location != null && filter.Location != "")
-            {
-                if (Enum.TryParse(filter.Location.Trim(), out ELocation locate))
-                {
-                    users = users.Where(x => x.Location == locate).ToList();
-                }
-            }
-
-            if (filter.FullName != null && filter.FullName.Trim() != "")
-            {
-                users = users.Where(x => x.FullName.Contains(filter.FullName.Trim())).ToList();
-            }
-
-            if (filter.Gender != null && filter.Gender.Trim() != "")
-            {
-                if (Enum.TryParse(filter.Gender.Trim(), out EGender gender))
-                    users = users.Where(x => x.Gender == gender).ToList();
-            }
-
-            if (filter.FromAge != 0)
-            {
-                users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
-            }
-
-            if (filter.ToAge != 0)
-            {
-                users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
-            }
-
-        }
-
-        private EAgeGroup GetAgeGroup(DateTime birthDay)
-        {
-            int age = CalculateAge(birthDay);
-            if (age < 18)
-                return EAgeGroup.Vị_Thành_Niên;
-            else if (age < 25)
-                return EAgeGroup.Thanh_Niên_1;
-            else if (age < 31)
-                return EAgeGroup.Thanh_Niên_2;
-            else if (age < 40)
-                return EAgeGroup.Trung_Niên_1;
-            else if (age < 50)
-                return EAgeGroup.Trung_Niên_2;
-            else return EAgeGroup.Trung_Niên_3;
-        }
-
-        //Save File
-        private async Task<string> SaveFile(IFormFile file)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
-        }
 
         [HttpGet("updateProfile")]
         public async Task<IActionResult> ChuanHoaDob()
@@ -809,50 +613,6 @@ namespace MakeFriendSolution.Controllers
             };
 
             return Ok(response);
-        }
-
-        private async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users)
-        {
-            var userDisplays = new List<UserDisplay>();
-            //Get Session user - Check login
-            var isLogin = true;
-            var sessionUser = _sessionService.GetDataFromToken();
-            if (sessionUser == null)
-            {
-                isLogin = false;
-                sessionUser = new LoginInfo()
-                {
-                    UserId = Guid.NewGuid()
-                };
-            }
-
-            foreach (var user in users)
-            {
-                var userDisplay = new UserDisplay(user, this._storageService);
-
-                if (isLogin)
-                {
-                    userDisplay.Followed = await this.IsFollowed(user.Id, sessionUser.UserId);
-                    userDisplay.Favorited = await this.IsLiked(user.Id, sessionUser.UserId);
-                }
-
-                userDisplays.Add(userDisplay);
-            }
-            return userDisplays;
-        }
-
-        private async Task<bool> IsLiked(Guid userId, Guid currentUserId)
-        {
-            return await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-        }
-
-        private async Task<bool> IsFollowed(Guid userId, Guid currentUserId)
-        {
-            return await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-        }
-        public async Task<int> GetNumberOfImages(Guid userId)
-        {
-            return await _context.ThumbnailImages.Where(x => x.UserId == userId).CountAsync();
         }
 
     }

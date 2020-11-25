@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MakeFriendSolution.Application;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.HubConfig;
 using MakeFriendSolution.Middlewares;
@@ -57,7 +58,7 @@ namespace MakeFriendSolution
             services.AddTransient<IMailService, MailService>();
             services.AddHttpContextAccessor();
             services.AddScoped<ISessionService, SessionService>();
-
+            services.AddTransient<IUserApplication, UserApplication>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

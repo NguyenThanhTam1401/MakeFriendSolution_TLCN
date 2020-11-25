@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using MakeFriendSolution.Models.Enum;
+using MakeFriendSolution.Application;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -30,14 +31,15 @@ namespace MakeFriendSolution.Controllers
         private readonly IMailService _mailService;
         private readonly IConfiguration _config;
         private ISessionService _sessionService;
-
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService)
+        private readonly IUserApplication _userApplication;
+        public UsersController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService, IUserApplication userApplication)
         {
             _context = context;
             _storageService = storageService;
             _mailService = mailService;
             _config = config;
             _sessionService = sessionService;
+            _userApplication = userApplication;
         }
 
         // GET: api/Users
@@ -66,7 +68,7 @@ namespace MakeFriendSolution.Controllers
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
 
-            var userDisplays = await this.GetUserDisplay(users);
+            var userDisplays = await _userApplication.GetUserDisplay(users);
 
             return Ok(userDisplays);
         }
@@ -85,7 +87,7 @@ namespace MakeFriendSolution.Controllers
                 users = users.Where(x => x.Id != loginInfo.UserId).ToList();
             }
             //Get user display
-            var userDisplays = await this.GetUserDisplay(users, true);
+            var userDisplays = await _userApplication.GetUserDisplay(users, true);
 
             var response = userDisplays
                 .OrderByDescending(x => x.NumberOfFavoritors)
@@ -96,8 +98,11 @@ namespace MakeFriendSolution.Controllers
             foreach (UserDisplay item in response)
             {
                 item.GetImagePath();
-                item.Followed = await this.IsFollowed(item.Id, loginInfo.UserId);
-                item.Favorited = await this.IsLiked(item.Id, loginInfo.UserId);
+                if(loginInfo != null)
+                {
+                    item.Followed = await _userApplication.IsFollowed(item.Id, loginInfo.UserId);
+                    item.Favorited = await _userApplication.IsLiked(item.Id, loginInfo.UserId);
+                }
             }
 
             var pageTotal = users.Count / request.PageSize;
@@ -123,7 +128,7 @@ namespace MakeFriendSolution.Controllers
                 .ToListAsync();
 
             //FilterUsers
-            FilterUers(ref users, filter);
+            _userApplication.FilterUers(ref users, filter);
 
             users.Insert(0, user);
 
@@ -258,7 +263,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            user.AvatarPath = await this.SaveFile(request.Avatar);
+            user.AvatarPath = await _userApplication.SaveFile(request.Avatar);
 
             if (oldAvatar != "image.png")
             {
@@ -290,10 +295,10 @@ namespace MakeFriendSolution.Controllers
                 });
             }
             //Get Follow & Favorite
-            respone.Followed = await this.IsFollowed(userId, sessionUser.UserId);
-            respone.Favorited = await this.IsLiked(userId, sessionUser.UserId);
+            respone.Followed = await _userApplication.IsFollowed(userId, sessionUser.UserId);
+            respone.Favorited = await _userApplication.IsLiked(userId, sessionUser.UserId);
 
-            respone.Blocked = await this.GetBlockStatus(sessionUser.UserId, userId);
+            respone.Blocked = await _userApplication.GetBlockStatus(sessionUser.UserId, userId);
 
             return Ok(respone);
         }
@@ -460,9 +465,9 @@ namespace MakeFriendSolution.Controllers
             var response = followers.Select(x => new UserDisplay(x.ToUser, _storageService));
             foreach (var item in response)
             {
-                item.Followed = await this.IsFollowed(item.Id, sessionUser.UserId);
+                item.Followed = await _userApplication.IsFollowed(item.Id, sessionUser.UserId);
 
-                item.Favorited = await this.IsLiked(item.Id, sessionUser.UserId);
+                item.Favorited = await _userApplication.IsLiked(item.Id, sessionUser.UserId);
             }
 
             return Ok(response);
@@ -495,112 +500,12 @@ namespace MakeFriendSolution.Controllers
             var response = favoritors.Select(x => new UserDisplay(x.ToUser, _storageService));
             foreach (var item in response)
             {
-                item.Followed = await this.IsFollowed(item.Id, sessionUser.UserId);
-                item.Favorited = await this.IsLiked(item.Id, sessionUser.UserId);
+                item.Followed = await _userApplication.IsFollowed(item.Id, sessionUser.UserId);
+                item.Favorited = await _userApplication.IsLiked(item.Id, sessionUser.UserId);
             }
 
             return Ok(response);
         }
 
-        private async Task<bool> IsLiked(Guid userId, Guid currentUserId)
-        {
-            return await _context.Favorites.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-        }
-
-        private async Task<bool> IsFollowed(Guid userId, Guid currentUserId)
-        {
-            return await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
-        }
-
-        private async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)
-        {
-            return await _context.BlockUsers.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == toUserId);
-        }
-
-        public async Task<int> GetNumberOfImages(Guid userId)
-        {
-            return await _context.ThumbnailImages.Where(x => x.UserId == userId).CountAsync();
-        }
-
-        private int CalculateAge(DateTime birthDay)
-        {
-            var today = DateTime.Today;
-            var age = today.Year - birthDay.Year;
-            if (birthDay > today.AddYears(-age))
-                age--;
-
-            return age;
-        }
-
-        private void FilterUers(ref List<AppUser> users, FilterUserViewModel filter)
-        {
-            if (filter.Location != null && filter.Location != "")
-            {
-                if (Enum.TryParse(filter.Location.Trim(), out ELocation locate))
-                {
-                    users = users.Where(x => x.Location == locate).ToList();
-                }
-            }
-
-            if (filter.FullName != null && filter.FullName.Trim() != "")
-            {
-                users = users.Where(x => x.FullName.Contains(filter.FullName.Trim())).ToList();
-            }
-
-            if (filter.Gender != null && filter.Gender.Trim() != "")
-            {
-                if (Enum.TryParse(filter.Gender.Trim(), out EGender gender))
-                    users = users.Where(x => x.Gender == gender).ToList();
-            }
-
-            if (filter.FromAge != 0)
-            {
-                users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
-            }
-
-            if (filter.ToAge != 0)
-            {
-                users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
-            }
-        }
-
-        private async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users, bool nonImage = false)
-        {
-            var userDisplays = new List<UserDisplay>();
-            //Get Session user - Check login
-            var isLogin = true;
-            var sessionUser = _sessionService.GetDataFromToken();
-            if (sessionUser == null)
-            {
-                isLogin = false;
-                sessionUser = new LoginInfo()
-                {
-                    UserId = Guid.NewGuid()
-                };
-            }
-
-            foreach (var user in users)
-            {
-                var userDisplay = new UserDisplay(user, this._storageService, nonImage);
-
-                if (!nonImage)
-                {
-                    userDisplay.Followed = await this.IsFollowed(user.Id, sessionUser.UserId);
-                    userDisplay.Favorited = await this.IsLiked(user.Id, sessionUser.UserId);
-                }
-
-                userDisplays.Add(userDisplay);
-            }
-            return userDisplays;
-        }
-
-        //Save File
-        private async Task<string> SaveFile(IFormFile file)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
-        }
     }
 }

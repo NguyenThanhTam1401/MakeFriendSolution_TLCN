@@ -7,7 +7,6 @@ using MakeFriendSolution.HubConfig;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
-using MakeFriendSolution.TimerFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -61,7 +60,7 @@ namespace MakeFriendSolution.Controllers
 
             return Ok(new { Message = "Request complete!" });
         }
-
+   
         [HttpGet("MoreMessages")]
         public async Task<IActionResult> GetMessages([FromQuery] StartChatRequest request)
         {
@@ -92,6 +91,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("friends/{userId}")]
         public async Task<IActionResult> GetFriendList(Guid userId, [FromQuery] PagingRequest request)
         {
+            request.PageSize = 20;
             var messages = new List<MessageResponse>();
             var tempMessages = new List<MessageResponse>();
             var userList = new List<Guid>();
