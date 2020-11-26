@@ -180,7 +180,7 @@ namespace MakeFriendSolution.Controllers
 
             return (accessTotal, accessCount);
         }
-
+        [Authorize]
         [HttpGet("getTheNumberOfNewUsersByMonth")]
         public async Task<IActionResult> GetTheNumberOfNewUsersByMonth()
         {
@@ -201,7 +201,7 @@ namespace MakeFriendSolution.Controllers
                 growthRate = percents
             });
         }
-
+        [Authorize]
         [HttpGet("getNumberOfActiveUsers")]
         public async Task<IActionResult> GetNumberOfActiveUsers()
         {
@@ -210,6 +210,21 @@ namespace MakeFriendSolution.Controllers
             return Ok(new { 
                 activeAccounts = numberOfActiveUsers,
                 inactiveAccounts = numberOfInactiveUsers
+            });
+        }
+        [Authorize]
+        [HttpGet("getTheAccountNumberOfEachType")]
+        public async Task<IActionResult> GetTheAccountNumberOfEachType()
+        {
+            var facebook = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.Facebook).CountAsync();
+            var google = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.Google).CountAsync();
+            var system = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.System).CountAsync();
+
+            return Ok(new
+            {
+                system,
+                facebook,
+                google
             });
         }
     }

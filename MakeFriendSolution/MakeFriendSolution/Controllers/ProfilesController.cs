@@ -67,7 +67,129 @@ namespace MakeFriendSolution.Controllers
             Random random = new Random();
             int gmailCount = 1;
             //Random Nu
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 468; i++)
+            {
+                var user = new AppUser();
+                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
+                user.Gender = EGender.Nữ;
+                user.AtmosphereLike = RandomEnumValue<EAtmosphereLike>();
+                user.Body = RandomEnumValue<EBody>();
+                user.Character = RandomEnumValue<ECharacter>();
+                user.Cook = RandomEnumValue<ECook>();
+                user.DrinkBeer = RandomEnumValue<EDrinkBeer>();
+                user.Education = RandomEnumValue<EEducation>();
+                user.Email = (gmailCount++).ToString() + "@gmail.com";
+                user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.FindPeople = RandomEnumValue<EGender>();
+                user.Game = RandomEnumValue<EGame>();
+                user.Height = random.Next(145, 180);
+                user.Weight = random.Next(30, 70);
+                user.IsInfoUpdated = true;
+                user.Job = RandomEnumValue<EJob>();
+                user.LifeStyle = RandomEnumValue<ELifeStyle>();
+                user.LikePet = RandomEnumValue<ELikePet>();
+                user.LikeTechnology = RandomEnumValue<ELikeTechnology>();
+                user.Location = RandomEnumValue<ELocation>();
+                user.Marriage = RandomEnumValue<EMarriage>();
+                user.MostValuable = RandomEnumValue<EMostValuable>();
+                user.PassWord = "1111";
+                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
+                user.PlaySport = RandomEnumValue<EPlaySport>();
+                user.Religion = RandomEnumValue<EReligion>();
+                user.Role = ERole.User;
+                user.Shopping = RandomEnumValue<EShopping>();
+                user.Smoking = RandomEnumValue<ESmoking>();
+                user.Status = EUserStatus.Active;
+                user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
+                user.Target = RandomEnumValue<ETarget>();
+                user.Title = "Kết bạn với " + user.FullName + " nhé!";
+                user.Travel = RandomEnumValue<ETravel>();
+                user.TypeAccount = ETypeAccount.Facebook;
+                user.UserName = user.Email;
+                user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.NumberOfLikes = random.Next(10, 1000);
+
+                user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
+
+                int day = random.Next(1, 29);
+                int month = random.Next(1, 13);
+                int year = random.Next(1970, 2007);
+
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2018, 2021);
+
+                var dob = new DateTime(year, month, day);
+                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+
+                user.CreatedAt = createdDate;
+                user.Dob = dob.Date;
+
+                users.Add(user);
+            }
+            //Random Nam
+            for (int i = 0; i < 417; i++)
+            {
+                var user = new AppUser();
+                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
+                user.Gender = EGender.Nam;
+                user.AtmosphereLike = RandomEnumValue<EAtmosphereLike>();
+                user.Body = RandomEnumValue<EBody>();
+                user.Character = RandomEnumValue<ECharacter>();
+                user.Cook = RandomEnumValue<ECook>();
+                user.DrinkBeer = RandomEnumValue<EDrinkBeer>();
+                user.Education = RandomEnumValue<EEducation>();
+                user.Email = (gmailCount++).ToString() + "@gmail.com";
+                user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.FindPeople = RandomEnumValue<EGender>();
+                user.Game = RandomEnumValue<EGame>();
+                user.Height = random.Next(150, 200);
+                user.Weight = random.Next(40, 80);
+                user.IsInfoUpdated = true;
+                user.Job = RandomEnumValue<EJob>();
+                user.LifeStyle = RandomEnumValue<ELifeStyle>();
+                user.LikePet = RandomEnumValue<ELikePet>();
+                user.LikeTechnology = RandomEnumValue<ELikeTechnology>();
+                user.Location = RandomEnumValue<ELocation>();
+                user.Marriage = RandomEnumValue<EMarriage>();
+                user.MostValuable = RandomEnumValue<EMostValuable>();
+                user.PassWord = "1111";
+                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
+                user.PlaySport = RandomEnumValue<EPlaySport>();
+                user.Religion = RandomEnumValue<EReligion>();
+                user.Role = ERole.User;
+                user.Shopping = RandomEnumValue<EShopping>();
+                user.Smoking = RandomEnumValue<ESmoking>();
+                user.Status = EUserStatus.Active;
+                user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
+                user.Target = RandomEnumValue<ETarget>();
+                user.Title = "Kết bạn với " + user.FullName + " nhé!";
+                user.Travel = RandomEnumValue<ETravel>();
+                user.TypeAccount = ETypeAccount.Facebook;
+                user.UserName = user.Email;
+                user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.NumberOfLikes = random.Next(10, 1000);
+
+                user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
+
+                int day = random.Next(1, 29);
+                int month = random.Next(1, 13);
+                int year = random.Next(1970, 2007);
+
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2018, 2021);
+
+                var dob = new DateTime(year, month, day);
+                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+                user.Dob = dob.Date;
+                user.CreatedAt = createdDate.Date;
+
+                users.Add(user);
+            }
+
+            //Random Nu
+            for (int i = 0; i < 641; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -110,7 +232,7 @@ namespace MakeFriendSolution.Controllers
                 user.NumberOfLikes = random.Next(10, 1000);
 
                 user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
-               
+
                 int day = random.Next(1, 29);
                 int month = random.Next(1, 13);
                 int year = random.Next(1970, 2007);
@@ -128,7 +250,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 623; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -188,6 +310,75 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
 
+            //Random InActive Account
+            for (int i = 0; i < 360; i++)
+            {
+                var user = new AppUser();
+                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
+                user.Gender = RandomEnumValue<EGender>();
+                user.AtmosphereLike = RandomEnumValue<EAtmosphereLike>();
+                user.Body = RandomEnumValue<EBody>();
+                user.Character = RandomEnumValue<ECharacter>();
+                user.Cook = RandomEnumValue<ECook>();
+                user.DrinkBeer = RandomEnumValue<EDrinkBeer>();
+                user.Education = RandomEnumValue<EEducation>();
+                user.Email = (gmailCount++).ToString() + "@gmail.com";
+                user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.FindPeople = RandomEnumValue<EGender>();
+                user.Game = RandomEnumValue<EGame>();
+                user.Height = random.Next(145, 180);
+                user.Weight = random.Next(30, 70);
+                user.IsInfoUpdated = true;
+                user.Job = RandomEnumValue<EJob>();
+                user.LifeStyle = RandomEnumValue<ELifeStyle>();
+                user.LikePet = RandomEnumValue<ELikePet>();
+                user.LikeTechnology = RandomEnumValue<ELikeTechnology>();
+                user.Location = RandomEnumValue<ELocation>();
+                user.Marriage = RandomEnumValue<EMarriage>();
+                user.MostValuable = RandomEnumValue<EMostValuable>();
+                user.PassWord = "1111";
+                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
+                user.PlaySport = RandomEnumValue<EPlaySport>();
+                user.Religion = RandomEnumValue<EReligion>();
+                user.Role = ERole.User;
+                user.Shopping = RandomEnumValue<EShopping>();
+                user.Smoking = RandomEnumValue<ESmoking>();
+                user.Status = RandomEnumValue<EUserStatus>();
+                user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
+                user.Target = RandomEnumValue<ETarget>();
+                user.Title = "Kết bạn với " + user.FullName + " nhé!";
+                user.Travel = RandomEnumValue<ETravel>();
+                user.TypeAccount = ETypeAccount.Google;
+                user.UserName = user.Email;
+                user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
+                user.NumberOfLikes = random.Next(10, 1000);
+
+                if(user.Gender == EGender.Nam)
+                {
+                    user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
+                }
+                else
+                {
+                    user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
+                }
+
+                int day = random.Next(1, 29);
+                int month = random.Next(1, 13);
+                int year = random.Next(1970, 2007);
+
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2018, 2021);
+
+                var dob = new DateTime(year, month, day);
+                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+
+                user.CreatedAt = createdDate;
+                user.Dob = dob.Date;
+
+                users.Add(user);
+            }
+
             //var response = new List<UserResponse>();
             //foreach (var item in users)
             //{
@@ -202,7 +393,7 @@ namespace MakeFriendSolution.Controllers
             {
                 var access = new Access();
                 access.AuthorizeCount = random.Next(500, 2000);
-                access.UnauthorizeCount = random.Next(100, 800);
+                access.UnauthorizeCount = random.Next(200, 800);
                 access.Date = fromDate.Date;
                 fromDate = fromDate.AddDays(1);
                 accesses.Add(access);
