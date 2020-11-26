@@ -23,7 +23,6 @@ namespace MakeFriendSolution.EF.Configurations
             builder.Property(x => x.PasswordForgottenPeriod).HasDefaultValue(new DateTime(2000, 1, 1));
             builder.Property(x => x.PasswordForgottenCode).HasDefaultValue("");
             builder.Property(x => x.TypeAccount).HasDefaultValue(ETypeAccount.System);
-            builder.Property(x => x.Role).HasDefaultValue(ERole.User);
             builder.Property(x => x.NumberOfFiends).HasDefaultValue(0);
             builder.Property(x => x.NumberOfImages).HasDefaultValue(0);
             builder.Property(x => x.NumberOfLikes).HasDefaultValue(0);

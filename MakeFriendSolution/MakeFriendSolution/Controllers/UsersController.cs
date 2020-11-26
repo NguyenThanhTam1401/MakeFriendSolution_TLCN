@@ -119,9 +119,7 @@ namespace MakeFriendSolution.Controllers
         {
             var usersResponse = new List<UserResponse>();
 
-            var user = await _context.Users
-                .Where(x => x.Id == userId)
-                .FirstOrDefaultAsync();
+            var user = await _userApplication.GetById(userId);
 
             var users = await _context.Users
                 .Where(x => x.Id != userId && x.Gender == user.FindPeople)
@@ -224,8 +222,7 @@ namespace MakeFriendSolution.Controllers
             try
             {
                 user.PassWord = request.NewPassword;
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
+                user = await _userApplication.UpdateUser(user);
             }
             catch (DbUpdateConcurrencyException e)
             {
@@ -245,7 +242,7 @@ namespace MakeFriendSolution.Controllers
         [HttpPut("avatar")]
         public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarRequest request)
         {
-            var user = await _context.Users.FindAsync(request.UserId);
+            var user = await _userApplication.GetById(request.UserId);
             if (user.Status != EUserStatus.Active)
             {
                 return BadRequest(new
@@ -270,8 +267,7 @@ namespace MakeFriendSolution.Controllers
                 await _storageService.DeleteFileAsync(oldAvatar);
             }
 
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            user = await _userApplication.UpdateUser(user);
 
             var response = new UserResponse(user, _storageService);
             return Ok(response);
@@ -281,7 +277,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById(Guid userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _userApplication.GetById(userId);
             if (user == null)
                 return NotFound("Can not find user by id = " + userId);
 
@@ -329,7 +325,7 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
                 .FirstOrDefaultAsync();
 
-            var user = await _context.Users.FindAsync(sessionUser.UserId);
+            var user = await _userApplication.GetById(sessionUser.UserId);
 
             var message = "";
 
@@ -343,7 +339,7 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.NumberOfFiends++;
 
-                _context.Users.Update(user);
+                user = await _userApplication.UpdateUser(user);
                 _context.Follows.Add(follow);
                 message = "Followed";
             }
@@ -351,7 +347,7 @@ namespace MakeFriendSolution.Controllers
             {
                 user.NumberOfFiends--;
 
-                _context.Users.Update(user);
+                user = await _userApplication.UpdateUser(user);
                 _context.Follows.Remove(followed);
                 message = "Unfollowed";
             }
@@ -399,7 +395,7 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
                 .FirstOrDefaultAsync();
 
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _userApplication.GetById(userId);
 
             var message = "";
 
@@ -413,7 +409,7 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.NumberOfLikes++;
 
-                _context.Users.Update(user);
+                user = await _userApplication.UpdateUser(user);
                 _context.Favorites.Add(favorite);
                 message = "Favorited";
             }
@@ -421,7 +417,7 @@ namespace MakeFriendSolution.Controllers
             {
                 user.NumberOfLikes--;
 
-                _context.Users.Update(user);
+                user = await _userApplication.UpdateUser(user);
                 _context.Favorites.Remove(favorited);
                 message = "Unfavorited";
             }

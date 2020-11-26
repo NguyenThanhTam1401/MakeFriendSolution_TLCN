@@ -11,6 +11,9 @@ namespace MakeFriendSolution.Application
 {
     public interface IUserApplication
     {
+        Task<AppUser> GetById(Guid id);
+        Task<AppUser> UpdateUser(AppUser user);
+
         Task<string> SaveFile(IFormFile file);
         Task<bool> IsLiked(Guid userId, Guid currentUserId);
         Task<bool> IsFollowed(Guid userId, Guid currentUserId);

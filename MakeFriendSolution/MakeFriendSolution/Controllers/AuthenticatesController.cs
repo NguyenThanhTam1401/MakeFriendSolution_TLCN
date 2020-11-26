@@ -359,8 +359,12 @@ namespace MakeFriendSolution.Controllers
             if (user == null)
             {
                 var newUser = new AppUser()
-                {
+                { 
+                    NumberOfFiends = 0,
+                    NumberOfImages = 0,
+                    NumberOfLikes = 0,
                     Email = request.Email,
+                    Role = ERole.User,
                     FullName = request.FullName,
                     UserName = request.Email,
                     AvatarPath = request.Avatar,

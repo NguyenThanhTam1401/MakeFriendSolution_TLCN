@@ -107,17 +107,17 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(0, 300);
+                user.NumberOfLikes = random.Next(10, 1000);
 
                 user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
                
-                int day = random.Next(1, 28);
-                int month = random.Next(1, 12);
-                int year = random.Next(1970, 2006);
+                int day = random.Next(1, 29);
+                int month = random.Next(1, 13);
+                int year = random.Next(1970, 2007);
 
-                int createdDay = random.Next(1, 28);
-                int createdMonth = random.Next(1, 12);
-                int createdYear = random.Next(2018, 2020);
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2018, 2021);
 
                 var dob = new DateTime(year, month, day);
                 var createdDate = new DateTime(createdYear, createdMonth, createdDay);
@@ -168,17 +168,22 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(0, 300);
+                user.NumberOfLikes = random.Next(10, 1000);
 
                 user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
 
-                int day = random.Next(1, 28);
-                int month = random.Next(1, 12);
-                int year = random.Next(1970, 2006);
+                int day = random.Next(1, 29);
+                int month = random.Next(1, 13);
+                int year = random.Next(1970, 2007);
+
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2018, 2021);
 
                 var dob = new DateTime(year, month, day);
-
+                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
                 user.Dob = dob.Date;
+                user.CreatedAt = createdDate.Date;
 
                 users.Add(user);
             }
@@ -189,7 +194,21 @@ namespace MakeFriendSolution.Controllers
             //    var u = new UserResponse(item, _storageService);
             //    response.Add(u);
             //}
+            var fromDate = new DateTime(2018, 1, 1);
+            var toDate = new DateTime(2020, 12, 30);
+            List<Access> accesses = new List<Access>();
 
+            while (toDate > fromDate)
+            {
+                var access = new Access();
+                access.AuthorizeCount = random.Next(500, 2000);
+                access.UnauthorizeCount = random.Next(100, 800);
+                access.Date = fromDate.Date;
+                fromDate = fromDate.AddDays(1);
+                accesses.Add(access);
+            }
+
+            _context.Accesses.AddRange(accesses);
             _context.Users.AddRange(users);
             _context.SaveChanges();
             return Ok();
@@ -206,9 +225,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("similar/{userId}")]
         public async Task<IActionResult> GetMatrix(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
-            var user = await _context.Users
-                .Where(x => x.Id == userId)
-                .FirstOrDefaultAsync();
+            var user = await _userApplication.GetById(userId);
 
             var tempUsers = await _context.Users
                 .Where(x => x.Id != userId && x.FindPeople == user.Gender && x.Status == EUserStatus.Active && x.IsInfoUpdated)
@@ -290,7 +307,7 @@ namespace MakeFriendSolution.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] UserRequest request)
         {
-            var user = await _context.Users.FindAsync(request.Id);
+            var user = await _userApplication.GetById(request.Id);
             if (user == null)
             {
                 return NotFound(new
@@ -303,8 +320,7 @@ namespace MakeFriendSolution.Controllers
             try
             {
                 user.IsInfoUpdated = true;
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
+                user = await _userApplication.UpdateUser(user);
             }
             catch (DbUpdateConcurrencyException e)
             {
@@ -319,30 +335,6 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
-
-        [HttpGet("updateProfile")]
-        public async Task<IActionResult> ChuanHoaDob()
-        {
-            Random random = new Random();
-            var users = await _context.Users
-                .Where(x => x.Dob.Year > 2010).ToListAsync();
-            foreach (var user in users)
-            {
-                user.Dob = user.Dob.AddYears(-random.Next(15, 60));
-            }
-
-            try
-            {
-                _context.UpdateRange(users);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException e)
-            {
-                var message = e.InnerException;
-                return BadRequest(message);
-            }
-            return Ok("Profiles had been updated!");
-        }
 
         [AllowAnonymous]
         [HttpGet("features")]

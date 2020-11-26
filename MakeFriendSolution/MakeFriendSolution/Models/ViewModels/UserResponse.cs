@@ -20,6 +20,7 @@ namespace MakeFriendSolution.Models.ViewModels
             FullName = user.FullName;
             Gender = user.Gender.ToString();
             Status = user.Status.ToString();
+            Role = user.Role.ToString();
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
             Summary = user.Summary;
@@ -59,6 +60,7 @@ namespace MakeFriendSolution.Models.ViewModels
         }
 
         public Guid Id { get; set; }
+        public string Role { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }

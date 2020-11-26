@@ -268,5 +268,17 @@ namespace MakeFriendSolution.Application
                 return EAgeGroup.Trung_Niên_2;
             else return EAgeGroup.Trung_Niên_3;
         }
+
+        public async Task<AppUser> GetById(Guid id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<AppUser> UpdateUser(AppUser user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
     }
 }
