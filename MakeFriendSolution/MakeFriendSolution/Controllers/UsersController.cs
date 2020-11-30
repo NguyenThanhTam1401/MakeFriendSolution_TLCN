@@ -502,6 +502,50 @@ namespace MakeFriendSolution.Controllers
 
             return Ok(response);
         }
+        [AllowAnonymous]
+        [HttpGet("filterUsers")]
+        public async Task<IActionResult> FilterUsers([FromQuery] FilterUserRequest request)
+        {
+            var users = new List<AppUser>();
+
+            switch (request.Feature)
+            {
+                case "FullName":
+                    users = request.IsAscending ?  await _context.Users.OrderBy(x=>x.FullName).ToListAsync() : await _context.Users.OrderByDescending(x => x.FullName).ToListAsync();
+
+                    break;
+                case "Like":
+                    users = request.IsAscending ? await _context.Users.OrderBy(x => x.NumberOfLikes).ToListAsync() : await _context.Users.OrderByDescending(x => x.NumberOfLikes).ToListAsync();
+                    break;
+                case "Follow":
+                    users = request.IsAscending ? await _context.Users.OrderBy(x => x.NumberOfFiends).ToListAsync() : await _context.Users.OrderByDescending(x => x.NumberOfFiends).ToListAsync();
+
+                    break;
+                case "ImageCount":
+                    users = request.IsAscending ? await _context.Users.OrderBy(x => x.NumberOfImages).ToListAsync() : await _context.Users.OrderByDescending(x => x.NumberOfImages).ToListAsync();
+
+                    break;
+                case "Status":
+                    users = request.IsAscending ? await _context.Users.OrderBy(x => x.Status).ToListAsync() : await _context.Users.OrderByDescending(x => x.Status).ToListAsync();
+
+                    break;
+                default:
+                    break;
+            }
+
+            users = users
+            .Skip((request.PageIndex - 1) * request.PageSize)
+            .Take(request.PageSize).ToList();
+
+            var response = await _userApplication.GetUserDisplay(users);
+
+            var pageTotal = users.Count / request.PageSize;
+            return Ok(new
+            {
+                data = response,
+                pageTotal = pageTotal
+            });
+        }
 
     }
 }

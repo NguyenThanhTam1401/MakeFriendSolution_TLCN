@@ -22,6 +22,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public bool Favorited { get; set; } = false;
         public int NumberOfImages { get; set; }
         public double Point { get; set; } = 0;
+        public string Status { get; set; }
         public IStorageService _storageService { get; set; }
 
         public UserDisplay()
@@ -41,6 +42,7 @@ namespace MakeFriendSolution.Models.ViewModels
             NumberOfFavoritors = user.NumberOfLikes;
             NumberOfFollowers = user.NumberOfFiends;
             NumberOfImages = user.NumberOfImages;
+            Status = user.Status.ToString();
             if (!nonImage)
             {
                 GetImagePath();

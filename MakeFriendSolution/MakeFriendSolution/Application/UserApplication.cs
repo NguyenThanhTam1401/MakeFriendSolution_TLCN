@@ -149,6 +149,27 @@ namespace MakeFriendSolution.Application
                 user.Shopping = shopping;
             }
 
+            if (Enum.TryParse(request.Location, out ELocation location))
+            {
+                user.Location = location;
+            }
+
+            if (Enum.TryParse(request.Body, out EBody body))
+            {
+                user.Body = body;
+            }
+
+            if (Enum.TryParse(request.Target, out ETarget target))
+            {
+                user.Target = target;
+            }
+
+            if (Enum.TryParse(request.Education, out EEducation education))
+            {
+                user.Education = education;
+            }
+
+
             if (Enum.TryParse(request.LikePet, out ELikePet pet))
             {
                 user.LikePet = pet;
@@ -177,6 +198,11 @@ namespace MakeFriendSolution.Application
             if (Enum.TryParse(request.MostValuable, out EMostValuable mostValuable))
             {
                 user.MostValuable = mostValuable;
+            }
+
+            if (Enum.TryParse(request.Marriage, out EMarriage marriage))
+            {
+                user.Marriage = marriage;
             }
 
             if (Enum.TryParse(request.Job, out EJob job))
