@@ -353,7 +353,7 @@ namespace MakeFriendSolution.Controllers
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
                 user.NumberOfLikes = random.Next(10, 1000);
 
-                if(user.Gender == EGender.Nam)
+                if (user.Gender == EGender.Nam)
                 {
                     user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
                 }
@@ -409,7 +409,7 @@ namespace MakeFriendSolution.Controllers
         {
             Random random = new Random();
             var values = Enum.GetValues(typeof(T));
-            int num =random.Next(0, values.Length);
+            int num = random.Next(0, values.Length);
             return (T)values.GetValue(num);
         }
 
@@ -419,7 +419,7 @@ namespace MakeFriendSolution.Controllers
             var user = await _userApplication.GetById(userId);
 
             var tempUsers = await _context.Users
-                .Where(x => x.Id != userId && x.FindPeople == user.Gender && x.Status == EUserStatus.Active && x.IsInfoUpdated)
+                .Where(x => x.Id != userId && x.Gender == user.FindPeople && x.Status == EUserStatus.Active && x.IsInfoUpdated)
                 .ToListAsync();
 
             var users = new List<AppUser>();
@@ -477,14 +477,16 @@ namespace MakeFriendSolution.Controllers
             List<double> kq = new List<double>();
             kq = m.SimilarityCalculate();
 
-            //users.RemoveAt(0);
+            users.RemoveAt(0);
 
-            for (int i = 0; i < kq.Count; i++)
+            for (int i = 1; i < kq.Count; i++)
             {
-                users[i].Point = kq[i];
+                users[i - 1].Point = kq[i];
             }
 
             users = users.OrderByDescending(o => o.Point).ToList();
+
+            var pageTotal = users.Count / filter.PageSize;
 
             users = users
                 .Skip((filter.PageIndex - 1) * filter.PageSize)
@@ -492,7 +494,10 @@ namespace MakeFriendSolution.Controllers
 
             var usersDisplay = await _userApplication.GetUserDisplay(users);
 
-            return Ok(usersDisplay);
+            return Ok(new {
+                data = usersDisplay,
+                pageTotal = pageTotal
+            });
         }
 
         [HttpPut]
@@ -526,6 +531,531 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+        [Authorize]
+        [HttpPost("filterFeatures")]
+        public async Task<IActionResult> FilterFeatures([FromQuery] PagingRequest pagingRequest, [FromBody] List<FilterFeaturesRequest> requests)
+        {
+            if(requests.Count == 0)
+            {
+                var usersNotFilter = await _context.Users
+                    .Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated)
+                    .ToListAsync();
+
+                var pageCount = usersNotFilter.Count / pagingRequest.PageSize;
+
+                usersNotFilter = usersNotFilter
+                .Skip((pagingRequest.PageIndex - 1) * pagingRequest.PageSize)
+                .Take(pagingRequest.PageSize).ToList();
+
+                var displayUsers = await _userApplication.GetUserDisplay(usersNotFilter);
+
+                return Ok(new
+                {
+                    data = displayUsers,
+                    pageTotal = pageCount
+                });
+
+            }
+            var data = await filterFeatures(requests);
+
+            var pageTotal = data.Count / pagingRequest.PageSize;
+
+            var users = data
+            .Skip((pagingRequest.PageIndex - 1) * pagingRequest.PageSize)
+            .Take(pagingRequest.PageSize).ToList();
+
+            var response = await _userApplication.GetUserDisplay(users);
+
+            return Ok(new
+            {
+                data = response,
+                pageTotal = pageTotal
+            });
+        }
+
+        private async Task<List<AppUser>> filterFeatures(List<FilterFeaturesRequest> requests)
+        {
+            List<EBody> bodies = new List<EBody>();
+            List<EGender> genders = new List<EGender>();
+            List<EEducation> educations = new List<EEducation>();
+            List<EReligion> religions = new List<EReligion>();
+            List<ECook> cooks = new List<ECook>();
+            List<ELikeTechnology> likeTechnologies = new List<ELikeTechnology>();
+            List<ELikePet> likePets = new List<ELikePet>();
+            List<EPlaySport> playSports = new List<EPlaySport>();
+            List<ETravel> travels = new List<ETravel>();
+            List<EGame> games = new List<EGame>();
+            List<EShopping> shoppings = new List<EShopping>();
+            List<ELocation> locations = new List<ELocation>();
+            List<ECharacter> characters = new List<ECharacter>();
+            //
+            List<EFavoriteMovie> favoriteMovies = new List<EFavoriteMovie>();
+            List<EAtmosphereLike> atmosphereLikes = new List<EAtmosphereLike>();
+            List<EDrinkBeer> drinkBeers = new List<EDrinkBeer>();
+            List<ESmoking> smokings = new List<ESmoking>();
+            List<EMarriage> marriages = new List<EMarriage>();
+            List<EJob> jobs = new List<EJob>();
+            List<EAgeGroup> ageGroups = new List<EAgeGroup>();
+
+            foreach (FilterFeaturesRequest item in requests)
+            {
+                switch (item.feature)
+                {
+                    case "body":
+                        if (!bodies.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EBody body))
+                            {
+                                bodies.Add(body);
+                            }
+                        }
+                        break;
+
+                    case "gender":
+                        if (!genders.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EGender gender))
+                            {
+                                genders.Add(gender);
+                            }
+                        }
+                        break;
+                    case "education":
+                        if (!educations.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EEducation education))
+                            {
+                                educations.Add(education);
+                            }
+                        }
+                        break;
+                    case "religion":
+                        if (!religions.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EReligion religion))
+                            {
+                                religions.Add(religion);
+                            }
+                        }
+                        break;
+                    case "cook":
+                        if (!cooks.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ECook cook))
+                            {
+                                cooks.Add(cook);
+                            }
+                        }
+                        break;
+                    case "likeTechnology":
+                        if (!likeTechnologies.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ELikeTechnology likeTechnology))
+                            {
+                                likeTechnologies.Add(likeTechnology);
+                            }
+                        }
+                        break;
+                    case "likePet":
+                        if (!likePets.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ELikePet likePet))
+                            {
+                                likePets.Add(likePet);
+                            }
+                        }
+                        break;
+                    case "playSport":
+                        if (!playSports.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EPlaySport playSport))
+                            {
+                                playSports.Add(playSport);
+                            }
+                        }
+                        break;
+                    case "travel":
+                        if (!travels.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ETravel travel))
+                            {
+                                travels.Add(travel);
+                            }
+                        }
+                        break;
+                    case "game":
+                        if (!games.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EGame game))
+                            {
+                                games.Add(game);
+                            }
+                        }
+                        break;
+                    case "shopping":
+                        if (!shoppings.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EShopping shopping))
+                            {
+                                shoppings.Add(shopping);
+                            }
+                        }
+                        break;
+                    case "location":
+                        if (!locations.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ELocation location))
+                            {
+                                locations.Add(location);
+                            }
+                        }
+                        break;
+                    case "character":
+                        if (!characters.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ECharacter character))
+                            {
+                                characters.Add(character);
+                            }
+                        }
+                        break;
+
+                        //
+                    case "favoriteMovie":
+                        if (!favoriteMovies.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EFavoriteMovie favoriteMovie))
+                            {
+                                favoriteMovies.Add(favoriteMovie);
+                            }
+                        }
+                        break;
+                    case "atmosphereLike":
+                        if (!atmosphereLikes.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EAtmosphereLike atmosphereLike))
+                            {
+                                atmosphereLikes.Add(atmosphereLike);
+                            }
+                        }
+                        break;
+                    case "drinkBeer":
+                        if (!drinkBeers.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EDrinkBeer drinkBeer))
+                            {
+                                drinkBeers.Add(drinkBeer);
+                            }
+                        }
+                        break;
+                    case "smoking":
+                        if (!smokings.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out ESmoking smoking))
+                            {
+                                smokings.Add(smoking);
+                            }
+                        }
+                        break;
+                    case "marriage":
+                        if (!marriages.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EMarriage marriage))
+                            {
+                                marriages.Add(marriage);
+                            }
+                        }
+                        break;
+                    case "job":
+                        if (!jobs.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EJob job))
+                            {
+                                jobs.Add(job);
+                            }
+                        }
+                        break;
+                    case "ageGroup":
+                        if (!ageGroups.Any(x => x.ToString() == item.display))
+                        {
+                            if (Enum.TryParse(item.display.Trim(), out EAgeGroup ageGroup))
+                            {
+                                ageGroups.Add(ageGroup);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated).ToListAsync(); 
+            List<AppUser> filterUsers = new List<AppUser>();
+            //
+
+            if (jobs.Count > 0)
+            {
+                foreach (EJob item in jobs)
+                {
+                    var filter = users.Where(x => x.Job == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+
+
+            if (marriages.Count > 0)
+            {
+                foreach (EMarriage item in marriages)
+                {
+                    var filter = users.Where(x => x.Marriage == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+
+
+            if (smokings.Count > 0)
+            {
+                foreach (ESmoking item in smokings)
+                {
+                    var filter = users.Where(x => x.Smoking == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+
+            if (drinkBeers.Count > 0)
+            {
+                foreach (EDrinkBeer item in drinkBeers)
+                {
+                    var filter = users.Where(x => x.DrinkBeer == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+
+            if (atmosphereLikes.Count > 0)
+            {
+                foreach (EAtmosphereLike item in atmosphereLikes)
+                {
+                    var filter = users.Where(x => x.AtmosphereLike == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+
+            if (favoriteMovies.Count > 0)
+            {
+                foreach (EFavoriteMovie item in favoriteMovies)
+                {
+                    var filter = users.Where(x => x.FavoriteMovie == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+
+            //
+            if (bodies.Count > 0)
+            {
+                foreach (EBody item in bodies)
+                {
+                    var filter = users.Where(x => x.Body == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            //
+            if(genders.Count > 0)
+            {
+                foreach (EGender item in genders)
+                {
+                    var filter = users.Where(x => x.Gender == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(educations.Count > 0)
+            {
+                foreach (EEducation item in educations)
+                {
+                    var filter = users.Where(x => x.Education == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(religions.Count > 0)
+            {
+                foreach (EReligion item in religions)
+                {
+                    var filter = users.Where(x => x.Religion == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(cooks.Count > 0)
+            {
+                foreach (ECook item in cooks)
+                {
+                    var filter = users.Where(x => x.Cook == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(likeTechnologies.Count > 0)
+            {
+                foreach (ELikeTechnology item in likeTechnologies)
+                {
+                    var filter = users.Where(x => x.LikeTechnology == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(likePets.Count > 0)
+            {
+                foreach (ELikePet item in likePets)
+                {
+                    var filter = users.Where(x => x.LikePet == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(playSports.Count > 0)
+            {
+                foreach (EPlaySport item in playSports)
+                {
+                    var filter = users.Where(x => x.PlaySport == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(travels.Count > 0)
+            {
+                foreach (ETravel item in travels)
+                {
+                    var filter = users.Where(x => x.Travel == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(games.Count > 0)
+            {
+                foreach (EGame item in games)
+                {
+                    var filter = users.Where(x => x.Game == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(shoppings.Count > 0)
+            {
+                foreach (EShopping item in shoppings)
+                {
+                    var filter = users.Where(x => x.Shopping == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if(locations.Count > 0)
+            {
+                foreach (ELocation item in locations)
+                {
+                    var filter = users.Where(x => x.Location == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if (characters.Count > 0)
+            {
+                foreach (ECharacter item in characters)
+                {
+                    var filter = users.Where(x => x.Character == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+
+            //
+            if (ageGroups.Count > 0)
+            {
+                foreach (EAgeGroup item in ageGroups)
+                {
+                    var filter = users.Where(x => _userApplication.GetAgeGroup(x.Dob) == item).ToList();
+                    filterUsers = filterUsers.Concat(filter)
+                                        .ToList();
+                }
+                users = filterUsers;
+                filterUsers = new List<AppUser>();
+            }
+            return users;
+        } 
 
         [AllowAnonymous]
         [HttpGet("features")]
@@ -600,7 +1130,7 @@ namespace MakeFriendSolution.Controllers
                     .ToList();
             foreach (var item in findPeople)
             {
-                Gender.Add(item.ToString());
+                FindPeople.Add(item.ToString());
             }
 
             var Job = new List<string>();
@@ -765,6 +1295,15 @@ namespace MakeFriendSolution.Controllers
                 LikeTechnology.Add(item.ToString());
             }
 
+            var AgeGroup = new List<string>();
+            List<EAgeGroup> ageGroups = Enum.GetValues(typeof(EAgeGroup))
+                    .Cast<EAgeGroup>()
+                    .ToList();
+            foreach (var item in ageGroups)
+            {
+                AgeGroup.Add(item.ToString());
+            }
+
             var response = new
             {
                 AtmosphereLike,
@@ -792,7 +1331,8 @@ namespace MakeFriendSolution.Controllers
                 Game,
                 Shopping,
                 TypeAccount,
-                UserStatus
+                UserStatus,
+                AgeGroup
             };
 
             return Ok(response);

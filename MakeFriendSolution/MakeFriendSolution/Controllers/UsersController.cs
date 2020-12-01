@@ -533,13 +533,14 @@ namespace MakeFriendSolution.Controllers
                     break;
             }
 
+            var pageTotal = users.Count / request.PageSize;
+
             users = users
             .Skip((request.PageIndex - 1) * request.PageSize)
             .Take(request.PageSize).ToList();
 
             var response = await _userApplication.GetUserDisplay(users);
-
-            var pageTotal = users.Count / request.PageSize;
+            
             return Ok(new
             {
                 data = response,

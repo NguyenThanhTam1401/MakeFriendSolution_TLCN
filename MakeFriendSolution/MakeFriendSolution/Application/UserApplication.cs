@@ -283,16 +283,16 @@ namespace MakeFriendSolution.Application
         {
             int age = CalculateAge(birthDay);
             if (age < 18)
-                return EAgeGroup.Vị_Thành_Niên;
-            else if (age < 25)
-                return EAgeGroup.Thanh_Niên_1;
+                return EAgeGroup.Dưới_18_Tuổi;
+            else if (age < 26)
+                return EAgeGroup.Từ_18_Đến_25;
             else if (age < 31)
-                return EAgeGroup.Thanh_Niên_2;
-            else if (age < 40)
-                return EAgeGroup.Trung_Niên_1;
-            else if (age < 50)
-                return EAgeGroup.Trung_Niên_2;
-            else return EAgeGroup.Trung_Niên_3;
+                return EAgeGroup.Từ_25_Đến_30;
+            else if (age < 41)
+                return EAgeGroup.Từ_31_Đến_40;
+            else if (age < 51)
+                return EAgeGroup.Từ_41_Đến_50;
+            else return EAgeGroup.Trên_50;
         }
 
         public async Task<AppUser> GetById(Guid id)

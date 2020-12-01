@@ -7,11 +7,11 @@ namespace MakeFriendSolution.Models.Enum
 {
     public enum EAgeGroup
     {
-        Vị_Thành_Niên,
-        Thanh_Niên_1,
-        Thanh_Niên_2,
-        Trung_Niên_1,
-        Trung_Niên_2,
-        Trung_Niên_3
+        Dưới_18_Tuổi,
+        Từ_18_Đến_25,
+        Từ_25_Đến_30,
+        Từ_31_Đến_40,
+        Từ_41_Đến_50,
+        Trên_50
     }
 }
