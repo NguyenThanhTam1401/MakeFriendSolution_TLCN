@@ -179,7 +179,8 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => (x.SenderId == userId && x.ReceiverId == friendId)
                     || (x.SenderId == friendId && x.ReceiverId == friendId))
                 .OrderByDescending(x => x.SentAt)
-                .Take(20).ToListAsync();
+                //.Take(20)
+                .ToListAsync();
 
             List<MessageResponse> messageResponses = new List<MessageResponse>();
 

@@ -59,6 +59,7 @@ namespace MakeFriendSolution
             services.AddHttpContextAccessor();
             services.AddScoped<ISessionService, SessionService>();
             services.AddTransient<IUserApplication, UserApplication>();
+            services.AddSingleton<IMailchimpService, MailchimpService>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

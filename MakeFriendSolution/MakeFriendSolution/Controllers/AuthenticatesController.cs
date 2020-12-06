@@ -29,17 +29,19 @@ namespace MakeFriendSolution.Controllers
         private readonly IStorageService _storageService;
         private readonly IMailService _mailService;
         private readonly IConfiguration _config;
+        private readonly IMailchimpService _mailchimpService;
 
         private ISessionService _sessionService;
         private LoginInfo _loginInfo = new LoginInfo();
 
-        public AuthenticatesController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService)
+        public AuthenticatesController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService, IMailchimpService mailchimpService)
         {
             _context = context;
             _storageService = storageService;
             _mailService = mailService;
             _config = config;
             _sessionService = sessionService;
+            _mailchimpService = mailchimpService;
         }
 
         [AllowAnonymous]
@@ -373,6 +375,14 @@ namespace MakeFriendSolution.Controllers
                     PassWord = Guid.NewGuid().ToString()
                 };
 
+                var mailchimp = new MailChimpModel()
+                {
+                    Email = request.Email,
+                    Name = request.FullName
+                };
+
+                _mailchimpService.Subscribe(mailchimp);
+
                 try
                 {
                     _context.Users.Add(newUser);
@@ -431,9 +441,16 @@ namespace MakeFriendSolution.Controllers
                     Status = EUserStatus.IsVerifying,
                     AvatarPath = "image.png"
                 };
+                var mailchimp = new MailChimpModel()
+                {
+                    Email = request.Email,
+                    Name = request.FullName
+                };
 
+                
                 try
                 {
+                    await _mailchimpService.Subscribe(mailchimp);
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
                 }

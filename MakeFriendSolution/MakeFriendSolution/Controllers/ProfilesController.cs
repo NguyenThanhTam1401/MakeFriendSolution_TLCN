@@ -107,7 +107,7 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.Facebook;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(10, 1000);
+                user.NumberOfLikes = random.Next(10, 10000);
 
                 user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
 
@@ -168,7 +168,7 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.Facebook;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(10, 1000);
+                user.NumberOfLikes = random.Next(10, 10000);
 
                 user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
 
@@ -229,7 +229,7 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(10, 1000);
+                user.NumberOfLikes = random.Next(10, 10000);
 
                 user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
 
@@ -290,7 +290,7 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(10, 1000);
+                user.NumberOfLikes = random.Next(10, 10000);
 
                 user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
 
@@ -351,9 +351,9 @@ namespace MakeFriendSolution.Controllers
                 user.TypeAccount = ETypeAccount.Google;
                 user.UserName = user.Email;
                 user.FavoriteMovie = RandomEnumValue<EFavoriteMovie>();
-                user.NumberOfLikes = random.Next(10, 1000);
+                user.NumberOfLikes = random.Next(10, 10000);
 
-                if (user.Gender == EGender.Nam)
+                if (user.Gender == EGender.Nữ)
                 {
                     user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
                 }
