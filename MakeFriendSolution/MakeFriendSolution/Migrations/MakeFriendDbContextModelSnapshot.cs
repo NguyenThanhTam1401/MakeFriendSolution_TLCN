@@ -1002,6 +1002,11 @@ namespace MakeFriendSolution.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("NumberOflikes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .ValueGeneratedOnAdd()

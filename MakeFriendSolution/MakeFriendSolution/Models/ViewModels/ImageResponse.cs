@@ -32,6 +32,7 @@ namespace MakeFriendSolution.Models.ViewModels
             Title = image.Title;
             ImagePath = image.ImagePath;
             CreatedAt = image.CreatedAt;
+            NumberOfLikes = image.NumberOflikes;
 
             GetImagePath(image);
         }

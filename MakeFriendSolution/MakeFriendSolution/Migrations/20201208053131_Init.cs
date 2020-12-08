@@ -190,7 +190,8 @@ namespace MakeFriendSolution.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: false, defaultValue: "Image title"),
                     ImagePath = table.Column<string>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false)
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    NumberOflikes = table.Column<int>(nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {

@@ -12,6 +12,7 @@ namespace MakeFriendSolution.Models
         public string Title { get; set; }
         public string ImagePath { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int NumberOflikes { get; set; }
         public AppUser User { get; set; }
         public ICollection<LikeImage> LikeImages { get; set; }
     }

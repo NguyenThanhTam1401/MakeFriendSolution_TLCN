@@ -56,7 +56,6 @@ namespace MakeFriendSolution.Controllers
                 try
                 {
                     var imageResponse = new ImageResponse(item, _storageService);
-                    imageResponse.NumberOfLikes = await GetNumberOfLikes(item.Id);
                     response.Add(imageResponse);
                 }
                 catch
@@ -113,7 +112,6 @@ namespace MakeFriendSolution.Controllers
             }
 
             var imageResponse = new ImageResponse(image, _storageService);
-            imageResponse.NumberOfLikes = await GetNumberOfLikes(image.Id);
 
             return Ok(imageResponse);
         }
@@ -262,7 +260,10 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            if (!await _context.ThumbnailImages.AnyAsync(x => x.Id == request.ImageId))
+            var image = await _context.ThumbnailImages.FindAsync(request.ImageId);
+
+
+            if (image == null)
             {
                 return BadRequest(new
                 {
@@ -292,11 +293,15 @@ namespace MakeFriendSolution.Controllers
                     UserId = request.UserId
                 };
 
+                image.NumberOflikes++;
+                _context.ThumbnailImages.Update(image);
                 _context.LikeImages.Add(likeImage);
                 message = "Liked";
             }
             else
             {
+                image.NumberOflikes--;
+                _context.ThumbnailImages.Update(image);
                 _context.LikeImages.Remove(like);
                 message = "Unliked";
             }
@@ -317,11 +322,6 @@ namespace MakeFriendSolution.Controllers
             {
                 Message = message
             });
-        }
-
-        private async Task<int> GetNumberOfLikes(int imageId)
-        {
-            return await _context.ThumbnailImages.Where(x => x.Id == imageId).Include(x => x.LikeImages).CountAsync();
         }
 
         //Save File

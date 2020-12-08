@@ -17,6 +17,7 @@ namespace MakeFriendSolution.EF.Configurations
             builder.Property(x => x.ImagePath).IsRequired();
             builder.Property(x => x.Title).IsRequired().HasDefaultValue("Image title");
             builder.HasOne(x => x.User).WithMany(x => x.ThumbnailImages).HasForeignKey(x => x.UserId);
+            builder.Property(x => x.NumberOflikes).HasDefaultValue(0);
         }
     }
 }
