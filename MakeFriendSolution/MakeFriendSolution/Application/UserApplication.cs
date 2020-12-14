@@ -56,7 +56,6 @@ namespace MakeFriendSolution.Application
             var age = today.Year - birthDay.Year;
             if (birthDay > today.AddYears(-age))
                 age--;
-
             return age;
         }
 
@@ -305,6 +304,11 @@ namespace MakeFriendSolution.Application
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return user;
+        }
+
+        public async Task<bool> IsExist(Guid userId)
+        {
+            return await _context.Users.AnyAsync(x => x.Id == userId);
         }
     }
 }

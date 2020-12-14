@@ -23,6 +23,6 @@ namespace MakeFriendSolution.Application
         Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users, bool nonImage = false);
         EAgeGroup GetAgeGroup(DateTime birthDay);
         Task<AppUser> BidingUserRequest(AppUser user, UserRequest request);
-
+        Task<bool> IsExist(Guid userId); 
     }
 }

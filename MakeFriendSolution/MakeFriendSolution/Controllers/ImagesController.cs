@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using MakeFriendSolution.Application;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
@@ -22,12 +23,15 @@ namespace MakeFriendSolution.Controllers
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
         private readonly ISessionService _sessionService;
-
-        public ImagesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
+        private readonly IImageApplication _imageApplication;
+        private readonly IUserApplication _userApplication;
+        public ImagesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IImageApplication imageApplication, IUserApplication userApplication)
         {
             _context = context;
             _storageService = storageService;
             _sessionService = sessionService;
+            _imageApplication = imageApplication;
+            _userApplication = userApplication;
         }
 
         [HttpGet("all")]
@@ -260,10 +264,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var image = await _context.ThumbnailImages.FindAsync(request.ImageId);
-
-
-            if (image == null)
+            if (!await _imageApplication.IsExist(request.ImageId))
             {
                 return BadRequest(new
                 {
@@ -271,7 +272,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            if (!await _context.Users.AnyAsync(x => x.Id == request.UserId))
+            if (!await _userApplication.IsExist(request.UserId))
             {
                 return BadRequest(new
                 {
@@ -279,45 +280,8 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var like = await _context.LikeImages
-                .Where(x => x.UserId == request.UserId && x.ImageId == request.ImageId)
-                .FirstOrDefaultAsync();
-
-            var message = "";
-
-            if (like == null)
-            {
-                var likeImage = new LikeImage()
-                {
-                    ImageId = request.ImageId,
-                    UserId = request.UserId
-                };
-
-                image.NumberOflikes++;
-                _context.ThumbnailImages.Update(image);
-                _context.LikeImages.Add(likeImage);
-                message = "Liked";
-            }
-            else
-            {
-                image.NumberOflikes--;
-                _context.ThumbnailImages.Update(image);
-                _context.LikeImages.Remove(like);
-                message = "Unliked";
-            }
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(501, new
-                {
-                    Message = e.Message
-                });
-            }
-
+            var message = await _imageApplication.LikeImage(request);
+            
             return Ok(new
             {
                 Message = message

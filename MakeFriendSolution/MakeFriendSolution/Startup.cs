@@ -42,7 +42,7 @@ namespace MakeFriendSolution
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "https://192.168.0.200:4200", "http://192.168.0.200:4200")
+                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "https://192.168.0.200:4200", "http://192.168.0.200:4200", "http://192.168.0.150:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -60,6 +60,7 @@ namespace MakeFriendSolution
             services.AddScoped<ISessionService, SessionService>();
             services.AddTransient<IUserApplication, UserApplication>();
             services.AddSingleton<IMailchimpService, MailchimpService>();
+            services.AddTransient<IImageApplication, ImageApplication>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

@@ -93,6 +93,56 @@ namespace MakeFriendSolution.Common
             }
         }
 
+        private List<double> getVectorLength(double[,] matrix, int row, int column)
+        {
+            if (row <= 0 || column <= 0)
+                return null;
+
+            List<double> vectorLengths = new List<double>();
+            for (int i = 0; i < row; i++)
+            {
+                double sum = 0;
+                for (int j = 0; j < column; j++)
+                {
+                    sum += matrix[i, j] * matrix[i, j];
+                }
+                var length = Math.Sqrt(sum);
+                vectorLengths.Add(length);
+            }
+
+            return vectorLengths;
+        }
+
+        private List<double> calculateSimilarScore(double[,] matrix, int row, int column)
+        {
+            if (row <= 0 || column <= 0)
+                return null;
+
+            List<double> scores = new List<double>();
+            double tichVoHuong;
+            double tichDoDai;
+
+            for (int i = 0; i < row; i++)
+            {
+                tichVoHuong = 0;
+                double lengthVectorA = 0;
+                double lengthVectorB = 0;
+
+                for (int j = 0; j < column; j++)
+                {
+                    tichVoHuong += matrix[0, j] * matrix[i, j];
+
+                    lengthVectorA += (matrix[0, j] * matrix[0, j]);
+                    lengthVectorB += (matrix[i, j] * matrix[i, j]);
+                }
+
+                tichDoDai = Math.Sqrt(lengthVectorA) * Math.Sqrt(lengthVectorB);
+                scores.Add(Math.Round(tichVoHuong / tichDoDai * 100, 3));
+            }
+
+            return scores;
+        }
+
         private void StandardizedMatrix()
         {
             for (int i = 0; i < this.Row; i++)
@@ -112,8 +162,7 @@ namespace MakeFriendSolution.Common
             GetLength();
             StandardizedMatrix();
 
-            int i = 0;
-            for (i = 0; i < this.Row; i++)
+            for (int i = 0; i < this.Row; i++)
             {
                 tichVoHuong = 0;
 
