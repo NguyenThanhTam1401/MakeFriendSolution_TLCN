@@ -42,14 +42,6 @@ namespace MakeFriendSolution.Controllers
             _userApplication = userApplication;
         }
 
-        // GET: api/Users
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
-        }
-
         [AllowAnonymous]
         [HttpGet("newUsers")]
         public async Task<IActionResult> GetNewestUsers([FromQuery] PagingRequest request)
@@ -111,66 +103,6 @@ namespace MakeFriendSolution.Controllers
                 data = response,
                 pageTotal = pageTotal
             });
-        }
-
-        [AllowAnonymous]
-        [HttpGet("similar")]
-        public async Task<IActionResult> GetMatrix(Guid userId, [FromQuery] FilterUserViewModel filter)
-        {
-            var usersResponse = new List<UserResponse>();
-
-            var user = await _userApplication.GetById(userId);
-
-            var users = await _context.Users
-                .Where(x => x.Id != userId && x.Gender == user.FindPeople)
-                .ToListAsync();
-
-            //FilterUsers
-            _userApplication.FilterUers(ref users, filter);
-
-            users.Insert(0, user);
-
-            foreach (var item in users)
-            {
-                UserResponse userResponse = new UserResponse(item, _storageService);
-                usersResponse.Add(userResponse);
-            }
-
-            int sl = users.Count;
-
-            double[,] usersMatrix = new double[sl, 12];
-            for (int i = 0; i < sl; i++)
-            {
-                usersMatrix[i, 0] = (double)users[i].Marriage;
-                usersMatrix[i, 1] = (double)users[i].Target;
-                usersMatrix[i, 2] = (double)users[i].Education;
-                usersMatrix[i, 3] = (double)users[i].Body;
-                usersMatrix[i, 4] = (double)users[i].Religion;
-                usersMatrix[i, 5] = (double)users[i].Smoking;
-                usersMatrix[i, 6] = (double)users[i].DrinkBeer;
-                usersMatrix[i, 7] = (double)users[i].FavoriteMovie;
-                usersMatrix[i, 8] = (double)users[i].AtmosphereLike;
-                usersMatrix[i, 9] = (double)users[i].Character;
-                usersMatrix[i, 10] = (double)users[i].LifeStyle;
-                usersMatrix[i, 11] = (double)users[i].MostValuable;
-            }
-
-            cMatrix m = new cMatrix();
-            m.Row = sl;
-            m.Column = 12;
-            m.Matrix = usersMatrix;
-
-            List<double> kq = new List<double>();
-            kq = m.SimilarityCalculate();
-
-            for (int i = 0; i < kq.Count; i++)
-            {
-                usersResponse[i].Point = kq[i];
-            }
-
-            //usersResponse.RemoveAt(0);
-            usersResponse = usersResponse.OrderByDescending(o => o.Point).ToList();
-            return Ok(usersResponse);
         }
 
         [Authorize]
@@ -502,7 +434,8 @@ namespace MakeFriendSolution.Controllers
 
             return Ok(response);
         }
-        [AllowAnonymous]
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("filterUsers")]
         public async Task<IActionResult> FilterUsers([FromQuery] FilterUserRequest request)
         {

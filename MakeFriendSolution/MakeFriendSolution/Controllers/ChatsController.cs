@@ -30,7 +30,7 @@ namespace MakeFriendSolution.Controllers
             _context = context;
             _storageService = storageService;
         }
-
+        [HttpPost()]
         public async Task<IActionResult> Post([FromForm] CreateMessageRequest request)
         {
             var result = await SaveMessage(request);

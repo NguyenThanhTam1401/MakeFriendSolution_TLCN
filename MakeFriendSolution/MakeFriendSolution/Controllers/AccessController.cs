@@ -25,7 +25,7 @@ namespace MakeFriendSolution.Controllers
             _sessionService = sessionService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("byDate")]
         public async Task<IActionResult> GetAccessCountByDate(DateTime Date)
         {
@@ -41,7 +41,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(accessCount);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("byMonth")]
         public async Task<IActionResult> GetAccessCountByMonth(DateTime dateTime)
         {
@@ -65,7 +65,7 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("byYear")]
         public async Task<IActionResult> GetAccessCountByYear(DateTime dateTime)
         {
@@ -85,8 +85,7 @@ namespace MakeFriendSolution.Controllers
                 listAccess = byYear.Item2
             });
         }
-
-        public async Task<(AccessResponse, List<AccessResponse>)> GetByMonth(DateTime datetime)
+        private async Task<(AccessResponse, List<AccessResponse>)> GetByMonth(DateTime datetime)
         {
             var accessCount = await _context.Accesses
             .Where(x => x.Date.Date.Year == datetime.Date.Year && x.Date.Date.Month == datetime.Date.Month)
@@ -157,8 +156,7 @@ namespace MakeFriendSolution.Controllers
 
             return (accessTotal, accessResponse);
         }
-
-        public async Task<(AccessResponse, List<AccessResponse>)> GetByYear(DateTime dateTime)
+        private async Task<(AccessResponse, List<AccessResponse>)> GetByYear(DateTime dateTime)
         {
             var accessCount = new List<AccessResponse>();
             var accessTotal = new AccessResponse();
@@ -180,7 +178,7 @@ namespace MakeFriendSolution.Controllers
 
             return (accessTotal, accessCount);
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("getTheNumberOfNewUsersByMonth")]
         public async Task<IActionResult> GetTheNumberOfNewUsersByMonth()
         {
@@ -201,7 +199,7 @@ namespace MakeFriendSolution.Controllers
                 growthRate = percents
             });
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("getNumberOfActiveUsers")]
         public async Task<IActionResult> GetNumberOfActiveUsers()
         {
@@ -212,7 +210,7 @@ namespace MakeFriendSolution.Controllers
                 inactiveAccounts = numberOfInactiveUsers
             });
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("getTheAccountNumberOfEachType")]
         public async Task<IActionResult> GetTheAccountNumberOfEachType()
         {

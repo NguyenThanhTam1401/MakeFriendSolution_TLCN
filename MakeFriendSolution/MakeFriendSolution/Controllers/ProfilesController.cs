@@ -405,7 +405,7 @@ namespace MakeFriendSolution.Controllers
             return Ok();
         }
 
-        public static T RandomEnumValue<T>()
+        private static T RandomEnumValue<T>()
         {
             Random random = new Random();
             var values = Enum.GetValues(typeof(T));
@@ -500,7 +500,7 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
-        [HttpPut]
+        [HttpPut()]
         public async Task<IActionResult> Update([FromForm] UserRequest request)
         {
             var user = await _userApplication.GetById(request.Id);
@@ -1337,6 +1337,5 @@ namespace MakeFriendSolution.Controllers
 
             return Ok(response);
         }
-
     }
 }
