@@ -418,28 +418,35 @@ namespace MakeFriendSolution.Controllers
         {
             var user = await _userApplication.GetById(userId);
 
-            var tempUsers = await _context.Users
-                .Where(x => x.Id != userId && x.Gender == user.FindPeople && x.Status == EUserStatus.Active && x.IsInfoUpdated)
-                .ToListAsync();
+            var tempUsers = new List<AppUser>();
+            var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
 
-            var users = new List<AppUser>();
-
-            var userAgeGroup = _userApplication.GetAgeGroup(user.Dob);
-            int userAgeValue = Convert.ToInt32(userAgeGroup);
-
-            foreach (var item in tempUsers)
+            if (!filter.IsFilter)
             {
-                var ageGroup = _userApplication.GetAgeGroup(item.Dob);
-                int ageValue = Convert.ToInt32(ageGroup);
+                tempUsers = users
+                .Where(x => x.Id != userId && x.Gender == user.FindPeople)
+                .ToList();
+                users = new List<AppUser>();
+                var userAgeGroup = _userApplication.GetAgeGroup(user.Dob);
+                int userAgeValue = Convert.ToInt32(userAgeGroup);
 
-                if (Math.Abs(userAgeValue - ageValue) <= 1)
+                foreach (var item in tempUsers)
                 {
-                    users.Add(item);
+                    var ageGroup = _userApplication.GetAgeGroup(item.Dob);
+                    int ageValue = Convert.ToInt32(ageGroup);
+
+                    if (Math.Abs(userAgeValue - ageValue) <= 1)
+                    {
+                        users.Add(item);
+                    }
                 }
             }
+            else
+            {
+                //FilterUsers
+                _userApplication.FilterUers(ref users, filter);
+            }
 
-            //FilterUsers
-            _userApplication.FilterUers(ref users, filter);
 
             users.Insert(0, user);
 
@@ -531,7 +538,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost("filterFeatures")]
         public async Task<IActionResult> FilterFeatures([FromQuery] PagingRequest pagingRequest, [FromBody] List<FilterFeaturesRequest> requests)
         {

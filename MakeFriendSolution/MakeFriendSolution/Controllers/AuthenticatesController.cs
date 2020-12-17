@@ -421,11 +421,17 @@ namespace MakeFriendSolution.Controllers
 
         [AllowAnonymous]
         [HttpPost("signUp")]
-        public async Task<IActionResult> SignUp([FromForm] LoginInfo request)
+        public async Task<IActionResult> SignUp([FromForm] SignUpSystemRequest signUpRequest)
         {
             _loginInfo = new LoginInfo();
             LoginInfo loginInfo = new LoginInfo();
-
+            var request = new LoginInfo()
+            {
+                Email = signUpRequest.Email,
+                FullName = signUpRequest.FullName,
+                Password = signUpRequest.Password,
+                UserName = signUpRequest.Email
+            };
             loginInfo = await this.CheckRecordExistence(request);
             _loginInfo = loginInfo;
             if (loginInfo == null)

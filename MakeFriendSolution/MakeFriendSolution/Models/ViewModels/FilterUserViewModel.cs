@@ -9,6 +9,7 @@ namespace MakeFriendSolution.Models.ViewModels
 {
     public class FilterUserViewModel : PagingRequest
     {
+        public bool IsFilter { get; set; }
         public string Location { get; set; }
         public string FullName { get; set; }
         public int FromAge { get; set; }

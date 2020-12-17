@@ -36,7 +36,7 @@ namespace MakeFriendSolution.Controllers
             var result = await SaveMessage(request);
             if (result == null)
             {
-                return BadRequest("Can not save message!");
+                return BadRequest("Can not send message now!");
             }
 
             var sender = await _context.Users.FindAsync(request.SenderId);
@@ -207,6 +207,14 @@ namespace MakeFriendSolution.Controllers
 
         private async Task<HaveMessage> SaveMessage(CreateMessageRequest message)
         {
+
+            //var isBlock = await _context.BlockUsers.AnyAsync(x => (x.FromUserId == message.SenderId && x.ToUserId == message.ReceiverId) || (x.FromUserId == message.ReceiverId && x.ToUserId == message.SenderId));
+
+            //if (isBlock)
+            //{
+            //    return null;
+            //}
+
             var newMessage = new HaveMessage()
             {
                 SenderId = message.SenderId,

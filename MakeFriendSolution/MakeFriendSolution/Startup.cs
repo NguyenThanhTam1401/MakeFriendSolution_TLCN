@@ -43,11 +43,11 @@ namespace MakeFriendSolution
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    //.WithOrigins("https://localhost:4200", "http://localhost:4200", "https://192.168.0.200:4200", "http://192.168.0.200:4200", "http://192.168.0.150:4200")
-                    .AllowAnyOrigin()
+                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuit.tech:4200")
+                    //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    //.AllowCredentials()
+                    .AllowCredentials()
                     );
             });
 

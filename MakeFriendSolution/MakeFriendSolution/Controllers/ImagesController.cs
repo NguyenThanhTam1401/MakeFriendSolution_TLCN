@@ -34,12 +34,6 @@ namespace MakeFriendSolution.Controllers
             _userApplication = userApplication;
         }
 
-        [HttpGet("all")]
-        public async Task<List<ThumbnailImage>> GetAll()
-        {
-            return await _context.ThumbnailImages.ToListAsync();
-        }
-
         [AllowAnonymous]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetImageByUserId(Guid userId)
@@ -181,41 +175,6 @@ namespace MakeFriendSolution.Controllers
             return Ok(imagesResponse);
         }
 
-        //[Authorize]
-        //[HttpPut("{imageId}")]
-        //public async Task<IActionResult> UpdateById(int imageId, [FromForm] ImageRequest request)
-        //{
-        //    var image = await _context.ThumbnailImages.FindAsync(imageId);
-        //    if (request.Title != "" && request.Title != null)
-        //    {
-        //        image.Title = request.Title;
-        //    }
-
-        //    if (request.Image != null)
-        //    {
-        //        await _storageService.DeleteFileAsync(image.ImagePath);
-        //        image.ImagePath = await this.SaveFile(request.Image);
-        //    }
-
-        //    try
-        //    {
-        //        _context.ThumbnailImages.Update(image);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException e)
-        //    {
-        //        return StatusCode(501, new
-        //        {
-        //            Message = e.InnerException
-        //        });
-        //    }
-
-        //    var response = new ImageResponse(image, _storageService);
-        //    response.NumberOfLikes = await GetNumberOfLikes(image.Id);
-
-        //    return Ok(response);
-        //}
-
         [Authorize]
         [HttpDelete("{imageId}")]
         public async Task<IActionResult> DeleteImage(int imageId)
@@ -229,7 +188,7 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find image with id = " + imageId
                 });
             }
-            var user = await _context.Users.FindAsync(image.User);
+            var user = await _context.Users.FindAsync(image.UserId);
             user.NumberOfImages--;
             try
             {
