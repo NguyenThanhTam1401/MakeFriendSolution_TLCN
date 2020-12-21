@@ -158,7 +158,7 @@ namespace MakeFriendSolution
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chartHub");
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
             app.UseSwagger();
 

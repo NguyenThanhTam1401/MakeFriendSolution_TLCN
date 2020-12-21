@@ -486,5 +486,15 @@ namespace MakeFriendSolution.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost("block/{userId}")]
+        public async Task<IActionResult> BlockUser(Guid userId)
+        {
+            var message = await _userApplication.DisableUser(userId);
+            return Ok(new
+            {
+                Message = message
+            });
+        }
     }
 }

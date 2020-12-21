@@ -414,10 +414,10 @@ namespace MakeFriendSolution.Controllers
         public async Task<IActionResult> GetListOfSuggestions(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
             var user = await _userApplication.GetById(userId);
-
+            if (user == null)
+                return BadRequest();
             var tempUsers = new List<AppUser>();
             var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
-
             if (!filter.IsFilter)
             {
                 tempUsers = users

@@ -12,7 +12,6 @@ namespace MakeFriendSolution.Application
     {
         Task<AppUser> GetById(Guid id);
         Task<AppUser> UpdateUser(AppUser user);
-
         Task<string> SaveFile(IFormFile file);
         Task<bool> IsLiked(Guid userId, Guid currentUserId);
         Task<bool> IsFollowed(Guid userId, Guid currentUserId);
@@ -26,5 +25,6 @@ namespace MakeFriendSolution.Application
         Task<List<AppUser>> GetActiveUsers();
         Task<AppUser> GetUserByEmail(string email);
         Task<Favorite> GetFavoriteById(Guid fromId, Guid toId);
+        Task<string> DisableUser(Guid userId);
     }
 }

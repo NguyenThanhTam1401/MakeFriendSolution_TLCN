@@ -329,5 +329,26 @@ namespace MakeFriendSolution.Application
                 .Where(x => x.FromUserId == fromId && x.ToUserId == toId)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<string> DisableUser(Guid userId)
+        {
+            string message = "Do nothing";
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user.Status == EUserStatus.Active)
+            {
+                user.Status = EUserStatus.Inactive;
+                message = "Blocked";
+            }
+            else if (user.Status == EUserStatus.Inactive)
+            {
+                user.Status = EUserStatus.Active;
+                message = "Unclocked";
+            }
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return message;
+        }
     }
 }
