@@ -19,7 +19,7 @@ namespace MakeFriendSolution.Application
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
         private ISessionService _sessionService;
-
+        public UserApplication() { }
         public UserApplication(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
         {
             _context = context;
@@ -309,6 +309,25 @@ namespace MakeFriendSolution.Application
         public async Task<bool> IsExist(Guid userId)
         {
             return await _context.Users.AnyAsync(x => x.Id == userId);
+        }
+
+        public async Task<List<AppUser>> GetActiveUsers()
+        {
+            return await _context.Users
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
+                .ToListAsync();
+        }
+
+        public async Task<AppUser> GetUserByEmail(string email)
+        {
+            return await _context.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
+        }
+
+        public async Task<Favorite> GetFavoriteById(Guid fromId, Guid toId)
+        {
+            return await _context.Favorites
+                .Where(x => x.FromUserId == fromId && x.ToUserId == toId)
+                .FirstOrDefaultAsync();
         }
     }
 }

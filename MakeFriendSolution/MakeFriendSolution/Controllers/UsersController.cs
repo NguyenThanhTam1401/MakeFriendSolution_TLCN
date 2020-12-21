@@ -2,21 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
-using MakeFriendSolution.Common;
-using System.Net.Http.Headers;
-using System.IO;
 using MakeFriendSolution.Services;
-using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using System.Runtime.CompilerServices;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Application;
 
@@ -28,16 +20,12 @@ namespace MakeFriendSolution.Controllers
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
-        private readonly IMailService _mailService;
-        private readonly IConfiguration _config;
         private ISessionService _sessionService;
         private readonly IUserApplication _userApplication;
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService, IUserApplication userApplication)
+        public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication)
         {
             _context = context;
             _storageService = storageService;
-            _mailService = mailService;
-            _config = config;
             _sessionService = sessionService;
             _userApplication = userApplication;
         }
@@ -46,9 +34,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("newUsers")]
         public async Task<IActionResult> GetNewestUsers([FromQuery] PagingRequest request)
         {
-            var users = await _context.Users
-                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
-                .ToListAsync();
+            var users = await _userApplication.GetActiveUsers();
 
             var loginInfo = _sessionService.GetDataFromToken();
             if (loginInfo != null)
@@ -69,9 +55,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("favoritest")]
         public async Task<IActionResult> GetFavoritestUsers([FromQuery] PagingRequest request)
         {
-            var users = await _context.Users
-                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
-                .ToListAsync();
+            var users = await _userApplication.GetActiveUsers();
 
             var loginInfo = _sessionService.GetDataFromToken();
             if (loginInfo != null)
@@ -117,7 +101,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var user = await _context.Users.Where(x => x.Email == request.Email).FirstOrDefaultAsync();
+            var user = await _userApplication.GetUserByEmail(request.Email);
 
             if (user == null)
             {
@@ -194,10 +178,10 @@ namespace MakeFriendSolution.Controllers
 
             user.AvatarPath = await _userApplication.SaveFile(request.Avatar);
 
-            if (oldAvatar != "image.png")
-            {
-                await _storageService.DeleteFileAsync(oldAvatar);
-            }
+            //if (oldAvatar != "image.png")
+            //{
+            //    await _storageService.DeleteFileAsync(oldAvatar);
+            //}
 
             user = await _userApplication.UpdateUser(user);
 
@@ -323,9 +307,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            var favorited = await _context.Favorites
-                .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
-                .FirstOrDefaultAsync();
+            var favorited = await _userApplication.GetFavoriteById(sessionUser.UserId, userId);
 
             var user = await _userApplication.GetById(userId);
 
@@ -479,6 +461,29 @@ namespace MakeFriendSolution.Controllers
                 data = response,
                 pageTotal = pageTotal
             });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("createDemoUser")]
+        public async Task<IActionResult> CreateDemoUser([FromForm] SignUpSystemRequest request)
+        {
+            var user = new AppUser()
+            {
+                Email = request.Email,
+                FullName = request.FullName,
+                PassWord = request.Password,
+                IsInfoUpdated = false,
+                TypeAccount = ETypeAccount.System,
+                AvatarPath = "image.png",
+                Status = EUserStatus.Active,
+                UserName = request.Email,
+                Role = ERole.User,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
     }

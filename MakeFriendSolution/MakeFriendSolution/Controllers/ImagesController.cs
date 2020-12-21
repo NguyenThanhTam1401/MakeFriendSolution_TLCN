@@ -135,7 +135,7 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find user with id = " + request.UserId
                 });
             }
-            var imagesResponse = new List<ImageResponse>();
+            
             var newImages = new List<ThumbnailImage>();
             for (int i = 0; i < request.Images.Count; i++)
             {
@@ -146,19 +146,18 @@ namespace MakeFriendSolution.Controllers
 
                 if (request.Images[i] != null)
                 {
-                    image.ImagePath = await this.SaveFile(request.Images[i]);
+                    image.ImagePath = await _storageService.SaveFile(request.Images[i]);
                 }
 
                 newImages.Add(image);
             }
 
             user.NumberOfImages += newImages.Count;
-
+            var imagesResponse = new List<ImageResponse>();
             try
             {
                 _context.Users.Update(user);
-                _context.ThumbnailImages.AddRange(newImages);
-                await _context.SaveChangesAsync();
+                imagesResponse = await _imageApplication.CreateImages(newImages);
             }
             catch (Exception e)
             {
@@ -168,10 +167,6 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            foreach (var image in newImages)
-            {
-                imagesResponse.Add(new ImageResponse(image, _storageService));
-            }
             return Ok(imagesResponse);
         }
 
@@ -247,13 +242,5 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
-        //Save File
-        private async Task<string> SaveFile(IFormFile file)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
-        }
     }
 }

@@ -13,5 +13,6 @@ namespace MakeFriendSolution.Application
         Task<ThumbnailImage> GetImageById(int imageId);
         Task<string> LikeImage(LikeImageRequest request);
         Task<bool> IsExist(int imageId);
+        Task<List<ImageResponse>> CreateImages(List<ThumbnailImage> images);
     }
 }

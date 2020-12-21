@@ -4,7 +4,6 @@ using MakeFriendSolution.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Application
@@ -23,6 +22,9 @@ namespace MakeFriendSolution.Application
         Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users, bool nonImage = false);
         EAgeGroup GetAgeGroup(DateTime birthDay);
         Task<AppUser> BidingUserRequest(AppUser user, UserRequest request);
-        Task<bool> IsExist(Guid userId); 
+        Task<bool> IsExist(Guid userId);
+        Task<List<AppUser>> GetActiveUsers();
+        Task<AppUser> GetUserByEmail(string email);
+        Task<Favorite> GetFavoriteById(Guid fromId, Guid toId);
     }
 }

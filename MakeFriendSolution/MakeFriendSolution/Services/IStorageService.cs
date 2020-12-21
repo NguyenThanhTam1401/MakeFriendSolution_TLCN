@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace MakeFriendSolution.Services
 {
     public interface IStorageService
     {
+        Task<string> SaveFile(IFormFile file);
         string GetFileUrl(string fileName);
 
         Task SaveFileAsync(Stream mediaBinaryStream, string fileName);

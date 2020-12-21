@@ -111,5 +111,24 @@ namespace MakeFriendSolution.Application
                 return false;
             }
         }
+
+        public async Task<List<ImageResponse>> CreateImages(List<ThumbnailImage> images)
+        {
+            try
+            {
+                _context.ThumbnailImages.AddRange(images);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            var imagesResponse = new List<ImageResponse>();
+            foreach (var image in images)
+            {
+                imagesResponse.Add(new ImageResponse(image, _storageService));
+            }
+            return imagesResponse;
+        }
     }
 }

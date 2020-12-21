@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.HubConfig
 {
-    public class ChartHub : Hub
+    public class ChatHub : Hub
     {
 		// Use this variable to track user count
 		private static int _userCount = 0;

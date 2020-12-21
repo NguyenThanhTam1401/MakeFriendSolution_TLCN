@@ -20,11 +20,11 @@ namespace MakeFriendSolution.Controllers
     [ApiController]
     public class ChatsController : ControllerBase
     {
-        private readonly IHubContext<ChartHub> _hub;
+        private readonly IHubContext<ChatHub> _hub;
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
 
-        public ChatsController(IHubContext<ChartHub> hub, MakeFriendDbContext context, IStorageService storageService)
+        public ChatsController(IHubContext<ChatHub> hub, MakeFriendDbContext context, IStorageService storageService)
         {
             _hub = hub;
             _context = context;

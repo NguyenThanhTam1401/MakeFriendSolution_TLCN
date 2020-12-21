@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MakeFriendSolution.Common
+namespace MakeFriendSolution.Application
 {
-    public class cMatrix
+    public class SimilarityMatrix
     {
         //Các thuộc tính, hàm dựng, properties
         #region
@@ -18,29 +18,29 @@ namespace MakeFriendSolution.Common
         public List<double> ListDoDaiVector { get; set; }
 
         //Hàm dựng
-        public cMatrix()
+        public SimilarityMatrix()
         {
-            this.Row = 0;
-            this.Column = 0;
-            this.Matrix = new double[1000, 1000];
-            this.ListDoDaiVector = new List<double>();
+            Row = 0;
+            Column = 0;
+            Matrix = new double[1000, 1000];
+            ListDoDaiVector = new List<double>();
         }
 
-        public cMatrix(int Row, int Column, double[,] Matrix)
+        public SimilarityMatrix(int Row, int Column, double[,] Matrix)
         {
             this.Row = Row;
             this.Column = Column;
             this.Matrix = new double[1000, 1000];
             this.Matrix = Matrix;
-            this.ListDoDaiVector = new List<double>();
+            ListDoDaiVector = new List<double>();
         }
 
-        public cMatrix(int Row, int Column)
+        public SimilarityMatrix(int Row, int Column)
         {
             this.Row = Row;
             this.Column = Column;
-            this.Matrix = new double[this.Row, this.Column];
-            this.ListDoDaiVector = new List<double>();
+            Matrix = new double[this.Row, this.Column];
+            ListDoDaiVector = new List<double>();
         }
 
         #endregion
@@ -50,11 +50,11 @@ namespace MakeFriendSolution.Common
 
         public void PrintfMatrix()
         {
-            for (int i = 0; i < this.Row; i++)
+            for (int i = 0; i < Row; i++)
             {
-                for (int j = 0; j < this.Column; j++)
+                for (int j = 0; j < Column; j++)
                 {
-                    Console.Write(string.Format("{0}\t", Math.Round(this.Matrix[i, j], 5)));
+                    Console.Write(string.Format("{0}\t", Math.Round(Matrix[i, j], 5)));
                 }
                 Console.WriteLine();
                 Console.WriteLine();
@@ -70,7 +70,7 @@ namespace MakeFriendSolution.Common
             {
                 for (int j = 0; j < this.Column; j++)
                 {
-                    this.Matrix[i, j] = rd.Next(from, to);
+                    Matrix[i, j] = rd.Next(from, to);
                 }
             }
         }
@@ -82,18 +82,18 @@ namespace MakeFriendSolution.Common
         private void GetLength()
         {
             ListDoDaiVector.Clear();
-            for (int i = 0; i < this.Row; i++)
+            for (int i = 0; i < Row; i++)
             {
                 double sum = 0;
-                for (int j = 0; j < this.Column; j++)
+                for (int j = 0; j < Column; j++)
                 {
-                    sum += this.Matrix[i, j] * this.Matrix[i, j];
+                    sum += Matrix[i, j] * Matrix[i, j];
                 }
                 ListDoDaiVector.Add(Math.Sqrt(sum));
             }
         }
 
-        private List<double> getVectorLength(double[,] matrix, int row, int column)
+        public List<double> getVectorLength(double[,] matrix, int row, int column)
         {
             if (row <= 0 || column <= 0)
                 return null;
@@ -113,7 +113,7 @@ namespace MakeFriendSolution.Common
             return vectorLengths;
         }
 
-        private List<double> calculateSimilarScore(double[,] matrix, int row, int column)
+        public List<double> calculateSimilarScore(double[,] matrix, int row, int column)
         {
             if (row <= 0 || column <= 0)
                 return null;
@@ -132,8 +132,8 @@ namespace MakeFriendSolution.Common
                 {
                     tichVoHuong += matrix[0, j] * matrix[i, j];
 
-                    lengthVectorA += (matrix[0, j] * matrix[0, j]);
-                    lengthVectorB += (matrix[i, j] * matrix[i, j]);
+                    lengthVectorA += matrix[0, j] * matrix[0, j];
+                    lengthVectorB += matrix[i, j] * matrix[i, j];
                 }
 
                 tichDoDai = Math.Sqrt(lengthVectorA) * Math.Sqrt(lengthVectorB);
@@ -145,11 +145,11 @@ namespace MakeFriendSolution.Common
 
         private void StandardizedMatrix()
         {
-            for (int i = 0; i < this.Row; i++)
+            for (int i = 0; i < Row; i++)
             {
-                for (int j = 0; j < this.Column; j++)
+                for (int j = 0; j < Column; j++)
                 {
-                    this.Matrix[i, j] = this.Matrix[i, j] / this.ListDoDaiVector[i];
+                    Matrix[i, j] = Matrix[i, j] / ListDoDaiVector[i];
                 }
             }
         }
@@ -162,19 +162,19 @@ namespace MakeFriendSolution.Common
             GetLength();
             StandardizedMatrix();
 
-            for (int i = 0; i < this.Row; i++)
+            for (int i = 0; i < Row; i++)
             {
                 tichVoHuong = 0;
 
                 double lengthVectorA = 0;
                 double lengthVectorB = 0;
 
-                for (int j = 0; j < this.Column; j++)
+                for (int j = 0; j < Column; j++)
                 {
-                    tichVoHuong += this.Matrix[0, j] * this.Matrix[i, j];
+                    tichVoHuong += Matrix[0, j] * Matrix[i, j];
 
-                    lengthVectorA += (this.Matrix[0, j] * this.Matrix[0, j]);
-                    lengthVectorB += (this.Matrix[i, j] * this.Matrix[i, j]);
+                    lengthVectorA += Matrix[0, j] * Matrix[0, j];
+                    lengthVectorB += Matrix[i, j] * Matrix[i, j];
                 }
 
                 tichDoDai = Math.Sqrt(lengthVectorA) * Math.Sqrt(lengthVectorB);

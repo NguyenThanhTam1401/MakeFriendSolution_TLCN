@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakeFriendSolution.EF;
@@ -10,8 +9,6 @@ using MakeFriendSolution.Models;
 using MakeFriendSolution.Common;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
-using System.Net.Http.Headers;
-using System.IO;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
 using MakeFriendSolution.Application;
@@ -414,7 +411,7 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpGet("similar/{userId}")]
-        public async Task<IActionResult> GetMatrix(Guid userId, [FromQuery] FilterUserViewModel filter)
+        public async Task<IActionResult> GetListOfSuggestions(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
             var user = await _userApplication.GetById(userId);
 
@@ -476,7 +473,7 @@ namespace MakeFriendSolution.Controllers
                 usersMatrix[i, 18] = (double)users[i].MostValuable;
             }
 
-            cMatrix m = new cMatrix();
+            SimilarityMatrix m = new SimilarityMatrix();
             m.Row = sl;
             m.Column = 19;
             m.Matrix = usersMatrix;
