@@ -28,7 +28,7 @@ namespace MakeFriendSolution.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 12, 31, 23, 11, 31, 474, DateTimeKind.Local).AddTicks(7954))
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 1, 2, 14, 44, 34, 398, DateTimeKind.Local).AddTicks(4100))
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,7 @@ namespace MakeFriendSolution.Migrations
                     Location = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 12, 31, 23, 11, 31, 451, DateTimeKind.Local).AddTicks(1738)),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 1, 2, 14, 44, 34, 363, DateTimeKind.Local).AddTicks(601)),
                     NumberOfFiends = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfLikes = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfImages = table.Column<int>(nullable: false, defaultValue: 0),
@@ -266,7 +266,7 @@ namespace MakeFriendSolution.Migrations
             migrationBuilder.InsertData(
                 table: "SimilariryFeatures",
                 columns: new[] { "Id", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2020, 12, 31, 23, 11, 31, 478, DateTimeKind.Local).AddTicks(1547) });
+                values: new object[] { 1, new DateTime(2021, 1, 2, 14, 44, 34, 403, DateTimeKind.Local).AddTicks(4472) });
 
             migrationBuilder.InsertData(
                 table: "Users",

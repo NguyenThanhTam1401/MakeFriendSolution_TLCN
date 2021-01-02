@@ -19,7 +19,11 @@ namespace MakeFriendSolution.Application
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
         private ISessionService _sessionService;
-        public UserApplication() { }
+
+        public UserApplication()
+        {
+        }
+
         public UserApplication(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
         {
             _context = context;
@@ -167,7 +171,6 @@ namespace MakeFriendSolution.Application
             {
                 user.Education = education;
             }
-
 
             if (Enum.TryParse(request.LikePet, out ELikePet pet))
             {
@@ -447,7 +450,7 @@ namespace MakeFriendSolution.Application
         public async Task<Tuple<List<UserDisplay>, int>> GetSimilarityScores(Guid userId, FilterUserViewModel request)
         {
             List<UserDisplay> userResponses = new List<UserDisplay>();
-            
+
             if (!request.IsFilter)
             {
                 var tempScore = await _context.SimilarityScores.Where(x => x.FromUserId == userId)
@@ -470,16 +473,16 @@ namespace MakeFriendSolution.Application
             {
                 var userInfo = await GetById(userId);
                 var users = await GetActiveUsers();
-                var scores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
                 FilterUers(ref users, request);
 
-                foreach (var item in users)
-                {
-                    item.Point = scores.Where(x => x.ToUserId == item.Id).FirstOrDefault().Score;
-                }
+                var total = users.Count / request.PageSize;
+                users = users.OrderByDescending(x => x.Point)
+                    .Skip((request.PageIndex - 1) * request.PageSize)
+                    .Take(request.PageSize).ToList();
 
                 userResponses = await GetUserDisplay(users);
 
+                return Tuple.Create(userResponses, total);
             }
         }
 

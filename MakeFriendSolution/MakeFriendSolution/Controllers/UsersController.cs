@@ -22,6 +22,7 @@ namespace MakeFriendSolution.Controllers
         private readonly IStorageService _storageService;
         private ISessionService _sessionService;
         private readonly IUserApplication _userApplication;
+
         public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication)
         {
             _context = context;
@@ -67,14 +68,14 @@ namespace MakeFriendSolution.Controllers
 
             var response = userDisplays
                 .OrderByDescending(x => x.NumberOfFavoritors)
-                .ThenBy(x=>x.FullName)
+                .ThenBy(x => x.FullName)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
 
             foreach (UserDisplay item in response)
             {
                 item.GetImagePath();
-                if(loginInfo != null)
+                if (loginInfo != null)
                 {
                     item.Followed = await _userApplication.IsFollowed(item.Id, loginInfo.UserId);
                     item.Favorited = await _userApplication.IsLiked(item.Id, loginInfo.UserId);
@@ -426,24 +427,29 @@ namespace MakeFriendSolution.Controllers
             switch (request.Feature)
             {
                 case "FullName":
-                    users = request.IsAscending ?  await _context.Users.OrderBy(x=>x.FullName).ToListAsync() : await _context.Users.OrderByDescending(x => x.FullName).ToListAsync();
+                    users = request.IsAscending ? await _context.Users.OrderBy(x => x.FullName).ToListAsync() : await _context.Users.OrderByDescending(x => x.FullName).ToListAsync();
 
                     break;
+
                 case "Like":
                     users = request.IsAscending ? await _context.Users.OrderBy(x => x.NumberOfLikes).ToListAsync() : await _context.Users.OrderByDescending(x => x.NumberOfLikes).ToListAsync();
                     break;
+
                 case "Follow":
                     users = request.IsAscending ? await _context.Users.OrderBy(x => x.NumberOfFiends).ToListAsync() : await _context.Users.OrderByDescending(x => x.NumberOfFiends).ToListAsync();
 
                     break;
+
                 case "ImageCount":
                     users = request.IsAscending ? await _context.Users.OrderBy(x => x.NumberOfImages).ToListAsync() : await _context.Users.OrderByDescending(x => x.NumberOfImages).ToListAsync();
 
                     break;
+
                 case "Status":
                     users = request.IsAscending ? await _context.Users.OrderBy(x => x.Status).ToListAsync() : await _context.Users.OrderByDescending(x => x.Status).ToListAsync();
 
                     break;
+
                 default:
                     break;
             }
@@ -455,7 +461,7 @@ namespace MakeFriendSolution.Controllers
             .Take(request.PageSize).ToList();
 
             var response = await _userApplication.GetUserDisplay(users);
-            
+
             return Ok(new
             {
                 data = response,

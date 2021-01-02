@@ -207,7 +207,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 12, 31, 23, 11, 31, 451, DateTimeKind.Local).AddTicks(1738));
+                        .HasDefaultValue(new DateTime(2021, 1, 2, 14, 44, 34, 363, DateTimeKind.Local).AddTicks(601));
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -1014,7 +1014,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 12, 31, 23, 11, 31, 474, DateTimeKind.Local).AddTicks(7954));
+                        .HasDefaultValue(new DateTime(2021, 1, 2, 14, 44, 34, 398, DateTimeKind.Local).AddTicks(4100));
 
                     b.HasKey("Id");
 
@@ -1024,7 +1024,7 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 1,
-                            UpdatedAt = new DateTime(2020, 12, 31, 23, 11, 31, 478, DateTimeKind.Local).AddTicks(1547)
+                            UpdatedAt = new DateTime(2021, 1, 2, 14, 44, 34, 403, DateTimeKind.Local).AddTicks(4472)
                         });
                 });
 
