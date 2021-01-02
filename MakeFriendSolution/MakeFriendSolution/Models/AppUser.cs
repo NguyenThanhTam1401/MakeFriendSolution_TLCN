@@ -24,6 +24,7 @@ namespace MakeFriendSolution.Models
         public ELocation Location { get; set; }
         public EUserStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         //
         public int NumberOfFiends { get; set; }
         public int NumberOfLikes { get; set; }
@@ -79,6 +80,8 @@ namespace MakeFriendSolution.Models
         public ICollection<Favorite> BeingFavoritedBy { get; set; }
         public ICollection<BlockUser> UserWasBlock { get; set; }
         public ICollection<BlockUser> BlockedByUsers { get; set; }
+        public ICollection<SimilarityScore> SimilarityScores { get; set; }
+
 
         [NotMapped]
         public double Point { get; set; } = 0;

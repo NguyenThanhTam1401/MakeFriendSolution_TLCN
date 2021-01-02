@@ -204,6 +204,11 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2020, 12, 31, 23, 11, 31, 451, DateTimeKind.Local).AddTicks(1738));
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("varchar(50)")
@@ -263,6 +268,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Admin",
                             Weight = 65
                         },
@@ -311,6 +317,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "nhung2",
                             Weight = 65
                         },
@@ -359,6 +366,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "vuong",
                             Weight = 65
                         },
@@ -407,6 +415,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "hieu",
                             Weight = 65
                         },
@@ -455,6 +464,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "tien",
                             Weight = 65
                         },
@@ -503,6 +513,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Dinh",
                             Weight = 65
                         },
@@ -551,6 +562,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Dat",
                             Weight = 65
                         },
@@ -599,6 +611,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Son",
                             Weight = 65
                         },
@@ -647,6 +660,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Duc",
                             Weight = 65
                         },
@@ -695,6 +709,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "GiaNhung",
                             Weight = 65
                         },
@@ -743,6 +758,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Diem",
                             Weight = 65
                         },
@@ -791,6 +807,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Han",
                             Weight = 65
                         },
@@ -839,6 +856,7 @@ namespace MakeFriendSolution.Migrations
                             Title = "Thông tin của tôi",
                             Travel = 0,
                             TypeAccount = 0,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Mai",
                             Weight = 65
                         });
@@ -986,6 +1004,57 @@ namespace MakeFriendSolution.Migrations
                     b.ToTable("LikeImages");
                 });
 
+            modelBuilder.Entity("MakeFriendSolution.Models.SimilarityFeature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2020, 12, 31, 23, 11, 31, 474, DateTimeKind.Local).AddTicks(7954));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SimilariryFeatures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            UpdatedAt = new DateTime(2020, 12, 31, 23, 11, 31, 478, DateTimeKind.Local).AddTicks(1547)
+                        });
+                });
+
+            modelBuilder.Entity("MakeFriendSolution.Models.SimilarityScore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("FromUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Score")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
+
+                    b.Property<Guid>("ToUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromUserId");
+
+                    b.ToTable("SimilarityScores");
+                });
+
             modelBuilder.Entity("MakeFriendSolution.Models.ThumbnailImage", b =>
                 {
                     b.Property<int>("Id")
@@ -1095,6 +1164,15 @@ namespace MakeFriendSolution.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MakeFriendSolution.Models.SimilarityScore", b =>
+                {
+                    b.HasOne("MakeFriendSolution.Models.AppUser", "FromUser")
+                        .WithMany("SimilarityScores")
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

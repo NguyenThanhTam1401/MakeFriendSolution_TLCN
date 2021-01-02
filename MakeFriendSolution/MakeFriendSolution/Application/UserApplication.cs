@@ -85,7 +85,7 @@ namespace MakeFriendSolution.Application
                 users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
             }
 
-            if (filter.ToAge != 0)
+            if (filter.ToAge > filter.FromAge)
             {
                 users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
             }
@@ -301,6 +301,9 @@ namespace MakeFriendSolution.Application
 
         public async Task<AppUser> UpdateUser(AppUser user)
         {
+            var updateScore = await _context.SimilariryFeatures.FirstOrDefaultAsync();
+            updateScore.UpdatedAt = DateTime.Now;
+            _context.SimilariryFeatures.Update(updateScore);
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return user;
@@ -349,6 +352,152 @@ namespace MakeFriendSolution.Application
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return message;
+        }
+
+        public async Task<bool> UpdateSimilarityScores(Guid userId)
+        {
+            var user = await GetById(userId);
+            var oldScores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
+            var tempUsers = new List<AppUser>();
+            var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
+
+            //
+            tempUsers = users
+                .Where(x => x.Id != userId && x.Gender == user.FindPeople)
+                .ToList();
+            users = new List<AppUser>();
+            var userAgeGroup = GetAgeGroup(user.Dob);
+            int userAgeValue = Convert.ToInt32(userAgeGroup);
+
+            foreach (var item in tempUsers)
+            {
+                var ageGroup = GetAgeGroup(item.Dob);
+                int ageValue = Convert.ToInt32(ageGroup);
+
+                if (Math.Abs(userAgeValue - ageValue) <= 1)
+                {
+                    users.Add(item);
+                }
+            }
+
+            //
+            users.Insert(0, user);
+            int sl = users.Count;
+
+            double[,] usersMatrix = new double[sl, 19];
+            for (int i = 0; i < sl; i++)
+            {
+                usersMatrix[i, 0] = (double)users[i].Marriage;
+                usersMatrix[i, 1] = (double)users[i].Target;
+                usersMatrix[i, 2] = (double)users[i].Education;
+                usersMatrix[i, 3] = (double)users[i].Body;
+                usersMatrix[i, 4] = (double)users[i].Religion;
+                usersMatrix[i, 5] = (double)users[i].Smoking;
+                usersMatrix[i, 6] = (double)users[i].DrinkBeer;
+                usersMatrix[i, 7] = (double)users[i].Cook;
+                usersMatrix[i, 8] = (double)users[i].Game;
+                usersMatrix[i, 9] = (double)users[i].Travel;
+                usersMatrix[i, 10] = (double)users[i].LikePet;
+                usersMatrix[i, 11] = (double)users[i].LikeTechnology;
+                usersMatrix[i, 12] = (double)users[i].Shopping;
+                usersMatrix[i, 13] = (double)users[i].PlaySport;
+                usersMatrix[i, 14] = (double)users[i].FavoriteMovie;
+                usersMatrix[i, 15] = (double)users[i].AtmosphereLike;
+                usersMatrix[i, 16] = (double)users[i].Character;
+                usersMatrix[i, 17] = (double)users[i].LifeStyle;
+                usersMatrix[i, 18] = (double)users[i].MostValuable;
+            }
+
+            SimilarityMatrix m = new SimilarityMatrix();
+            m.Row = sl;
+            m.Column = 19;
+            m.Matrix = usersMatrix;
+
+            List<double> kq = new List<double>();
+            kq = m.SimilarityCalculate();
+
+            users.RemoveAt(0);
+
+            var similarityScores = new List<SimilarityScore>();
+
+            for (int i = 1; i < kq.Count; i++)
+            {
+                users[i - 1].Point = kq[i];
+                var score = new SimilarityScore()
+                {
+                    FromUserId = userId,
+                    ToUserId = users[i - 1].Id,
+                    Score = kq[i]
+                };
+                similarityScores.Add(score);
+            }
+            try
+            {
+                _context.SimilarityScores.AddRange(similarityScores);
+                _context.SimilarityScores.RemoveRange(oldScores);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<Tuple<List<UserDisplay>, int>> GetSimilarityScores(Guid userId, FilterUserViewModel request)
+        {
+            List<UserDisplay> userResponses = new List<UserDisplay>();
+            
+            if (!request.IsFilter)
+            {
+                var tempScore = await _context.SimilarityScores.Where(x => x.FromUserId == userId)
+                    .OrderByDescending(x => x.Score)
+                    .Skip((request.PageIndex - 1) * request.PageSize)
+                    .Take(request.PageSize).ToListAsync();
+
+                List<AppUser> users = new List<AppUser>();
+                foreach (var item in tempScore)
+                {
+                    var user = await GetById(item.ToUserId);
+                    user.Point = item.Score;
+                    users.Add(user);
+                }
+                userResponses = await GetUserDisplay(users);
+                var total = tempScore.Count / request.PageSize;
+                return Tuple.Create(userResponses, total);
+            }
+            else
+            {
+                var userInfo = await GetById(userId);
+                var users = await GetActiveUsers();
+                var scores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
+                FilterUers(ref users, request);
+
+                foreach (var item in users)
+                {
+                    item.Point = scores.Where(x => x.ToUserId == item.Id).FirstOrDefault().Score;
+                }
+
+                userResponses = await GetUserDisplay(users);
+
+            }
+        }
+
+        public async Task<Tuple<List<UserDisplay>, int>> GetSimilarityUsers(Guid userId, FilterUserViewModel request)
+        {
+            var updateScore = await _context.SimilariryFeatures.FirstOrDefaultAsync();
+            var user = await GetById(userId);
+            if (updateScore.UpdatedAt > user.UpdatedAt)
+            {
+                var update = await UpdateSimilarityScores(userId);
+                user.UpdatedAt = DateTime.Now;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+
+            var result = await GetSimilarityScores(userId, request);
+
+            return result;
         }
     }
 }

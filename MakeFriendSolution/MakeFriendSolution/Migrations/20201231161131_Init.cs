@@ -23,6 +23,19 @@ namespace MakeFriendSolution.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SimilariryFeatures",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 12, 31, 23, 11, 31, 474, DateTimeKind.Local).AddTicks(7954))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SimilariryFeatures", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -39,6 +52,7 @@ namespace MakeFriendSolution.Migrations
                     Location = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 12, 31, 23, 11, 31, 451, DateTimeKind.Local).AddTicks(1738)),
                     NumberOfFiends = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfLikes = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfImages = table.Column<int>(nullable: false, defaultValue: 0),
@@ -182,6 +196,26 @@ namespace MakeFriendSolution.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SimilarityScores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FromUserId = table.Column<Guid>(nullable: false),
+                    ToUserId = table.Column<Guid>(nullable: false),
+                    Score = table.Column<double>(nullable: false, defaultValue: 0.0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SimilarityScores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SimilarityScores_Users_FromUserId",
+                        column: x => x.FromUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ThumbnailImages",
                 columns: table => new
                 {
@@ -228,6 +262,11 @@ namespace MakeFriendSolution.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "SimilariryFeatures",
+                columns: new[] { "Id", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2020, 12, 31, 23, 11, 31, 478, DateTimeKind.Local).AddTicks(1547) });
 
             migrationBuilder.InsertData(
                 table: "Users",
@@ -300,6 +339,11 @@ namespace MakeFriendSolution.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SimilarityScores_FromUserId",
+                table: "SimilarityScores",
+                column: "FromUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ThumbnailImages_UserId",
                 table: "ThumbnailImages",
                 column: "UserId");
@@ -324,6 +368,12 @@ namespace MakeFriendSolution.Migrations
 
             migrationBuilder.DropTable(
                 name: "LikeImages");
+
+            migrationBuilder.DropTable(
+                name: "SimilariryFeatures");
+
+            migrationBuilder.DropTable(
+                name: "SimilarityScores");
 
             migrationBuilder.DropTable(
                 name: "ThumbnailImages");

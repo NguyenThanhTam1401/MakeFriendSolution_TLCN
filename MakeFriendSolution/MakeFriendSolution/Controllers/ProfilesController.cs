@@ -64,7 +64,7 @@ namespace MakeFriendSolution.Controllers
             Random random = new Random();
             int gmailCount = 1;
             //Random Nu
-            for (int i = 0; i < 468; i++)
+            for (int i = 0; i < 1985; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -125,7 +125,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 417; i++)
+            for (int i = 0; i < 2015; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -186,7 +186,7 @@ namespace MakeFriendSolution.Controllers
             }
 
             //Random Nu
-            for (int i = 0; i < 641; i++)
+            for (int i = 0; i < 5840; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -247,7 +247,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 623; i++)
+            for (int i = 0; i < 5329; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -413,94 +413,97 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("similar/{userId}")]
         public async Task<IActionResult> GetListOfSuggestions(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
-            var user = await _userApplication.GetById(userId);
-            if (user == null)
-                return BadRequest();
-            var tempUsers = new List<AppUser>();
-            var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
-            if (!filter.IsFilter)
-            {
-                tempUsers = users
-                .Where(x => x.Id != userId && x.Gender == user.FindPeople)
-                .ToList();
-                users = new List<AppUser>();
-                var userAgeGroup = _userApplication.GetAgeGroup(user.Dob);
-                int userAgeValue = Convert.ToInt32(userAgeGroup);
+            //var user = await _userApplication.GetById(userId);
+            //if (user == null)
+            //    return BadRequest();
 
-                foreach (var item in tempUsers)
-                {
-                    var ageGroup = _userApplication.GetAgeGroup(item.Dob);
-                    int ageValue = Convert.ToInt32(ageGroup);
+            //var tempUsers = new List<AppUser>();
+            //var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
+            //if (!filter.IsFilter)
+            //{
+            //    tempUsers = users
+            //    .Where(x => x.Id != userId && x.Gender == user.FindPeople)
+            //    .ToList();
+            //    users = new List<AppUser>();
+            //    var userAgeGroup = _userApplication.GetAgeGroup(user.Dob);
+            //    int userAgeValue = Convert.ToInt32(userAgeGroup);
 
-                    if (Math.Abs(userAgeValue - ageValue) <= 1)
-                    {
-                        users.Add(item);
-                    }
-                }
-            }
-            else
-            {
-                //FilterUsers
-                _userApplication.FilterUers(ref users, filter);
-            }
+            //    foreach (var item in tempUsers)
+            //    {
+            //        var ageGroup = _userApplication.GetAgeGroup(item.Dob);
+            //        int ageValue = Convert.ToInt32(ageGroup);
+
+            //        if (Math.Abs(userAgeValue - ageValue) <= 1)
+            //        {
+            //            users.Add(item);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    //FilterUsers
+            //    _userApplication.FilterUers(ref users, filter);
+            //}
 
 
-            users.Insert(0, user);
+            //users.Insert(0, user);
 
-            int sl = users.Count;
+            //int sl = users.Count;
 
-            double[,] usersMatrix = new double[sl, 19];
-            for (int i = 0; i < sl; i++)
-            {
-                usersMatrix[i, 0] = (double)users[i].Marriage;
-                usersMatrix[i, 1] = (double)users[i].Target;
-                usersMatrix[i, 2] = (double)users[i].Education;
-                usersMatrix[i, 3] = (double)users[i].Body;
-                usersMatrix[i, 4] = (double)users[i].Religion;
-                usersMatrix[i, 5] = (double)users[i].Smoking;
-                usersMatrix[i, 6] = (double)users[i].DrinkBeer;
-                usersMatrix[i, 7] = (double)users[i].Cook;
-                usersMatrix[i, 8] = (double)users[i].Game;
-                usersMatrix[i, 9] = (double)users[i].Travel;
-                usersMatrix[i, 10] = (double)users[i].LikePet;
-                usersMatrix[i, 11] = (double)users[i].LikeTechnology;
-                usersMatrix[i, 12] = (double)users[i].Shopping;
-                usersMatrix[i, 13] = (double)users[i].PlaySport;
-                usersMatrix[i, 14] = (double)users[i].FavoriteMovie;
-                usersMatrix[i, 15] = (double)users[i].AtmosphereLike;
-                usersMatrix[i, 16] = (double)users[i].Character;
-                usersMatrix[i, 17] = (double)users[i].LifeStyle;
-                usersMatrix[i, 18] = (double)users[i].MostValuable;
-            }
+            //double[,] usersMatrix = new double[sl, 19];
+            //for (int i = 0; i < sl; i++)
+            //{
+            //    usersMatrix[i, 0] = (double)users[i].Marriage;
+            //    usersMatrix[i, 1] = (double)users[i].Target;
+            //    usersMatrix[i, 2] = (double)users[i].Education;
+            //    usersMatrix[i, 3] = (double)users[i].Body;
+            //    usersMatrix[i, 4] = (double)users[i].Religion;
+            //    usersMatrix[i, 5] = (double)users[i].Smoking;
+            //    usersMatrix[i, 6] = (double)users[i].DrinkBeer;
+            //    usersMatrix[i, 7] = (double)users[i].Cook;
+            //    usersMatrix[i, 8] = (double)users[i].Game;
+            //    usersMatrix[i, 9] = (double)users[i].Travel;
+            //    usersMatrix[i, 10] = (double)users[i].LikePet;
+            //    usersMatrix[i, 11] = (double)users[i].LikeTechnology;
+            //    usersMatrix[i, 12] = (double)users[i].Shopping;
+            //    usersMatrix[i, 13] = (double)users[i].PlaySport;
+            //    usersMatrix[i, 14] = (double)users[i].FavoriteMovie;
+            //    usersMatrix[i, 15] = (double)users[i].AtmosphereLike;
+            //    usersMatrix[i, 16] = (double)users[i].Character;
+            //    usersMatrix[i, 17] = (double)users[i].LifeStyle;
+            //    usersMatrix[i, 18] = (double)users[i].MostValuable;
+            //}
 
-            SimilarityMatrix m = new SimilarityMatrix();
-            m.Row = sl;
-            m.Column = 19;
-            m.Matrix = usersMatrix;
+            //SimilarityMatrix m = new SimilarityMatrix();
+            //m.Row = sl;
+            //m.Column = 19;
+            //m.Matrix = usersMatrix;
 
-            List<double> kq = new List<double>();
-            kq = m.SimilarityCalculate();
+            //List<double> kq = new List<double>();
+            //kq = m.SimilarityCalculate();
 
-            users.RemoveAt(0);
+            //users.RemoveAt(0);
 
-            for (int i = 1; i < kq.Count; i++)
-            {
-                users[i - 1].Point = kq[i];
-            }
+            //for (int i = 1; i < kq.Count; i++)
+            //{
+            //    users[i - 1].Point = kq[i];
+            //}
 
-            users = users.OrderByDescending(o => o.Point).ToList();
+            //users = users.OrderByDescending(o => o.Point).ToList();
 
-            var pageTotal = users.Count / filter.PageSize;
+            //var pageTotal = users.Count / filter.PageSize;
 
-            users = users
-                .Skip((filter.PageIndex - 1) * filter.PageSize)
-                .Take(filter.PageSize).ToList();
+            //users = users
+            //    .Skip((filter.PageIndex - 1) * filter.PageSize)
+            //    .Take(filter.PageSize).ToList();
 
-            var usersDisplay = await _userApplication.GetUserDisplay(users);
+            //var usersDisplay = await _userApplication.GetUserDisplay(users);
+
+            var result = await _userApplication.GetSimilarityUsers(userId, filter);
 
             return Ok(new {
-                data = usersDisplay,
-                pageTotal = pageTotal
+                data = result.Item1,
+                pageTotal = result.Item2
             });
         }
 

@@ -26,5 +26,8 @@ namespace MakeFriendSolution.Application
         Task<AppUser> GetUserByEmail(string email);
         Task<Favorite> GetFavoriteById(Guid fromId, Guid toId);
         Task<string> DisableUser(Guid userId);
+        Task<bool> UpdateSimilarityScores(Guid userId);
+        Task<Tuple<List<UserDisplay>, int>> GetSimilarityScores(Guid userId, FilterUserViewModel request);
+        Task<Tuple<List<UserDisplay>, int>> GetSimilarityUsers(Guid userId, FilterUserViewModel request);
     }
 }

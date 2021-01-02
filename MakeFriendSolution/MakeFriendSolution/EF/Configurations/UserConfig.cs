@@ -26,6 +26,7 @@ namespace MakeFriendSolution.EF.Configurations
             builder.Property(x => x.NumberOfFiends).HasDefaultValue(0);
             builder.Property(x => x.NumberOfImages).HasDefaultValue(0);
             builder.Property(x => x.NumberOfLikes).HasDefaultValue(0);
+            builder.Property(x => x.UpdatedAt).HasDefaultValue(DateTime.Now);
 
             builder.HasMany(x => x.SendMessages).WithOne(a => a.Sender).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.ReceiveMessages).WithOne(a => a.Receiver).HasForeignKey(x => x.ReceiverId).OnDelete(DeleteBehavior.NoAction);

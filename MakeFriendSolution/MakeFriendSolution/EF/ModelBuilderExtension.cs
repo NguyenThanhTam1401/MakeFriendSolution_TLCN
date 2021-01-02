@@ -25,6 +25,13 @@ namespace MakeFriendSolution.EF
             var diemId = new Guid("EC826AF8-0310-48CF-8A14-DA11BDB1C968");
             var hanId = new Guid("EC826AF8-0310-48CF-8A14-DA11BDB1C969");
             var maiId = new Guid("EC826AF8-0310-48CF-8A14-DA11BDB1C977");
+            builder.Entity<SimilarityFeature>().HasData(
+                new SimilarityFeature()
+                {
+                    UpdatedAt = DateTime.Now,
+                    Id = 1
+                }
+            );
 
             builder.Entity<AppUser>().HasData(
                 //Tam

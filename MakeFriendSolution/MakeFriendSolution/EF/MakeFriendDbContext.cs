@@ -1,10 +1,6 @@
 ﻿using MakeFriendSolution.EF.Configurations;
 using MakeFriendSolution.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MakeFriendSolution.EF
 {
@@ -24,6 +20,8 @@ namespace MakeFriendSolution.EF
             modelBuilder.ApplyConfiguration(new FavoriteConfig());
             modelBuilder.ApplyConfiguration(new BlockUserConfig());
             modelBuilder.ApplyConfiguration(new AccessConfig());
+            modelBuilder.ApplyConfiguration(new SimilarityFeatureConfig());
+            modelBuilder.ApplyConfiguration(new SimilarityScoreConfog());
             modelBuilder.Seed();
         }
 
@@ -35,5 +33,7 @@ namespace MakeFriendSolution.EF
         public DbSet<LikeImage> LikeImages { get; set; }
         public DbSet<BlockUser> BlockUsers { get; set; }
         public DbSet<Access> Accesses { get; set; }
+        public DbSet<SimilarityFeature> SimilariryFeatures { get; set; }
+        public DbSet<SimilarityScore> SimilarityScores { get; set; }
     }
 }
