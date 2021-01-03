@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class SubscribeController : ControllerBase
     {
@@ -18,6 +18,11 @@ namespace MakeFriendSolution.Controllers
         }
 
 
+        /// <summary>
+        /// Đăng ký nhận email từ website
+        /// </summary>
+        /// <param name="mailChimp">Thông tin đăng ký</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Subscribe([FromForm] MailChimpModel mailChimp)

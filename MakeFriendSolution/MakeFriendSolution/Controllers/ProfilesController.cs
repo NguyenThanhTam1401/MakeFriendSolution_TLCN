@@ -12,10 +12,11 @@ using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
 using MakeFriendSolution.Application;
+using Microsoft.AspNetCore.Http;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ProfilesController : ControllerBase
     {
@@ -31,8 +32,15 @@ namespace MakeFriendSolution.Controllers
             _sessionService = sessionService;
             _userApplication = userApplication;
         }
+        
+        
+        /// <summary>
+        /// Generate dữ liệu giả phục vụ demo
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("data")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GenerateData()
         {
             var tenNam = new List<string>();
@@ -64,7 +72,7 @@ namespace MakeFriendSolution.Controllers
             Random random = new Random();
             int gmailCount = 1;
             //Random Nu
-            for (int i = 0; i < 1985; i++)
+            for (int i = 0; i < 1130; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -125,7 +133,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 2015; i++)
+            for (int i = 0; i < 1208; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -175,7 +183,7 @@ namespace MakeFriendSolution.Controllers
 
                 int createdDay = random.Next(1, 29);
                 int createdMonth = random.Next(1, 13);
-                int createdYear = random.Next(2018, 2021);
+                int createdYear = random.Next(2018, 2022);
 
                 var dob = new DateTime(year, month, day);
                 var createdDate = new DateTime(createdYear, createdMonth, createdDay);
@@ -186,7 +194,7 @@ namespace MakeFriendSolution.Controllers
             }
 
             //Random Nu
-            for (int i = 0; i < 5840; i++)
+            for (int i = 0; i < 2350; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -247,7 +255,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 5329; i++)
+            for (int i = 0; i < 2400; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -383,7 +391,7 @@ namespace MakeFriendSolution.Controllers
             //    response.Add(u);
             //}
             var fromDate = new DateTime(2018, 1, 1);
-            var toDate = new DateTime(2020, 12, 30);
+            var toDate = new DateTime(2021, 12, 30);
             List<Access> accesses = new List<Access>();
 
             while (toDate > fromDate)
@@ -410,7 +418,17 @@ namespace MakeFriendSolution.Controllers
             return (T)values.GetValue(num);
         }
 
+
+        /// <summary>
+        /// Lấy danh sách bạn gợi ý
+        /// </summary>
+        /// <param name="userId">Id người dùng</param>
+        /// <param name="filter">Các filter feature</param>
+        /// <returns></returns>
+        [Authorize]
         [HttpGet("similar/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetListOfSuggestions(Guid userId, [FromQuery] FilterUserViewModel filter)
         {
             //var user = await _userApplication.GetById(userId);
@@ -507,7 +525,16 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Cập nhật thông tin cá nhân và hồ sơ
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize]
         [HttpPut()]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Update([FromForm] UserRequest request)
         {
             var user = await _userApplication.GetById(request.Id);
@@ -523,7 +550,7 @@ namespace MakeFriendSolution.Controllers
             try
             {
                 user.IsInfoUpdated = true;
-                user = await _userApplication.UpdateUser(user);
+                user = await _userApplication.UpdateUser(user, true);
             }
             catch (DbUpdateConcurrencyException e)
             {
@@ -538,6 +565,12 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Filter người dùng
+        /// </summary>
+        /// <param name="pagingRequest">Phân trang</param>
+        /// <param name="requests">Các feature lọc</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("filterFeatures")]
         public async Task<IActionResult> FilterFeatures([FromQuery] PagingRequest pagingRequest, [FromBody] List<FilterFeaturesRequest> requests)

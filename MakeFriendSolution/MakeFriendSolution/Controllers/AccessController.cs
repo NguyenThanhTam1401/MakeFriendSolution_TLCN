@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MakeFriendSolution.EF;
+using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Các API thống kê lưu lượng truy cập
+    /// </summary>
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AccessController : ControllerBase
     {
@@ -24,9 +28,15 @@ namespace MakeFriendSolution.Controllers
             _context = context;
             _sessionService = sessionService;
         }
-
+        /// <summary>
+        /// Thống kê lưu lượng truy cập theo ngày
+        /// </summary>
+        /// <param name="Date">Truyền vào ngày muốn thống kê</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("byDate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Access))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAccessCountByDate(DateTime Date)
         {
             if (Date.Date > DateTime.Now.Date)
@@ -41,8 +51,15 @@ namespace MakeFriendSolution.Controllers
             return Ok(accessCount);
         }
 
+        /// <summary>
+        /// Thống kê lưu lượng truy cập theo tháng
+        /// </summary>
+        /// <param name="dateTime">truyền vào tháng muốn thống kê</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("byMonth")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccessResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAccessCountByMonth(DateTime dateTime)
         {
             if (dateTime.Date > DateTime.Now.Date)
@@ -65,8 +82,15 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+        /// <summary>
+        /// Thống kê lưu lượng truy cập theo năm
+        /// </summary>
+        /// <param name="dateTime">Truyền vào năm muốn thống kê</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("byYear")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AccessResponse>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAccessCountByYear(DateTime dateTime)
         {
             if (dateTime.Date > DateTime.Now.Date)
@@ -85,6 +109,76 @@ namespace MakeFriendSolution.Controllers
                 listAccess = byYear.Item2
             });
         }
+
+        /// <summary>
+        /// Lấy số lượng người truy cập trong tháng này, tháng trước và tỉ lệ tăng trưởng so với tháng trước
+        /// </summary>
+        /// <returns>Số lượng người truy cập trong tháng này, tháng trước và tỉ lệ tăng trưởng so với tháng trước</returns>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("getTheNumberOfNewUsersByMonth")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GrowthRate))]
+        public async Task<IActionResult> GetTheNumberOfNewUsersByMonth()
+        {
+            var numberOfUsers = await _context.Users
+                .Where(x => x.CreatedAt.Year == DateTime.Now.Year && x.CreatedAt.Month == DateTime.Now.Month)
+                .CountAsync();
+
+            int numberOfLastMonth = await _context.Users
+                .Where(x => x.CreatedAt.Year == DateTime.Now.AddMonths(-1).Year && x.CreatedAt.Month == DateTime.Now.AddMonths(-1).Month)
+                .CountAsync();
+
+            double percents = Math.Round(((double)(numberOfUsers) / numberOfLastMonth * 100), 2);
+
+            return Ok(new GrowthRate()
+            {
+                thisMonth = numberOfUsers,
+                lastMonth = numberOfLastMonth,
+                growthRate = percents
+            });
+        }
+
+
+        /// <summary>
+        ///Lấy số lượng tài khoản trong hệ thống 
+        /// </summary>
+        /// <returns>Số tài khoản active và inactive</returns>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("getNumberOfActiveUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountCount))]
+        public async Task<IActionResult> GetNumberOfActiveUsers()
+        {
+            var numberOfActiveUsers = await _context.Users.Where(x => x.Status == Models.Enum.EUserStatus.Active).CountAsync();
+            var numberOfInactiveUsers = await _context.Users.Where(x => x.Status != Models.Enum.EUserStatus.Active).CountAsync();
+            return Ok(new AccountCount()
+            { 
+                activeAccounts = numberOfActiveUsers,
+                inactiveAccounts = numberOfInactiveUsers
+            });
+        }
+
+
+        /// <summary>
+        /// Lấy số lượng tài khoản của mỗi loại
+        /// </summary>
+        /// <returns>Số lượng tài khoản hệ thống, facebook và google</returns>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("getTheAccountNumberOfEachType")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountTypeResponse))]
+        public async Task<IActionResult> GetTheAccountNumberOfEachType()
+        {
+            var facebook = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.Facebook).CountAsync();
+            var google = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.Google).CountAsync();
+            var system = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.System).CountAsync();
+
+            return Ok(new AccountTypeResponse()
+            {
+                facebook = facebook,
+                google = google,
+                system = system
+            }
+            );
+        }
+
         private async Task<(AccessResponse, List<AccessResponse>)> GetByMonth(DateTime datetime)
         {
             var accessCount = await _context.Accesses
@@ -95,7 +189,7 @@ namespace MakeFriendSolution.Controllers
             var accessTotal = new AccessResponse();
 
 
-            if(datetime.Month == 2)
+            if (datetime.Month == 2)
             {
                 for (int i = 1; i <= 28; i++)
                 {
@@ -177,53 +271,6 @@ namespace MakeFriendSolution.Controllers
             accessTotal.Period = dateTime;
 
             return (accessTotal, accessCount);
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpGet("getTheNumberOfNewUsersByMonth")]
-        public async Task<IActionResult> GetTheNumberOfNewUsersByMonth()
-        {
-            var numberOfUsers = await _context.Users
-                .Where(x => x.CreatedAt.Year == DateTime.Now.Year && x.CreatedAt.Month == DateTime.Now.Month)
-                .CountAsync();
-
-            int numberOfLastMonth = await _context.Users
-                .Where(x => x.CreatedAt.Year == DateTime.Now.AddMonths(-1).Year && x.CreatedAt.Month == DateTime.Now.AddMonths(-1).Month)
-                .CountAsync();
-
-            double percents = Math.Round(((double)(numberOfUsers - numberOfLastMonth) / numberOfUsers  * 100), 2);
-
-            return Ok(new
-            {
-                thisMonth = numberOfUsers,
-                lastMonth = numberOfLastMonth,
-                growthRate = percents
-            });
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpGet("getNumberOfActiveUsers")]
-        public async Task<IActionResult> GetNumberOfActiveUsers()
-        {
-            var numberOfActiveUsers = await _context.Users.Where(x => x.Status == Models.Enum.EUserStatus.Active).CountAsync();
-            var numberOfInactiveUsers = await _context.Users.Where(x => x.Status != Models.Enum.EUserStatus.Active).CountAsync();
-            return Ok(new { 
-                activeAccounts = numberOfActiveUsers,
-                inactiveAccounts = numberOfInactiveUsers
-            });
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpGet("getTheAccountNumberOfEachType")]
-        public async Task<IActionResult> GetTheAccountNumberOfEachType()
-        {
-            var facebook = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.Facebook).CountAsync();
-            var google = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.Google).CountAsync();
-            var system = await _context.Users.Where(x => x.TypeAccount == Models.Enum.ETypeAccount.System).CountAsync();
-
-            return Ok(new
-            {
-                system,
-                facebook,
-                google
-            });
         }
     }
 }

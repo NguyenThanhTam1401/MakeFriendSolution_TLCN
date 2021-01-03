@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ImagesController : ControllerBase
     {
@@ -34,8 +34,17 @@ namespace MakeFriendSolution.Controllers
             _userApplication = userApplication;
         }
 
+
+        /// <summary>
+        /// Lấy thông tin user bằng ID
+        /// </summary>
+        /// <param name="userId">ID người dùng</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("user/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ImageResponse>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetImageByUserId(Guid userId)
         {
             var isExist = await _context.Users.AnyAsync(x => x.Id == userId);
@@ -80,7 +89,7 @@ namespace MakeFriendSolution.Controllers
                 }
                 catch (Exception e)
                 {
-                    return StatusCode(501, new
+                    return StatusCode(500, new
                     {
                         Message = e.InnerException
                     });
@@ -90,13 +99,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
-        private async Task<bool> IsLiked(Guid userId, int imageId)
-        {
-            return await _context.LikeImages.AnyAsync(x => x.UserId == userId && x.ImageId == imageId);
-        }
 
+        /// <summary>
+        /// Get image by Id
+        /// </summary>
+        /// <param name="imageId">Id hình ảnh</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("{imageId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ImageResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetById(int imageId)
         {
             var image = await _context.ThumbnailImages.FindAsync(imageId);
@@ -114,8 +126,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(imageResponse);
         }
 
+
+        /// <summary>
+        /// Thêm hình ảnh
+        /// </summary>
+        /// <param name="request">Files hình ảnh, userId và content</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(List<ImageResponse>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> Create([FromForm] ImageRequest request)
         {
             var userInfo = _sessionService.GetDataFromToken();
@@ -170,8 +190,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(imagesResponse);
         }
 
+
+        /// <summary>
+        /// Xóa hình ảnh theo ID
+        /// </summary>
+        /// <param name="imageId">Id hình ảnh cần xóa</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete("{imageId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ImageResponse>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
             var image = await _context.ThumbnailImages.FindAsync(imageId);
@@ -205,8 +233,16 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Like và unlike ảnh
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("like")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> LikeImage([FromForm] LikeImageRequest request)
         {
             var userInfo = _sessionService.GetDataFromToken();
@@ -240,6 +276,11 @@ namespace MakeFriendSolution.Controllers
             {
                 Message = message
             });
+        }
+
+        private async Task<bool> IsLiked(Guid userId, int imageId)
+        {
+            return await _context.LikeImages.AnyAsync(x => x.UserId == userId && x.ImageId == imageId);
         }
 
     }

@@ -12,7 +12,7 @@ namespace MakeFriendSolution.Application
     {
         Task<AppUser> GetById(Guid id);
 
-        Task<AppUser> UpdateUser(AppUser user);
+        Task<AppUser> UpdateUser(AppUser user, bool isUpdateScore);
 
         Task<string> SaveFile(IFormFile file);
 

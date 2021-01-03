@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MakeFriendSolution</name>
+    </assembly>
+    <members>
+        <member name="T:MakeFriendSolution.Controllers.AccessController">
+            <summary>
+            Các API thống kê lưu lượng truy cập
+            </summary>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AccessController.GetAccessCountByDate(System.DateTime)">
+            <summary>
+            Thống kê lưu lượng truy cập theo ngày
+            </summary>
+            <param name="Date">Truyền vào ngày muốn thống kê</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AccessController.GetAccessCountByMonth(System.DateTime)">
+            <summary>
+            Thống kê lưu lượng truy cập theo tháng
+            </summary>
+            <param name="dateTime">truyền vào tháng muốn thống kê</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AccessController.GetAccessCountByYear(System.DateTime)">
+            <summary>
+            Thống kê lưu lượng truy cập theo năm
+            </summary>
+            <param name="dateTime">Truyền vào năm muốn thống kê</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AccessController.GetTheNumberOfNewUsersByMonth">
+            <summary>
+            Lấy số lượng người truy cập trong tháng này, tháng trước và tỉ lệ tăng trưởng so với tháng trước
+            </summary>
+            <returns>Số lượng người truy cập trong tháng này, tháng trước và tỉ lệ tăng trưởng so với tháng trước</returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AccessController.GetNumberOfActiveUsers">
+             <summary>
+            Lấy số lượng tài khoản trong hệ thống 
+             </summary>
+             <returns>Số tài khoản active và inactive</returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AccessController.GetTheAccountNumberOfEachType">
+            <summary>
+            Lấy số lượng tài khoản của mỗi loại
+            </summary>
+            <returns>Số lượng tài khoản hệ thống, facebook và google</returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.CodeValidation(MakeFriendSolution.Models.ViewModels.ForgotPasswordRequest)">
+            <summary>
+            Code validation khi sử dụng chức năng quên mật khẩu
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.ForgotPassword(System.String)">
+            <summary>
+            Quên mật khẩu
+            </summary>
+            <param name="email">Emai đăng ký tài khoản</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.ConfirmMail(System.Guid)">
+            <summary>
+            Xác nhận email đăng ký tài khoản
+            </summary>
+            <param name="userId">Mã người dùng</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.Login(MakeFriendSolution.Models.ViewModels.LoginRequest)">
+            <summary>
+            Đăng nhập hệ thống
+            </summary>
+            <param name="request">Thông tin đăng nhập</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.FacebookLogin(MakeFriendSolution.Models.ViewModels.FacebookLoginRequest)">
+            <summary>
+            Đăng nhập với tài khoản facebook
+            </summary>
+            <param name="request">Facebook login info</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.SignUp(MakeFriendSolution.Models.ViewModels.SignUpSystemRequest)">
+            <summary>
+            Đăng ký tài khoản hệ thống
+            </summary>
+            <param name="signUpRequest">Thông tin đăng ký</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.Logout">
+            <summary>
+            Logout
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.CheckToken">
+            <summary>
+            Validate token
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MakeFriendSolution.Controllers.ChatsController">
+            <summary>
+            Controller chứa các api nhắn tin, và get tin nhắn
+            </summary>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.ChatsController.Post(MakeFriendSolution.Models.ViewModels.CreateMessageRequest)">
+            <summary>
+            Tạo tin nhắn
+            </summary>
+            <param name="request">Nội dung tin nhắn và ID người nhận, người gửi</param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.ChatsController.GetMessages(MakeFriendSolution.Models.ViewModels.StartChatRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MakeFriendSolution.Controllers.ChatsController.GetFriendList(System.Guid,MakeFriendSolution.Models.ViewModels.PagingRequest)">
+            <summary>
+            
+            </summary>
+            <param name="userId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MakeFriendSolution.Models.AppUser.FindPeople">
+            <summary>
+            Dưới đây là các thông số dùng để tính toán
+            </summary>
+        </member>
+        <member name="P:MakeFriendSolution.Models.ViewModels.ProfileResponse.Marriage">
+             <summary>
+             Dưới đây là các thông số dùng để tính toán
+             </summary>
+            
+        </member>
+        <member name="P:MakeFriendSolution.Models.ViewModels.UserRequest.Marriage">
+             <summary>
+             Dưới đây là các thông số dùng để tính toán
+             </summary>
+            
+        </member>
+    </members>
+</doc>

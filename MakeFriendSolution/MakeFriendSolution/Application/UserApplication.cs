@@ -99,11 +99,9 @@ namespace MakeFriendSolution.Application
         {
             var userDisplays = new List<UserDisplay>();
             //Get Session user - Check login
-            var isLogin = true;
             var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
             {
-                isLogin = false;
                 sessionUser = new LoginInfo()
                 {
                     UserId = Guid.NewGuid()
@@ -302,11 +300,14 @@ namespace MakeFriendSolution.Application
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<AppUser> UpdateUser(AppUser user)
+        public async Task<AppUser> UpdateUser(AppUser user, bool isUpdateScore)
         {
             var updateScore = await _context.SimilariryFeatures.FirstOrDefaultAsync();
-            updateScore.UpdatedAt = DateTime.Now;
-            _context.SimilariryFeatures.Update(updateScore);
+            if (isUpdateScore)
+            {
+                updateScore.UpdatedAt = DateTime.Now;
+                _context.SimilariryFeatures.Update(updateScore);
+            }
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return user;

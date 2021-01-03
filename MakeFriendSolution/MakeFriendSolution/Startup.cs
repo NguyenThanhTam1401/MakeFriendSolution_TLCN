@@ -1,6 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MakeFriendSolution.Application;
@@ -73,8 +75,20 @@ namespace MakeFriendSolution
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Wagger Make Friends Solution",
-                    Version = "v1"
+                    Title = "Wagger Make Friends Solution API",
+                    Version = "v1",
+                    Description = "Make Friends Solution API",
+                    Contact = new OpenApiContact()
+                    {
+                        Email = "ng.th.tam1401@gmail.com",
+                        Name = "Nguyễn Thành Tâm - 17110219",
+                        Url = new Uri("http://hieuit.tech:4200")
+                    },
+                    License = new OpenApiLicense()
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                    }
                 });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -105,6 +119,10 @@ namespace MakeFriendSolution
                         new List<string>()
                     }
                 });
+
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                c.IncludeXmlComments(cmlCommentFullPath);
             });
 
 

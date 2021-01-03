@@ -9,14 +9,16 @@ using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Controller chứa các api nhắn tin, và get tin nhắn
+    /// </summary>
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ChatsController : ControllerBase
     {
@@ -30,7 +32,17 @@ namespace MakeFriendSolution.Controllers
             _context = context;
             _storageService = storageService;
         }
+
+
+        /// <summary>
+        /// Tạo tin nhắn
+        /// </summary>
+        /// <param name="request">Nội dung tin nhắn và ID người nhận, người gửi</param>
+        /// <returns></returns>
+        [Authorize]
         [HttpPost()]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChatResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> Post([FromForm] CreateMessageRequest request)
         {
             var result = await SaveMessage(request);
@@ -43,7 +55,7 @@ namespace MakeFriendSolution.Controllers
 
             var display = new UserDisplay(sender, _storageService);
 
-            var response = new
+            var response = new ChatResponse()
             {
                 SenderId = result.SenderId,
                 ReceiverId = result.ReceiverId,
@@ -60,8 +72,16 @@ namespace MakeFriendSolution.Controllers
 
             return Ok(new { Message = "Request complete!" });
         }
-   
+
+
+        /// <summary>
+        /// Lấy tin nhắn giữa hai người
+        /// </summary>
+        /// <param name="request"> Id người gửi và Id người nhận</param>
+        /// <returns>Danh sách tin nhắn</returns>
+        [Authorize]
         [HttpGet("MoreMessages")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<MessageResponse>))]
         public async Task<IActionResult> GetMessages([FromQuery] StartChatRequest request)
         {
             var messages = await _context.HaveMessages
@@ -88,7 +108,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(responses);
         }
 
+
+        /// <summary>
+        /// Lấy thông tin những người nhắn tin gần đây
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="request">Paging info</param>
+        /// <returns></returns>
+        [Authorize]
         [HttpGet("friends/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<FriendResponse>))]
         public async Task<IActionResult> GetFriendList(Guid userId, [FromQuery] PagingRequest request)
         {
             request.PageSize = 20;
@@ -164,8 +193,17 @@ namespace MakeFriendSolution.Controllers
             return Ok(friendList);
         }
 
-        [AllowAnonymous]
+
+        /// <summary>
+        /// Thấy thông tin user và tin nhắn
+        /// </summary>
+        /// <param name="userId">ID của mình</param>
+        /// <param name="friendId">ID của bạn bè</param>
+        /// <returns></returns>
+        [Authorize]
         [HttpGet("chatFriend")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FriendResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDisplayUser(Guid userId, Guid friendId)
         {
             var user = await _context.Users.FindAsync(friendId);

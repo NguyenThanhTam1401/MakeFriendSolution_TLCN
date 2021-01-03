@@ -11,10 +11,11 @@ using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Application;
+using Microsoft.AspNetCore.Http;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -31,8 +32,14 @@ namespace MakeFriendSolution.Controllers
             _userApplication = userApplication;
         }
 
+        /// <summary>
+        /// Lấy danh sách những người mới đăng ký tài khoản
+        /// </summary>
+        /// <param name="request">Thông tin phân trang</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("newUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
         public async Task<IActionResult> GetNewestUsers([FromQuery] PagingRequest request)
         {
             var users = await _userApplication.GetActiveUsers(Guid.Empty, false);
@@ -52,8 +59,15 @@ namespace MakeFriendSolution.Controllers
             return Ok(userDisplays);
         }
 
+
+        /// <summary>
+        /// Danh sách những người được yêu thích nhiều nhất
+        /// </summary>
+        /// <param name="request">Thông tin phân trang</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("favoritest")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
         public async Task<IActionResult> GetFavoritestUsers([FromQuery] PagingRequest request)
         {
             var users = await _userApplication.GetActiveUsers(Guid.Empty, false);
@@ -90,8 +104,19 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Đổi mật khẩu đăng nhập
+        /// </summary>
+        /// <param name="request">Thông tin tài khoản và mật khẩu mới</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPut("changePassword")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordRequest request)
         {
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.ConfirmPassword) || string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
@@ -139,11 +164,11 @@ namespace MakeFriendSolution.Controllers
             try
             {
                 user.PassWord = request.NewPassword;
-                user = await _userApplication.UpdateUser(user);
+                user = await _userApplication.UpdateUser(user, false);
             }
             catch (DbUpdateConcurrencyException e)
             {
-                return StatusCode(501, new
+                return StatusCode(500, new
                 {
                     Message = e.Message
                 });
@@ -155,8 +180,17 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Cập nhật avatar
+        /// </summary>
+        /// <param name="request">File avatar</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPut("avatar")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarRequest request)
         {
             var user = await _userApplication.GetById(request.UserId);
@@ -184,14 +218,23 @@ namespace MakeFriendSolution.Controllers
             //    await _storageService.DeleteFileAsync(oldAvatar);
             //}
 
-            user = await _userApplication.UpdateUser(user);
+            user = await _userApplication.UpdateUser(user, false);
 
             var response = new UserResponse(user, _storageService);
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Get User By Id
+        /// </summary>
+        /// <param name="userId">ID user</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetById(Guid userId)
         {
             var user = await _userApplication.GetById(userId);
@@ -216,8 +259,17 @@ namespace MakeFriendSolution.Controllers
             return Ok(respone);
         }
 
+
+        /// <summary>
+        /// Follow người dùng
+        /// </summary>
+        /// <param name="userId">Id người dùng</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("follow")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Follow([FromForm] Guid userId)
         {
             var sessionUser = _sessionService.GetDataFromToken();
@@ -256,7 +308,7 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.NumberOfFiends++;
 
-                user = await _userApplication.UpdateUser(user);
+                user = await _userApplication.UpdateUser(user, false);
                 _context.Follows.Add(follow);
                 message = "Followed";
             }
@@ -264,7 +316,7 @@ namespace MakeFriendSolution.Controllers
             {
                 user.NumberOfFiends--;
 
-                user = await _userApplication.UpdateUser(user);
+                user = await _userApplication.UpdateUser(user, false);
                 _context.Follows.Remove(followed);
                 message = "Unfollowed";
             }
@@ -286,8 +338,17 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Yêu thích người dùng
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("favorite")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Favorite([FromForm] Guid userId)
         {
             var sessionUser = _sessionService.GetDataFromToken();
@@ -324,7 +385,7 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.NumberOfLikes++;
 
-                user = await _userApplication.UpdateUser(user);
+                user = await _userApplication.UpdateUser(user, false);
                 _context.Favorites.Add(favorite);
                 message = "Favorited";
             }
@@ -332,7 +393,7 @@ namespace MakeFriendSolution.Controllers
             {
                 user.NumberOfLikes--;
 
-                user = await _userApplication.UpdateUser(user);
+                user = await _userApplication.UpdateUser(user, false);
                 _context.Favorites.Remove(favorited);
                 message = "Unfavorited";
             }
@@ -354,8 +415,16 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+        /// <summary>
+        /// Lấy danh sách bạn bè
+        /// </summary>
+        /// <param name="userId">user Id</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("follow/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetFriends(Guid userId)
         {
             var sessionUser = _sessionService.GetDataFromToken();
@@ -384,8 +453,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Lấy danh sách những người yêu thích
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("favorite/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetFavoritors(Guid userId)
         {
             var sessionUser = _sessionService.GetDataFromToken();
@@ -418,8 +495,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Lọc người dùng
+        /// </summary>
+        /// <param name="request">Các feature lọc</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("filterUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> FilterUsers([FromQuery] FilterUserRequest request)
         {
             var users = new List<AppUser>();
@@ -469,8 +554,15 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Tạo user mẫu để demo
+        /// </summary>
+        /// <param name="request">SignUp request, các thông tin đăng ký</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("createDemoUser")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDisplay))]
         public async Task<IActionResult> CreateDemoUser([FromForm] SignUpSystemRequest request)
         {
             var user = new AppUser()
@@ -492,8 +584,17 @@ namespace MakeFriendSolution.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Vô hiệu hóa tài khoản
+        /// </summary>
+        /// <param name="userId">ID người bị vô hiệu hóa</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost("block/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> BlockUser(Guid userId)
         {
             var message = await _userApplication.DisableUser(userId);
@@ -503,8 +604,15 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Lấy danh sách đen - những người đã chặn
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("blackList")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetBlackList()
         {
             var userInfo = _sessionService.GetDataFromToken();
@@ -528,8 +636,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(userDisplays);
         }
 
+
+        /// <summary>
+        /// Thêm người dùng vào danh sách đen
+        /// </summary>
+        /// <param name="userId">ID người dùng</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("blackList/{userid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddToBlackList(Guid userId)
         {
             if (!await _userApplication.IsExist(userId))

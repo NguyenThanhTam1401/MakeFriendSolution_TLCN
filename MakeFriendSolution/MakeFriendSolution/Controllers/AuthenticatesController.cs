@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AuthenticatesController : ControllerBase
     {
@@ -44,8 +44,18 @@ namespace MakeFriendSolution.Controllers
             _mailchimpService = mailchimpService;
         }
 
+
+        /// <summary>
+        /// Code validation khi sử dụng chức năng quên mật khẩu
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("CodeValidation")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CodeValidation([FromForm] ForgotPasswordRequest request)
         {
             if (string.IsNullOrEmpty(request.NewPassword))
@@ -90,7 +100,7 @@ namespace MakeFriendSolution.Controllers
                 }
                 catch (DbUpdateConcurrencyException e)
                 {
-                    return StatusCode(501, new
+                    return StatusCode(500, new
                     {
                         Message = e.Message
                     });
@@ -122,8 +132,17 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+        /// <summary>
+        /// Quên mật khẩu
+        /// </summary>
+        /// <param name="email">Emai đăng ký tài khoản</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("forgotPassword")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDisplay))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ForgotPassword([FromForm] string email)
         {
             var user = await _context.Users.Where(a => a.Email == email.Trim()).FirstOrDefaultAsync();
@@ -159,7 +178,7 @@ namespace MakeFriendSolution.Controllers
             }
             catch (DbUpdateConcurrencyException e)
             {
-                return StatusCode(501, new
+                return StatusCode(500, new
                 {
                     Message = e.Message
                 });
@@ -196,8 +215,17 @@ namespace MakeFriendSolution.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Xác nhận email đăng ký tài khoản
+        /// </summary>
+        /// <param name="userId">Mã người dùng</param>
+        /// <returns>ActionResult</returns>
         [AllowAnonymous]
         [HttpPost("confirmMail")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDisplay))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> ConfirmMail(Guid userId)
         {
             try
@@ -236,57 +264,67 @@ namespace MakeFriendSolution.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(501, new
+                return StatusCode(500, new
                 {
                     Message = e.Message
                 });
             }
         }
 
-        [AllowAnonymous]
-        [HttpPost("reconfirmMail")]
-        public async Task<IActionResult> ReconfirmMail(string username)
-        {
-            var appUser = await _context.Users.Where(x => x.UserName == username.Trim()).FirstOrDefaultAsync();
 
-            if (appUser == null)
-            {
-                return NotFound("Can not find user by username = " + username);
-            }
 
-            if (appUser.Status != EUserStatus.IsVerifying)
-            {
-                return BadRequest(new
-                {
-                    Message = "User has been confirmed, please login"
-                });
-            }
+        //[AllowAnonymous]
+        //[HttpPost("reconfirmMail")]
+        //public async Task<IActionResult> ReconfirmMail(string username)
+        //{
+        //    var appUser = await _context.Users.Where(x => x.UserName == username.Trim()).FirstOrDefaultAsync();
 
-            var info = new LoginInfo()
-            {
-                Email = appUser.Email,
-                FullName = appUser.FullName,
-                UserId = appUser.Id
-            };
+        //    if (appUser == null)
+        //    {
+        //        return NotFound("Can not find user by username = " + username);
+        //    }
 
-            MailClass mailClass = this.GetMailObject(info);
-            string result = await _mailService.SendMail(mailClass);
+        //    if (appUser.Status != EUserStatus.IsVerifying)
+        //    {
+        //        return BadRequest(new
+        //        {
+        //            Message = "User has been confirmed, please login"
+        //        });
+        //    }
 
-            if (result == MessageMail.MailSent)
-            {
-                return Ok(new
-                {
-                    Message = MessageMail.VerifyMail
-                });
-            }
-            else return BadRequest(new
-            {
-                Message = result
-            });
-        }
+        //    var info = new LoginInfo()
+        //    {
+        //        Email = appUser.Email,
+        //        FullName = appUser.FullName,
+        //        UserId = appUser.Id
+        //    };
 
+        //    MailClass mailClass = this.GetMailObject(info);
+        //    string result = await _mailService.SendMail(mailClass);
+
+        //    if (result == MessageMail.MailSent)
+        //    {
+        //        return Ok(new
+        //        {
+        //            Message = MessageMail.VerifyMail
+        //        });
+        //    }
+        //    else return BadRequest(new
+        //    {
+        //        Message = result
+        //    });
+        //}
+
+
+        /// <summary>
+        /// Đăng nhập hệ thống
+        /// </summary>
+        /// <param name="request">Thông tin đăng nhập</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> Login([FromForm] LoginRequest request)
         {
             var user = await _context.Users
@@ -296,7 +334,7 @@ namespace MakeFriendSolution.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Can not find User with UserName is " + request.Email
+                    Message = "UserName or Password is not correct!"
                 });
             }
 
@@ -312,7 +350,7 @@ namespace MakeFriendSolution.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Password is not correct!"
+                    Message = "UserName or Password is not correct!"
                 });
             }
 
@@ -351,8 +389,16 @@ namespace MakeFriendSolution.Controllers
             return Ok(userResponse);
         }
 
+
+        /// <summary>
+        /// Đăng nhập với tài khoản facebook
+        /// </summary>
+        /// <param name="request">Facebook login info</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("facebook")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public IActionResult FacebookLogin([FromForm] FacebookLoginRequest request)
         {
             var user = _context.Users.Where(x => x.Email == request.Email.Trim()).FirstOrDefault();
@@ -419,8 +465,16 @@ namespace MakeFriendSolution.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Đăng ký tài khoản hệ thống
+        /// </summary>
+        /// <param name="signUpRequest">Thông tin đăng ký</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("signUp")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> SignUp([FromForm] SignUpSystemRequest signUpRequest)
         {
             _loginInfo = new LoginInfo();
@@ -518,16 +572,27 @@ namespace MakeFriendSolution.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Logout
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("logout")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         public IActionResult Logout()
         {
             //_sessionService.Logout();
             return Ok("logged out");
         }
 
+        /// <summary>
+        /// Validate token
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("validateToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult CheckToken()
         {
             return Ok();
@@ -664,12 +729,6 @@ namespace MakeFriendSolution.Controllers
                 loginInfo.IsMailConfirmed = false;
 
             return loginInfo;
-        }
-
-        [HttpGet("session")]
-        public IActionResult GetSession()
-        {
-            return Ok(_sessionService.GetDataFromToken());
         }
     }
 }
