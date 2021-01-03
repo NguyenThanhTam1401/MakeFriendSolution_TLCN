@@ -317,11 +317,38 @@ namespace MakeFriendSolution.Application
             return await _context.Users.AnyAsync(x => x.Id == userId);
         }
 
-        public async Task<List<AppUser>> GetActiveUsers()
+        public async Task<List<AppUser>> GetActiveUsers(Guid userId, bool getLock)
         {
-            return await _context.Users
+            if (!getLock)
+            {
+                return await _context.Users
                 .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
                 .ToListAsync();
+            }
+
+            var blocksFrom = await _context.BlockUsers.Where(x => x.FromUserId == userId).ToListAsync();
+            var blocksTo = await _context.BlockUsers.Where(x => x.ToUserId == userId).ToListAsync();
+            List<Guid> blocksId = new List<Guid>();
+            foreach (var item in blocksFrom)
+            {
+                blocksId.Add(item.ToUserId);
+            }
+
+            foreach (var item in blocksTo)
+            {
+                blocksId.Add(item.FromUserId);
+            }
+
+            var users = await _context.Users
+                .Where(x => x.Status == Models.Enum.EUserStatus.Active && x.IsInfoUpdated)
+                .ToListAsync();
+
+            foreach (var item in blocksId)
+            {
+                users.Remove(users.Where(x => x.Id == item).FirstOrDefault());
+            }
+
+            return users;
         }
 
         public async Task<AppUser> GetUserByEmail(string email)
@@ -362,7 +389,9 @@ namespace MakeFriendSolution.Application
             var user = await GetById(userId);
             var oldScores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
             var tempUsers = new List<AppUser>();
-            var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
+            var users = await GetActiveUsers(userId, true);
+            users.Remove(users.Where(x => x.Id == userId).FirstOrDefault());
+            //var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
 
             //
             tempUsers = users
@@ -472,7 +501,7 @@ namespace MakeFriendSolution.Application
             else
             {
                 var userInfo = await GetById(userId);
-                var users = await GetActiveUsers();
+                var users = await GetActiveUsers(userId, true);
                 FilterUers(ref users, request);
 
                 var total = users.Count / request.PageSize;

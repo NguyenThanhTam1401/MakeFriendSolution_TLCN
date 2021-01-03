@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20210102074435_Init")]
+    [Migration("20210103031845_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,7 +209,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 2, 14, 44, 34, 363, DateTimeKind.Local).AddTicks(601));
+                        .HasDefaultValue(new DateTime(2021, 1, 3, 10, 18, 44, 329, DateTimeKind.Local).AddTicks(6787));
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -879,6 +879,9 @@ namespace MakeFriendSolution.Migrations
                     b.Property<Guid>("FromUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsLock")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("ToUserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1016,7 +1019,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 2, 14, 44, 34, 398, DateTimeKind.Local).AddTicks(4100));
+                        .HasDefaultValue(new DateTime(2021, 1, 3, 10, 18, 44, 400, DateTimeKind.Local).AddTicks(936));
 
                     b.HasKey("Id");
 
@@ -1026,7 +1029,7 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 1,
-                            UpdatedAt = new DateTime(2021, 1, 2, 14, 44, 34, 403, DateTimeKind.Local).AddTicks(4472)
+                            UpdatedAt = new DateTime(2021, 1, 3, 10, 18, 44, 405, DateTimeKind.Local).AddTicks(4585)
                         });
                 });
 

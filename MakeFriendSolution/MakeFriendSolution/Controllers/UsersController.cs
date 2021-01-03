@@ -35,7 +35,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("newUsers")]
         public async Task<IActionResult> GetNewestUsers([FromQuery] PagingRequest request)
         {
-            var users = await _userApplication.GetActiveUsers();
+            var users = await _userApplication.GetActiveUsers(Guid.Empty, false);
 
             var loginInfo = _sessionService.GetDataFromToken();
             if (loginInfo != null)
@@ -56,7 +56,7 @@ namespace MakeFriendSolution.Controllers
         [HttpGet("favoritest")]
         public async Task<IActionResult> GetFavoritestUsers([FromQuery] PagingRequest request)
         {
-            var users = await _userApplication.GetActiveUsers();
+            var users = await _userApplication.GetActiveUsers(Guid.Empty, false);
 
             var loginInfo = _sessionService.GetDataFromToken();
             if (loginInfo != null)
@@ -500,6 +500,83 @@ namespace MakeFriendSolution.Controllers
             return Ok(new
             {
                 Message = message
+            });
+        }
+
+        [Authorize]
+        [HttpGet("blackList")]
+        public async Task<IActionResult> GetBlackList()
+        {
+            var userInfo = _sessionService.GetDataFromToken();
+            if (userInfo == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Can not found user"
+                });
+            }
+
+            var blocks = await _context.BlockUsers.Where(x => x.FromUserId == userInfo.UserId && x.IsLock).ToListAsync();
+            var userDisplays = new List<UserDisplay>();
+
+            foreach (var item in blocks)
+            {
+                var user = new UserDisplay(await _userApplication.GetById(item.ToUserId), _storageService);
+                userDisplays.Add(user);
+            }
+
+            return Ok(userDisplays);
+        }
+
+        [Authorize]
+        [HttpPost("blackList/{userid}")]
+        public async Task<IActionResult> AddToBlackList(Guid userId)
+        {
+            if (!await _userApplication.IsExist(userId))
+                return NotFound(new
+                {
+                    Message = "Not found User"
+                });
+
+            var userInfo = _sessionService.GetDataFromToken();
+
+            var block = await _context.BlockUsers
+                .Where(x => x.FromUserId == userInfo.UserId && x.ToUserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (block == null)
+            {
+                block = new BlockUser()
+                {
+                    FromUserId = userInfo.UserId,
+                    ToUserId = userId,
+                    IsLock = true
+                };
+
+                _context.BlockUsers.Add(block);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Message = "Locked"
+                });
+            }
+
+            var Message = "Unlocked";
+
+            if (!block.IsLock)
+            {
+                Message = "Locked";
+            }
+
+            block.IsLock = !block.IsLock;
+
+            _context.BlockUsers.Update(block);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Message = Message
             });
         }
     }

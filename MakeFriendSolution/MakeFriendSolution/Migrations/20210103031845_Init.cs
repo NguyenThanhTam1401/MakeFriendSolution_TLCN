@@ -28,7 +28,7 @@ namespace MakeFriendSolution.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 1, 2, 14, 44, 34, 398, DateTimeKind.Local).AddTicks(4100))
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 1, 3, 10, 18, 44, 400, DateTimeKind.Local).AddTicks(936))
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,7 @@ namespace MakeFriendSolution.Migrations
                     Location = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 1, 2, 14, 44, 34, 363, DateTimeKind.Local).AddTicks(601)),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 1, 3, 10, 18, 44, 329, DateTimeKind.Local).AddTicks(6787)),
                     NumberOfFiends = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfLikes = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfImages = table.Column<int>(nullable: false, defaultValue: 0),
@@ -99,6 +99,7 @@ namespace MakeFriendSolution.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
+                    IsLock = table.Column<bool>(nullable: false),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false)
                 },
@@ -266,7 +267,7 @@ namespace MakeFriendSolution.Migrations
             migrationBuilder.InsertData(
                 table: "SimilariryFeatures",
                 columns: new[] { "Id", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2021, 1, 2, 14, 44, 34, 403, DateTimeKind.Local).AddTicks(4472) });
+                values: new object[] { 1, new DateTime(2021, 1, 3, 10, 18, 44, 405, DateTimeKind.Local).AddTicks(4585) });
 
             migrationBuilder.InsertData(
                 table: "Users",
