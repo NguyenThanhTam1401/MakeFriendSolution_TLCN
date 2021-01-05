@@ -668,10 +668,13 @@ namespace MakeFriendSolution.Controllers
                     ToUserId = userId,
                     IsLock = true
                 };
-
+                var user1 = await _userApplication.GetById(userInfo.UserId);
+                user1.UpdatedAt = DateTime.Now;
+                _context.Users.Update(user1);
                 _context.BlockUsers.Add(block);
                 await _context.SaveChangesAsync();
 
+                await _userApplication.UpdateSimilarityScores(userInfo.UserId);
                 return Ok(new
                 {
                     Message = "Locked"
@@ -686,10 +689,13 @@ namespace MakeFriendSolution.Controllers
             }
 
             block.IsLock = !block.IsLock;
-
+            var user = await _userApplication.GetById(userInfo.UserId);
+            user.UpdatedAt = DateTime.Now;
+            _context.Users.Update(user);
             _context.BlockUsers.Update(block);
             await _context.SaveChangesAsync();
 
+            await _userApplication.UpdateSimilarityScores(userInfo.UserId);
             return Ok(new
             {
                 Message = Message

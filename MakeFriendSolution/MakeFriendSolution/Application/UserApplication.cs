@@ -49,9 +49,9 @@ namespace MakeFriendSolution.Application
             return await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
         }
 
-        public async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)
+        public async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)   
         {
-            return await _context.BlockUsers.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == toUserId);
+            return await _context.BlockUsers.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == toUserId && x.IsLock);
         }
 
         public int CalculateAge(DateTime birthDay)
@@ -327,8 +327,8 @@ namespace MakeFriendSolution.Application
                 .ToListAsync();
             }
 
-            var blocksFrom = await _context.BlockUsers.Where(x => x.FromUserId == userId).ToListAsync();
-            var blocksTo = await _context.BlockUsers.Where(x => x.ToUserId == userId).ToListAsync();
+            var blocksFrom = await _context.BlockUsers.Where(x => x.FromUserId == userId && x.IsLock).ToListAsync();
+            var blocksTo = await _context.BlockUsers.Where(x => x.ToUserId == userId && x.IsLock).ToListAsync();
             List<Guid> blocksId = new List<Guid>();
             foreach (var item in blocksFrom)
             {
@@ -389,6 +389,7 @@ namespace MakeFriendSolution.Application
         {
             var user = await GetById(userId);
             var oldScores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
+            
             var tempUsers = new List<AppUser>();
             var users = await GetActiveUsers(userId, true);
             users.Remove(users.Where(x => x.Id == userId).FirstOrDefault());

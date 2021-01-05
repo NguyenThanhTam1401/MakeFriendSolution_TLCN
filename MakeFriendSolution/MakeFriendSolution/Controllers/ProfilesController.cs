@@ -72,7 +72,7 @@ namespace MakeFriendSolution.Controllers
             Random random = new Random();
             int gmailCount = 1;
             //Random Nu
-            for (int i = 0; i < 1130; i++)
+            for (int i = 0; i < 400; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -133,7 +133,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 1208; i++)
+            for (int i = 0; i < 500; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -194,7 +194,7 @@ namespace MakeFriendSolution.Controllers
             }
 
             //Random Nu
-            for (int i = 0; i < 2350; i++)
+            for (int i = 0; i < 800; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
@@ -255,7 +255,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam
-            for (int i = 0; i < 2400; i++)
+            for (int i = 0; i < 900; i++)
             {
                 var user = new AppUser();
                 user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
@@ -425,7 +425,7 @@ namespace MakeFriendSolution.Controllers
         /// <param name="userId">Id người dùng</param>
         /// <param name="filter">Các filter feature</param>
         /// <returns></returns>
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("similar/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

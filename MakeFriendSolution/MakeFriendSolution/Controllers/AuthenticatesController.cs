@@ -256,10 +256,7 @@ namespace MakeFriendSolution.Controllers
 
                     _context.Users.Update(user);
                     await _context.SaveChangesAsync();
-                    return Ok(new
-                    {
-                        Message = "Mail Confirmed"
-                    });
+                    return Ok("Xác nhận email thành công, vui lòng đăng nhập!");
                 }
             }
             catch (Exception e)
