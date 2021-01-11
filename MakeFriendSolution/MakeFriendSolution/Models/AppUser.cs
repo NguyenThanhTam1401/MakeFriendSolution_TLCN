@@ -48,26 +48,10 @@ namespace MakeFriendSolution.Models
         /// </summary>
 
         public EGender FindPeople { get; set; }
-        public EMarriage Marriage { get; set; }
         public ETarget Target { get; set; }
-        public EEducation Education { get; set; }
-        public EBody Body { get; set; }
-        public ECharacter Character { get; set; }
-        public ELifeStyle LifeStyle { get; set; }
-        public EMostValuable MostValuable { get; set; }
+
         public EJob Job { get; set; }
-        public EReligion Religion { get; set; }
-        public EFavoriteMovie FavoriteMovie { get; set; }
-        public EAtmosphereLike AtmosphereLike { get; set; }
-        public EShopping Shopping { get; set; }
-        public ETravel Travel { get; set; }
-        public EGame Game { get; set; }
-        public ECook Cook { get; set; }
-        public ELikeTechnology LikeTechnology { get; set; }
-        public ELikePet LikePet { get; set; }
-        public EPlaySport PlaySport { get; set; }
-        public ESmoking Smoking { get; set; }
-        public EDrinkBeer DrinkBeer { get; set; }
+
 
         //
 
@@ -82,6 +66,7 @@ namespace MakeFriendSolution.Models
         public ICollection<BlockUser> BlockedByUsers { get; set; }
         public ICollection<SimilarityScore> SimilarityScores { get; set; }
 
+        public ICollection<UserFeature> HaveFeatures { get; set; }
 
         [NotMapped]
         public double Point { get; set; } = 0;
@@ -109,17 +94,9 @@ namespace MakeFriendSolution.Models
             Weight = user.Weight;
             Height = user.Height;
             Dob = user.Dob;
-            Marriage = user.Marriage;
             Target = user.Target;
-            Education = user.Education;
-            Body = user.Body;
-            Character = user.Character;
-            LifeStyle = user.LifeStyle;
-            MostValuable = user.MostValuable;
             Job = user.Job;
-            Religion = user.Religion;
-            Smoking = user.Smoking;
-            DrinkBeer = user.DrinkBeer;
+
         }
 
         public AppUser()

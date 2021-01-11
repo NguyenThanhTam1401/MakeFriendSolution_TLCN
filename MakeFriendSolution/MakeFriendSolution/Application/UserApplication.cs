@@ -1,4 +1,5 @@
-﻿using MakeFriendSolution.EF;
+﻿using MakeFriendSolution.Common;
+using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
@@ -19,16 +20,18 @@ namespace MakeFriendSolution.Application
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
         private ISessionService _sessionService;
+        private readonly IFeatureApplication _featureApplication;
 
         public UserApplication()
         {
         }
 
-        public UserApplication(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService)
+        public UserApplication(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IFeatureApplication featureApplication)
         {
             _context = context;
             _storageService = storageService;
             _sessionService = sessionService;
+            _featureApplication = featureApplication;
         }
 
         public async Task<string> SaveFile(IFormFile file)
@@ -130,110 +133,110 @@ namespace MakeFriendSolution.Application
                 user.Gender = gender;
             }
 
-            if (Enum.TryParse(request.Cook, out ECook cook))
-            {
-                user.Cook = cook;
-            }
+            //if (Enum.TryParse(request.Cook, out ECook cook))
+            //{
+            //    user.Cook = cook;
+            //}
 
-            if (Enum.TryParse(request.Game, out EGame game))
-            {
-                user.Game = game;
-            }
+            //if (Enum.TryParse(request.Game, out EGame game))
+            //{
+            //    user.Game = game;
+            //}
 
-            if (Enum.TryParse(request.Travel, out ETravel travel))
-            {
-                user.Travel = travel;
-            }
+            //if (Enum.TryParse(request.Travel, out ETravel travel))
+            //{
+            //    user.Travel = travel;
+            //}
 
-            if (Enum.TryParse(request.Shopping, out EShopping shopping))
-            {
-                user.Shopping = shopping;
-            }
+            //if (Enum.TryParse(request.Shopping, out EShopping shopping))
+            //{
+            //    user.Shopping = shopping;
+            //}
 
             if (Enum.TryParse(request.Location, out ELocation location))
             {
                 user.Location = location;
             }
 
-            if (Enum.TryParse(request.Body, out EBody body))
-            {
-                user.Body = body;
-            }
+            //if (Enum.TryParse(request.Body, out EBody body))
+            //{
+            //    user.Body = body;
+            //}
 
             if (Enum.TryParse(request.Target, out ETarget target))
             {
                 user.Target = target;
             }
 
-            if (Enum.TryParse(request.Education, out EEducation education))
-            {
-                user.Education = education;
-            }
+            //if (Enum.TryParse(request.Education, out EEducation education))
+            //{
+            //    user.Education = education;
+            //}
 
-            if (Enum.TryParse(request.LikePet, out ELikePet pet))
-            {
-                user.LikePet = pet;
-            }
+            //if (Enum.TryParse(request.LikePet, out ELikePet pet))
+            //{
+            //    user.LikePet = pet;
+            //}
 
-            if (Enum.TryParse(request.LikeTechnology, out ELikeTechnology technology))
-            {
-                user.LikeTechnology = technology;
-            }
+            //if (Enum.TryParse(request.LikeTechnology, out ELikeTechnology technology))
+            //{
+            //    user.LikeTechnology = technology;
+            //}
 
-            if (Enum.TryParse(request.PlaySport, out EPlaySport playSport))
-            {
-                user.PlaySport = playSport;
-            }
+            //if (Enum.TryParse(request.PlaySport, out EPlaySport playSport))
+            //{
+            //    user.PlaySport = playSport;
+            //}
 
-            if (Enum.TryParse(request.Character, out ECharacter character))
-            {
-                user.Character = character;
-            }
+            //if (Enum.TryParse(request.Character, out ECharacter character))
+            //{
+            //    user.Character = character;
+            //}
 
-            if (Enum.TryParse(request.LifeStyle, out ELifeStyle lifeStyle))
-            {
-                user.LifeStyle = lifeStyle;
-            }
+            //if (Enum.TryParse(request.LifeStyle, out ELifeStyle lifeStyle))
+            //{
+            //    user.LifeStyle = lifeStyle;
+            //}
 
-            if (Enum.TryParse(request.MostValuable, out EMostValuable mostValuable))
-            {
-                user.MostValuable = mostValuable;
-            }
+            //if (Enum.TryParse(request.MostValuable, out EMostValuable mostValuable))
+            //{
+            //    user.MostValuable = mostValuable;
+            //}
 
-            if (Enum.TryParse(request.Marriage, out EMarriage marriage))
-            {
-                user.Marriage = marriage;
-            }
+            //if (Enum.TryParse(request.Marriage, out EMarriage marriage))
+            //{
+            //    user.Marriage = marriage;
+            //}
 
             if (Enum.TryParse(request.Job, out EJob job))
             {
                 user.Job = job;
             }
 
-            if (Enum.TryParse(request.Religion, out EReligion religion))
-            {
-                user.Religion = religion;
-            }
+            //if (Enum.TryParse(request.Religion, out EReligion religion))
+            //{
+            //    user.Religion = religion;
+            //}
 
-            if (Enum.TryParse(request.FavoriteMovie, out EFavoriteMovie favoriteMovie))
-            {
-                user.FavoriteMovie = favoriteMovie;
-            }
+            //if (Enum.TryParse(request.FavoriteMovie, out EFavoriteMovie favoriteMovie))
+            //{
+            //    user.FavoriteMovie = favoriteMovie;
+            //}
 
-            if (Enum.TryParse(request.AtmosphereLike, out EAtmosphereLike atmosphereLike))
-            {
-                user.AtmosphereLike = atmosphereLike;
-            }
+            //if (Enum.TryParse(request.AtmosphereLike, out EAtmosphereLike atmosphereLike))
+            //{
+            //    user.AtmosphereLike = atmosphereLike;
+            //}
 
-            if (Enum.TryParse(request.Smoking, out ESmoking smoking))
-            {
-                user.Smoking = smoking;
-            }
+            //if (Enum.TryParse(request.Smoking, out ESmoking smoking))
+            //{
+            //    user.Smoking = smoking;
+            //}
 
-            if (Enum.TryParse(request.DrinkBeer, out EDrinkBeer drinkBeer))
-            {
-                user.DrinkBeer = drinkBeer;
-            }
+            //if (Enum.TryParse(request.DrinkBeer, out EDrinkBeer drinkBeer))
+            //{
+            //    user.DrinkBeer = drinkBeer;
+            //}
 
             //
 
@@ -299,7 +302,21 @@ namespace MakeFriendSolution.Application
         {
             return await _context.Users.FindAsync(id);
         }
+        public async Task<AppUser> GetFullById(Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            var haveFeatures = await _context.UserFeatures.Where(x => x.UserId == id).ToListAsync();
+            var features = await _featureApplication.GetFeatures();
+            var featureDetails = await _featureApplication.GetFeatureDetails();
+            var details = new List<FeatureViewModel>();
 
+            foreach (var item in haveFeatures)
+            {
+                var detail = await _featureApplication.GetFeatureViewModel(item.FeatureDetailId);
+            }
+
+            return user;
+        }
         public async Task<AppUser> UpdateUser(AppUser user, bool isUpdateScore)
         {
             var updateScore = await _context.SimilariryFeatures.FirstOrDefaultAsync();
@@ -421,25 +438,25 @@ namespace MakeFriendSolution.Application
             double[,] usersMatrix = new double[sl, 19];
             for (int i = 0; i < sl; i++)
             {
-                usersMatrix[i, 0] = (double)users[i].Marriage;
-                usersMatrix[i, 1] = (double)users[i].Target;
-                usersMatrix[i, 2] = (double)users[i].Education;
-                usersMatrix[i, 3] = (double)users[i].Body;
-                usersMatrix[i, 4] = (double)users[i].Religion;
-                usersMatrix[i, 5] = (double)users[i].Smoking;
-                usersMatrix[i, 6] = (double)users[i].DrinkBeer;
-                usersMatrix[i, 7] = (double)users[i].Cook;
-                usersMatrix[i, 8] = (double)users[i].Game;
-                usersMatrix[i, 9] = (double)users[i].Travel;
-                usersMatrix[i, 10] = (double)users[i].LikePet;
-                usersMatrix[i, 11] = (double)users[i].LikeTechnology;
-                usersMatrix[i, 12] = (double)users[i].Shopping;
-                usersMatrix[i, 13] = (double)users[i].PlaySport;
-                usersMatrix[i, 14] = (double)users[i].FavoriteMovie;
-                usersMatrix[i, 15] = (double)users[i].AtmosphereLike;
-                usersMatrix[i, 16] = (double)users[i].Character;
-                usersMatrix[i, 17] = (double)users[i].LifeStyle;
-                usersMatrix[i, 18] = (double)users[i].MostValuable;
+                //usersMatrix[i, 0] = (double)users[i].Marriage;
+                //usersMatrix[i, 1] = (double)users[i].Target;
+                //usersMatrix[i, 2] = (double)users[i].Education;
+                //usersMatrix[i, 3] = (double)users[i].Body;
+                //usersMatrix[i, 4] = (double)users[i].Religion;
+                //usersMatrix[i, 5] = (double)users[i].Smoking;
+                //usersMatrix[i, 6] = (double)users[i].DrinkBeer;
+                //usersMatrix[i, 7] = (double)users[i].Cook;
+                //usersMatrix[i, 8] = (double)users[i].Game;
+                //usersMatrix[i, 9] = (double)users[i].Travel;
+                //usersMatrix[i, 10] = (double)users[i].LikePet;
+                //usersMatrix[i, 11] = (double)users[i].LikeTechnology;
+                //usersMatrix[i, 12] = (double)users[i].Shopping;
+                //usersMatrix[i, 13] = (double)users[i].PlaySport;
+                //usersMatrix[i, 14] = (double)users[i].FavoriteMovie;
+                //usersMatrix[i, 15] = (double)users[i].AtmosphereLike;
+                //usersMatrix[i, 16] = (double)users[i].Character;
+                //usersMatrix[i, 17] = (double)users[i].LifeStyle;
+                //usersMatrix[i, 18] = (double)users[i].MostValuable;
             }
 
             SimilarityMatrix m = new SimilarityMatrix();
@@ -533,5 +550,7 @@ namespace MakeFriendSolution.Application
 
             return result;
         }
+        
+        
     }
 }

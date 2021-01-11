@@ -33,6 +33,844 @@ namespace MakeFriendSolution.EF
                 }
             );
 
+            builder.Entity<Feature>().HasData(
+                new Feature()
+                {
+                    Id = 1,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Dáng người",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 2,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Học vấn",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 3,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Phong cách sống",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 4,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Điều quan trọng nhất",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 5,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Tôn giáo",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 6,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Thể loại phim ưa thích",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 7,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Nhạc ưa thích",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 8,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Bầu không khí ưa thích",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 9,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Đi mua sắm",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 10,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Đi du lịch",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 11,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Chơi game",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 12,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Nấu ăn",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 13,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Công nghệ",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 14,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Thú cưng",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 15,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Chơi thể thao",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 16,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Hút thuốc",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 17,
+                    IsCalculated = true,
+                    IsDisplay = true,
+                    Name = "Uống rượu bia",
+                    WeightRate = 1
+                },
+                new Feature()
+                {
+                    Id = 18,
+                    IsCalculated = true,
+                    IsDisplay = false,
+                    Name = "Giới tính"
+                },
+                new Feature()
+                {
+                    Id = 19, 
+                    IsCalculated = true,
+                    IsDisplay = false,
+                    Name = "Nhóm tuổi"
+                }
+            );
+
+            builder.Entity<FeatureDetail>().HasData(
+                //Dáng người Id = 1, max = 6
+                new FeatureDetail()
+                {
+                    Id = 1,
+                    FeatureId = 1,
+                    Content = "Nhỏ nhắn",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 2,
+                    FeatureId = 1,
+                    Content = "Mảnh mai",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 3,
+                    FeatureId = 1,
+                    Content = "Cân đối",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 4,
+                    FeatureId = 1,
+                    Content = "Mũm mĩm",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 5,
+                    FeatureId = 1,
+                    Content = "Cao lớn",
+                    Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 6,
+                    FeatureId = 1,
+                    Content = "Vạm vỡ",
+                    Weight = 6
+                },
+                //Học vấn Id = 2, max = 12
+                new FeatureDetail()
+                {
+                    Id = 7,
+                    FeatureId = 2,
+                    Content = "Phổ thông",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 8,
+                    FeatureId = 2,
+                    Content = "Trung cấp",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 9,
+                    FeatureId = 2,
+                    Content = "Cao đẳng",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 10,
+                    FeatureId = 2,
+                    Content = "Đại học",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 11,
+                    FeatureId = 2,
+                    Content = "Cao học",
+                    Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 12,
+                    FeatureId = 2,
+                    Content = "Trên cao học",
+                    Weight = 6
+                }
+                //Cách sống Id = 3, max = 19
+                ,
+                new FeatureDetail()
+                {
+                    Id = 13,
+                    FeatureId = 3,
+                    Content = "An nhàn",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 14,
+                    FeatureId = 3,
+                    Content = "Giản dị",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 15,
+                    FeatureId = 3,
+                    Content = "Lạc quan",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 16,
+                    FeatureId = 3,
+                    Content = "Lành mạnh",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 17,
+                    FeatureId = 3,
+                    Content = "Năng động",
+                    Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 18,
+                    FeatureId = 3,
+                    Content = "Tình cảm",
+                    Weight = 6
+                },
+                new FeatureDetail()
+                {
+                    Id = 19,
+                    FeatureId = 3,
+                    Content = "Tự do",
+                    Weight = 7
+                }
+                //Điều quan trọng nhất Id = 4, max = 26
+                ,
+                new FeatureDetail()
+                {
+                    Id = 20,
+                    FeatureId = 4,
+                    Content = "Sức khỏe",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 21,
+                    FeatureId = 4,
+                    Content = "Thời gian",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 22,
+                    FeatureId = 4,
+                    Content = "Bạn bè",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 23,
+                    FeatureId = 4,
+                    Content = "Bạn đời",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 24,
+                    FeatureId = 4,
+                    Content = "Gia đình",
+                    Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 25,
+                    FeatureId = 4,
+                    Content = "Sự nghiệp",
+                    Weight = 6
+                },
+                new FeatureDetail()
+                {
+                    Id = 26,
+                    FeatureId = 4,
+                    Content = "Niềm vui mỗi ngày",
+                    Weight = 7
+                }
+                //Tôn giáo Id = 5, max = 29
+                ,
+                new FeatureDetail()
+                {
+                    Id = 27,
+                    FeatureId = 5,
+                    Content = "Không có đạo",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 28,
+                    FeatureId = 5,
+                    Content = "Thiên Chúa giáo",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 29,
+                    FeatureId = 5,
+                    Content = "Phật giáo",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 100,
+                    FeatureId = 5,
+                    Content = "Tin Lành",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 101,
+                    FeatureId = 5,
+                    Content = "Đạo khác",
+                    Weight = 5
+                }
+                //Thể loại phim Id = 6, max = 38
+                ,
+                new FeatureDetail()
+                {
+                    Id = 30,
+                    FeatureId = 6,
+                    Content = "Hành động",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 31,
+                    FeatureId = 6,
+                    Content = "Khoa học viễn tưởng",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 32,
+                    FeatureId = 6,
+                    Content = "Chiến tranh",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 33,
+                    FeatureId = 6,
+                    Content = "Chiến tranh",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 34,
+                    FeatureId = 6,
+                    Content = "Cổ trang",
+                    Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 35,
+                    FeatureId = 6,
+                    Content = "Hài hước",
+                    Weight = 6
+                },
+                new FeatureDetail()
+                {
+                    Id = 36,
+                    FeatureId = 6,
+                    Content = "Kinh dị",
+                    Weight = 7
+                },
+                new FeatureDetail()
+                {
+                    Id = 37,
+                    FeatureId = 6,
+                    Content = "Lãng mạn",
+                    Weight = 8
+                },
+                new FeatureDetail()
+                {
+                    Id = 38,
+                    FeatureId = 6,
+                    Content = "Hoạt hình",
+                    Weight = 9
+                }
+                //Nhạc yêu thích Id = 7, max = 43
+                ,
+                new FeatureDetail()
+                {
+                    Id = 39,
+                    FeatureId = 7,
+                    Content = "Nhạc trẻ",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 40,
+                    FeatureId = 7,
+                    Content = "Pop",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 41,
+                    FeatureId = 7,
+                    Content = "Dance",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 42,
+                    FeatureId = 7,
+                    Content = "Rap - Hip hop",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 43,
+                    FeatureId = 7,
+                    Content = "Nhạc Bolero",
+                    Weight = 5
+                }
+                //Bầu không khí Id = 8, max = 48
+                ,
+                new FeatureDetail()
+                {
+                    Id = 44,
+                    FeatureId = 8,
+                    Content = "Tĩnh lặng",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 45,
+                    FeatureId = 8,
+                    Content = "Êm đềm",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 46,
+                    FeatureId = 8,
+                    Content = "Bình yên",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 47,
+                    FeatureId = 8,
+                    Content = "Vui tươi",
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 48,
+                    FeatureId = 8,
+                    Content = "Náo nhiệt",
+                    Weight = 5
+                }
+                //Đi mua sắm Id = 9, max = 51
+                ,
+                new FeatureDetail()
+                {
+                    Id = 49,
+                    FeatureId = 9,
+                    Content = "Ít khi đi",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 50,
+                    FeatureId = 9,
+                    Content = "Thỉnh thoảng",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 51,
+                    FeatureId = 9,
+                    Content = "Thường xuyên",
+                    Weight = 3
+                }
+                //Đi du lịch Id = 10, max = 54
+                ,
+                new FeatureDetail()
+                {
+                    Id = 52,
+                    FeatureId = 10,
+                    Content = "Ít khi đi",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 53,
+                    FeatureId = 10,
+                    Content = "Thỉnh thoảng",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 54,
+                    FeatureId = 10,
+                    Content = "Thường xuyên",
+                    Weight = 3
+                }
+                //Chơi game Id = 11, max = 59
+                ,
+                new FeatureDetail()
+                {
+                    Id = 56,
+                    FeatureId = 11,
+                    Content = "Không chơi game",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 57,
+                    FeatureId = 11,
+                    Content = "Thỉnh thoảng",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 58,
+                    FeatureId = 11,
+                    Content = "Thường xuyên",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 59,
+                    FeatureId = 11,
+                    Content = "Nghiện game",
+                    Weight = 4
+                }
+                // Nấu ăn Id = 12, max = 63
+                ,
+                new FeatureDetail()
+                {
+                    Id = 60,
+                    FeatureId = 12,
+                    Content = "Không nấu ăn",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 61,
+                    FeatureId = 12,
+                    Content = "Ít nấu ăn",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 62,
+                    FeatureId = 12,
+                    Content = "Thỉnh thoảng",
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 63,
+                    FeatureId = 12,
+                    Content = "Thường xuyên",
+                    Weight = 4
+                }
+                //Công nghệ Id = 13, max = 66
+                ,
+                new FeatureDetail()
+                {
+                    Id = 64,
+                    FeatureId = 13,
+                    Content = "Bình thường",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 65,
+                    FeatureId = 13,
+                    Content = "Chỉ theo dõi",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 66,
+                    FeatureId = 13,
+                    Content = "Tính đồ công nghệ",
+                    Weight = 3
+                }
+                //Thú cưng Id = 14, max = 69
+                ,
+                new FeatureDetail()
+                {
+                    Id = 67,
+                    FeatureId = 14,
+                    Content = "Không thích",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 68,
+                    FeatureId = 14,
+                    Content = "Nuôi cho vui",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 69,
+                    FeatureId = 14,
+                    Content = "Thích thú cưng",
+                    Weight = 3
+                }
+                // Chơi thể thao Id = 15, max = 72
+                ,
+                new FeatureDetail()
+                {
+                    Id = 70,
+                    FeatureId = 15,
+                    Content = "Ít khi chơi",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 71,
+                    FeatureId = 15,
+                    Content = "Thỉnh thoảng",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 72,
+                    FeatureId = 15,
+                    Content = "Thường xuyên",
+                    Weight = 3
+                }
+                //Hút thuốc Id = 16, max = 75
+                ,
+                new FeatureDetail()
+                {
+                    Id = 73,
+                    FeatureId = 16,
+                    Content = "Không hút thuốc",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 74,
+                    FeatureId = 16,
+                    Content = "Hút xã giao",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 75,
+                    FeatureId = 16,
+                    Content = "Hút nhiều",
+                    Weight = 3
+                }
+                //Uống rượu bia Id = 17, max = 78
+                ,
+                new FeatureDetail()
+                {
+                    Id = 76,
+                    FeatureId = 17,
+                    Content = "Không uống",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 77,
+                    FeatureId = 17,
+                    Content = "Uống xã giao",
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 78,
+                    FeatureId = 17,
+                    Content = "Uống nhiều",
+                    Weight = 3
+                }
+                //Giới tính ID = 18, max = 80
+                ,
+                new FeatureDetail()
+                {
+                    Id = 79,
+                    FeatureId = 18,
+                    Content = "Khác giới",
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 80,
+                    FeatureId = 18,
+                    Content = "Cùng giới",
+                    Weight = -1
+                }
+                //Nhóm tuổi ID = 19, max = 86
+                ,
+                new FeatureDetail()
+                {
+                    Id = 81,
+                    FeatureId = 19,
+                    Content = EAgeGroup.Dưới_18_Tuổi.ToString(),
+                    Weight = 1
+                },
+                new FeatureDetail()
+                {
+                    Id = 82,
+                    FeatureId = 19,
+                    Content = EAgeGroup.Từ_18_Đến_25.ToString(),
+                    Weight = 2
+                },
+                new FeatureDetail()
+                {
+                    Id = 83,
+                    FeatureId = 19,
+                    Content = EAgeGroup.Từ_25_Đến_30.ToString(),
+                    Weight = 3
+                },
+                new FeatureDetail()
+                {
+                    Id = 84,
+                    FeatureId = 19,
+                    Content = EAgeGroup.Từ_31_Đến_40.ToString(),
+                    Weight = 4
+                },
+                new FeatureDetail()
+                {
+                    Id = 85,
+                    FeatureId = 19,
+                    Content = EAgeGroup.Từ_41_Đến_50.ToString(),
+                    Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 86,
+                    FeatureId = 19,
+                    Content = EAgeGroup.Trên_50.ToString(),
+                    Weight = 6
+                }
+            );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             builder.Entity<AppUser>().HasData(
                 //Tam
                 new AppUser()
@@ -53,21 +891,11 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Dễ_Gần,
-                    DrinkBeer = EDrinkBeer.Uống_Nhiều,
-                    Education = EEducation.Đại_Học,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Năng_Động,
-                    Marriage = EMarriage.Đã_Kết_Hôn,
-                    MostValuable = EMostValuable.Gia_Đình,
-                    Religion = EReligion.Đạo_Thiên_Chúa,
-                    Smoking = ESmoking.Không_Hút_Thuốc,
+
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Náo_Nhiệt,
-                    FavoriteMovie = EFavoriteMovie.Giật_Gân,
                     IsInfoUpdated = true
                 },
                 //Nhung2
@@ -90,21 +918,10 @@ namespace MakeFriendSolution.EF
                     Weight = 65,
 
                     FindPeople = EGender.Nam,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Năng_Động,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Đời,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Vuong
@@ -126,21 +943,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Mũm_Mĩm,
-                    Character = ECharacter.Dịu_Dàng,
-                    DrinkBeer = EDrinkBeer.Chỉ_Uống_Xã_Giao,
-                    Education = EEducation.Cao_Học,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Giản_Dị,
-                    Marriage = EMarriage.Ly_Dị,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Đạo_Phật,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Người_Yêu_Lâu_Dài,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Tĩnh_Lặng,
-                    FavoriteMovie = EFavoriteMovie.Hài_Hước,
                     IsInfoUpdated = true
                 },
                 //hieu
@@ -162,21 +968,11 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
+
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Tien
@@ -198,21 +994,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Dinh
@@ -234,21 +1019,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Dat
@@ -270,21 +1044,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Son
@@ -306,21 +1069,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Duc
@@ -342,21 +1094,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Nhung
@@ -378,21 +1119,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Diem
@@ -414,21 +1144,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Han
@@ -450,21 +1169,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 },
                 //Mai
@@ -486,21 +1194,10 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Body = EBody.Cân_Đối,
-                    Character = ECharacter.Chung_Thủy,
-                    DrinkBeer = EDrinkBeer.Uống_Khá_Nhiều,
-                    Education = EEducation.Cao_Đẳng,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
-                    LifeStyle = ELifeStyle.Lạc_Quan_Yêu_Đời,
-                    Marriage = EMarriage.Đang_Yêu,
-                    MostValuable = EMostValuable.Bạn_Bè,
-                    Religion = EReligion.Không_Có_Đạo,
-                    Smoking = ESmoking.Chỉ_Hút_Xã_Giao,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
-                    AtmosphereLike = EAtmosphereLike.Vui_Tươi,
-                    FavoriteMovie = EFavoriteMovie.Hoạt_Hình,
                     IsInfoUpdated = true
                 }
             );

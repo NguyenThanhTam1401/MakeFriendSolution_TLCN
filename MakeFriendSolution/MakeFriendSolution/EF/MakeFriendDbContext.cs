@@ -22,6 +22,9 @@ namespace MakeFriendSolution.EF
             modelBuilder.ApplyConfiguration(new AccessConfig());
             modelBuilder.ApplyConfiguration(new SimilarityFeatureConfig());
             modelBuilder.ApplyConfiguration(new SimilarityScoreConfog());
+
+            modelBuilder.ApplyConfiguration(new FeatureConfig());
+            modelBuilder.ApplyConfiguration(new FeatureDetailConfig());
             modelBuilder.Seed();
         }
 
@@ -35,5 +38,8 @@ namespace MakeFriendSolution.EF
         public DbSet<Access> Accesses { get; set; }
         public DbSet<SimilarityFeature> SimilariryFeatures { get; set; }
         public DbSet<SimilarityScore> SimilarityScores { get; set; }
+        public DbSet<Feature> Features { get; set; }
+        public DbSet<FeatureDetail> FeatureDetails { get; set; }
+        public DbSet<UserFeature> UserFeatures { get; set; }
     }
 }

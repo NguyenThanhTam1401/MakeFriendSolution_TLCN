@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20210103031845_Init")]
+    [Migration("20210110113111_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,7 +209,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 3, 10, 18, 44, 329, DateTimeKind.Local).AddTicks(6787));
+                        .HasDefaultValue(new DateTime(2021, 1, 10, 18, 31, 10, 998, DateTimeKind.Local).AddTicks(1911));
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -921,6 +921,854 @@ namespace MakeFriendSolution.Migrations
                     b.ToTable("Favorites");
                 });
 
+            modelBuilder.Entity("MakeFriendSolution.Models.Feature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Delete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsCalculated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDisplay")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("WeightRate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(1.0);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Features");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Dáng người",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Học vấn",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Phong cách sống",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Điều quan trọng nhất",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Tôn giáo",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Thể loại phim ưa thích",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Nhạc ưa thích",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Bầu không khí ưa thích",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Đi mua sắm",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Đi du lịch",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Chơi game",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Nấu ăn",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Công nghệ",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Thú cưng",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Chơi thể thao",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Hút thuốc",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = true,
+                            Name = "Uống rượu bia",
+                            WeightRate = 1.0
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = false,
+                            Name = "Giới tính",
+                            WeightRate = 0.0
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Delete = false,
+                            IsCalculated = true,
+                            IsDisplay = false,
+                            Name = "Nhóm tuổi",
+                            WeightRate = 0.0
+                        });
+                });
+
+            modelBuilder.Entity("MakeFriendSolution.Models.FeatureDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FeatureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Weight")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeatureId");
+
+                    b.ToTable("FeatureDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "Nhỏ nhắn",
+                            FeatureId = 1,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "Mảnh mai",
+                            FeatureId = 1,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "Cân đối",
+                            FeatureId = 1,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "Mũm mĩm",
+                            FeatureId = 1,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "Cao lớn",
+                            FeatureId = 1,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Content = "Vạm vỡ",
+                            FeatureId = 1,
+                            Weight = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Content = "Phổ thông",
+                            FeatureId = 2,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Content = "Trung cấp",
+                            FeatureId = 2,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Content = "Cao đẳng",
+                            FeatureId = 2,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Content = "Đại học",
+                            FeatureId = 2,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Content = "Cao học",
+                            FeatureId = 2,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Content = "Trên cao học",
+                            FeatureId = 2,
+                            Weight = 6
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Content = "An nhàn",
+                            FeatureId = 3,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Content = "Giản dị",
+                            FeatureId = 3,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Content = "Lạc quan",
+                            FeatureId = 3,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Content = "Lành mạnh",
+                            FeatureId = 3,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Content = "Năng động",
+                            FeatureId = 3,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Content = "Tình cảm",
+                            FeatureId = 3,
+                            Weight = 6
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Content = "Tự do",
+                            FeatureId = 3,
+                            Weight = 7
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Content = "Sức khỏe",
+                            FeatureId = 4,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Content = "Thời gian",
+                            FeatureId = 4,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Content = "Bạn bè",
+                            FeatureId = 4,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Content = "Bạn đời",
+                            FeatureId = 4,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Content = "Gia đình",
+                            FeatureId = 4,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Content = "Sự nghiệp",
+                            FeatureId = 4,
+                            Weight = 6
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Content = "Niềm vui mỗi ngày",
+                            FeatureId = 4,
+                            Weight = 7
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Content = "Không có đạo",
+                            FeatureId = 5,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Content = "Thiên Chúa giáo",
+                            FeatureId = 5,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Content = "Phật giáo",
+                            FeatureId = 5,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 100,
+                            Content = "Tin Lành",
+                            FeatureId = 5,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Content = "Đạo khác",
+                            FeatureId = 5,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Content = "Hành động",
+                            FeatureId = 6,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Content = "Khoa học viễn tưởng",
+                            FeatureId = 6,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Content = "Chiến tranh",
+                            FeatureId = 6,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Content = "Chiến tranh",
+                            FeatureId = 6,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Content = "Cổ trang",
+                            FeatureId = 6,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Content = "Hài hước",
+                            FeatureId = 6,
+                            Weight = 6
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Content = "Kinh dị",
+                            FeatureId = 6,
+                            Weight = 7
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Content = "Lãng mạn",
+                            FeatureId = 6,
+                            Weight = 8
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Content = "Hoạt hình",
+                            FeatureId = 6,
+                            Weight = 9
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Content = "Nhạc trẻ",
+                            FeatureId = 7,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Content = "Pop",
+                            FeatureId = 7,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Content = "Dance",
+                            FeatureId = 7,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Content = "Rap - Hip hop",
+                            FeatureId = 7,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Content = "Nhạc Bolero",
+                            FeatureId = 7,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Content = "Tĩnh lặng",
+                            FeatureId = 8,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Content = "Êm đềm",
+                            FeatureId = 8,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Content = "Bình yên",
+                            FeatureId = 8,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Content = "Vui tươi",
+                            FeatureId = 8,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Content = "Náo nhiệt",
+                            FeatureId = 8,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Content = "Ít khi đi",
+                            FeatureId = 9,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Content = "Thỉnh thoảng",
+                            FeatureId = 9,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Content = "Thường xuyên",
+                            FeatureId = 9,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Content = "Ít khi đi",
+                            FeatureId = 10,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Content = "Thỉnh thoảng",
+                            FeatureId = 10,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 54,
+                            Content = "Thường xuyên",
+                            FeatureId = 10,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Content = "Không chơi game",
+                            FeatureId = 11,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Content = "Thỉnh thoảng",
+                            FeatureId = 11,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Content = "Thường xuyên",
+                            FeatureId = 11,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Content = "Nghiện game",
+                            FeatureId = 11,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Content = "Không nấu ăn",
+                            FeatureId = 12,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Content = "Ít nấu ăn",
+                            FeatureId = 12,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Content = "Thỉnh thoảng",
+                            FeatureId = 12,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Content = "Thường xuyên",
+                            FeatureId = 12,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 64,
+                            Content = "Bình thường",
+                            FeatureId = 13,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 65,
+                            Content = "Chỉ theo dõi",
+                            FeatureId = 13,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 66,
+                            Content = "Tính đồ công nghệ",
+                            FeatureId = 13,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 67,
+                            Content = "Không thích",
+                            FeatureId = 14,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 68,
+                            Content = "Nuôi cho vui",
+                            FeatureId = 14,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 69,
+                            Content = "Thích thú cưng",
+                            FeatureId = 14,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 70,
+                            Content = "Ít khi chơi",
+                            FeatureId = 15,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 71,
+                            Content = "Thỉnh thoảng",
+                            FeatureId = 15,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 72,
+                            Content = "Thường xuyên",
+                            FeatureId = 15,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 73,
+                            Content = "Không hút thuốc",
+                            FeatureId = 16,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 74,
+                            Content = "Hút xã giao",
+                            FeatureId = 16,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 75,
+                            Content = "Hút nhiều",
+                            FeatureId = 16,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 76,
+                            Content = "Không uống",
+                            FeatureId = 17,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 77,
+                            Content = "Uống xã giao",
+                            FeatureId = 17,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 78,
+                            Content = "Uống nhiều",
+                            FeatureId = 17,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 79,
+                            Content = "Khác giới",
+                            FeatureId = 18,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 80,
+                            Content = "Cùng giới",
+                            FeatureId = 18,
+                            Weight = -1
+                        },
+                        new
+                        {
+                            Id = 81,
+                            Content = "Dưới_18_Tuổi",
+                            FeatureId = 19,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 82,
+                            Content = "Từ_18_Đến_25",
+                            FeatureId = 19,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 83,
+                            Content = "Từ_25_Đến_30",
+                            FeatureId = 19,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 84,
+                            Content = "Từ_31_Đến_40",
+                            FeatureId = 19,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 85,
+                            Content = "Từ_41_Đến_50",
+                            FeatureId = 19,
+                            Weight = 5
+                        },
+                        new
+                        {
+                            Id = 86,
+                            Content = "Trên_50",
+                            FeatureId = 19,
+                            Weight = 6
+                        });
+                });
+
             modelBuilder.Entity("MakeFriendSolution.Models.Follow", b =>
                 {
                     b.Property<int>("Id")
@@ -1019,7 +1867,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 3, 10, 18, 44, 400, DateTimeKind.Local).AddTicks(936));
+                        .HasDefaultValue(new DateTime(2021, 1, 10, 18, 31, 11, 24, DateTimeKind.Local).AddTicks(134));
 
                     b.HasKey("Id");
 
@@ -1029,7 +1877,7 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 1,
-                            UpdatedAt = new DateTime(2021, 1, 3, 10, 18, 44, 405, DateTimeKind.Local).AddTicks(4585)
+                            UpdatedAt = new DateTime(2021, 1, 10, 18, 31, 11, 31, DateTimeKind.Local).AddTicks(8622)
                         });
                 });
 
@@ -1097,6 +1945,39 @@ namespace MakeFriendSolution.Migrations
                     b.ToTable("ThumbnailImages");
                 });
 
+            modelBuilder.Entity("MakeFriendSolution.Models.UserFeature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Enable")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("FeatureDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FeatureId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeatureDetailId");
+
+                    b.HasIndex("FeatureId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFeatures");
+                });
+
             modelBuilder.Entity("MakeFriendSolution.Models.BlockUser", b =>
                 {
                     b.HasOne("MakeFriendSolution.Models.AppUser", "FromUser")
@@ -1123,6 +2004,15 @@ namespace MakeFriendSolution.Migrations
                     b.HasOne("MakeFriendSolution.Models.AppUser", "ToUser")
                         .WithMany("BeingFavoritedBy")
                         .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MakeFriendSolution.Models.FeatureDetail", b =>
+                {
+                    b.HasOne("MakeFriendSolution.Models.Feature", "Feature")
+                        .WithMany("FeatureDetails")
+                        .HasForeignKey("FeatureId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -1185,6 +2075,27 @@ namespace MakeFriendSolution.Migrations
                 {
                     b.HasOne("MakeFriendSolution.Models.AppUser", "User")
                         .WithMany("ThumbnailImages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MakeFriendSolution.Models.UserFeature", b =>
+                {
+                    b.HasOne("MakeFriendSolution.Models.FeatureDetail", "FeatureDetail")
+                        .WithMany("UserFeatures")
+                        .HasForeignKey("FeatureDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MakeFriendSolution.Models.Feature", "Feature")
+                        .WithMany("UserFeatures")
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MakeFriendSolution.Models.AppUser", "User")
+                        .WithMany("HaveFeatures")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

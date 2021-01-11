@@ -29,7 +29,13 @@ namespace MakeFriendSolution.Models.ViewModels
             NumberOfFollowers = user.NumberOfFiends;
             NumberOfImages = user.NumberOfImages;
             Age = this.CalculateAge(user.Dob);
-            Profile = new ProfileResponse(user);
+            //
+            Job = Job.ToString();
+            Location = Location.ToString();
+            Title = Title;
+            Weight = Weight;
+            Height = Height;
+            Dob = Dob;
 
             GetImagePath(user);
         }
@@ -80,6 +86,13 @@ namespace MakeFriendSolution.Models.ViewModels
         public int Age { get; set; }
         public bool IsInfoUpdated { get; set; }
         public string Token { get; set; }
-        public ProfileResponse Profile { get; set; }
+        //
+        public string Title { get; set; }
+        public int Weight { get; set; }
+        public int Height { get; set; }
+        public DateTime Dob { get; set; }
+        public string Job { get; set; }
+        public string Location { get; set; }
+        List<FeatureResponse> Features { get; set; }
     }
 }
