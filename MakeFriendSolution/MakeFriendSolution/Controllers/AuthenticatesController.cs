@@ -1,4 +1,5 @@
-﻿using MakeFriendSolution.Common;
+﻿using MakeFriendSolution.Application;
+using MakeFriendSolution.Common;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.Enum;
@@ -30,20 +31,19 @@ namespace MakeFriendSolution.Controllers
         private readonly IMailService _mailService;
         private readonly IConfiguration _config;
         private readonly IMailchimpService _mailchimpService;
+        private readonly IFeatureApplication _featureApplication;
 
-        private ISessionService _sessionService;
         private LoginInfo _loginInfo = new LoginInfo();
 
-        public AuthenticatesController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, ISessionService sessionService, IMailchimpService mailchimpService)
+        public AuthenticatesController(MakeFriendDbContext context, IStorageService storageService, IMailService mailService, IConfiguration config, IMailchimpService mailchimpService, IFeatureApplication featureApplication)
         {
             _context = context;
             _storageService = storageService;
             _mailService = mailService;
             _config = config;
-            _sessionService = sessionService;
             _mailchimpService = mailchimpService;
+            _featureApplication = featureApplication;
         }
-
 
         /// <summary>
         /// Code validation khi sử dụng chức năng quên mật khẩu
@@ -268,8 +268,6 @@ namespace MakeFriendSolution.Controllers
             }
         }
 
-
-
         //[AllowAnonymous]
         //[HttpPost("reconfirmMail")]
         //public async Task<IActionResult> ReconfirmMail(string username)
@@ -377,15 +375,19 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
+            if(!await _featureApplication.CheckUserFeature(user.Id))
+            {
+                user.IsInfoUpdated = false;
+            }
+
             var userResponse = new UserResponse(user, _storageService);
-
+            var ft = await _featureApplication.GetFeatureResponseByUserId(userResponse.Id);
+            userResponse.Features = ft.Item1;
+            userResponse.SearchFeatures = ft.Item2;
             userResponse.Token = this.GenerateJSONWebToken(user);
-
-            //_sessionService.SetSessionUser(user);
 
             return Ok(userResponse);
         }
-
 
         /// <summary>
         /// Đăng nhập với tài khoản facebook
@@ -498,26 +500,26 @@ namespace MakeFriendSolution.Controllers
                     Status = EUserStatus.IsVerifying,
                     AvatarPath = "image.png"
                 };
-                var mailchimp = new MailChimpModel()
-                {
-                    Email = request.Email,
-                    Name = request.FullName
-                };
+                //var mailchimp = new MailChimpModel()
+                //{
+                //    Email = request.Email,
+                //    Name = request.FullName
+                //};
 
                 
-                try
-                {
-                    await _mailchimpService.Subscribe(mailchimp);
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(new
-                    {
-                        Message = e.InnerException
-                    });
-                }
+                //try
+                //{
+                //    await _mailchimpService.Subscribe(mailchimp);
+                //    _context.Users.Add(user);
+                //    await _context.SaveChangesAsync();
+                //}
+                //catch (Exception e)
+                //{
+                //    return BadRequest(new
+                //    {
+                //        Message = e.InnerException
+                //    });
+                //}
                 _loginInfo = new LoginInfo()
                 {
                     Email = user.Email,

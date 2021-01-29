@@ -42,17 +42,15 @@ namespace MakeFriendSolution.Models
         public int Weight { get; set; }
         public int Height { get; set; }
         public DateTime Dob { get; set; }
+        public EJob Job { get; set; }
 
         /// <summary>
         /// Dưới đây là các thông số dùng để tính toán
         /// </summary>
 
         public EGender FindPeople { get; set; }
-        public ETarget Target { get; set; }
-
-        public EJob Job { get; set; }
-
-
+        public EAgeGroup FindAgeGroup { get; set; }
+        
         //
 
         public ICollection<ThumbnailImage> ThumbnailImages { get; set; }
@@ -67,6 +65,7 @@ namespace MakeFriendSolution.Models
         public ICollection<SimilarityScore> SimilarityScores { get; set; }
 
         public ICollection<UserFeature> HaveFeatures { get; set; }
+        public ICollection<SearchFeature> SearchFeatures { get; set; }
 
         [NotMapped]
         public double Point { get; set; } = 0;
@@ -94,7 +93,6 @@ namespace MakeFriendSolution.Models
             Weight = user.Weight;
             Height = user.Height;
             Dob = user.Dob;
-            Target = user.Target;
             Job = user.Job;
 
         }

@@ -115,7 +115,8 @@ namespace MakeFriendSolution.Application
                 FeatureId = feature.Id,
                 FeatureDetailId = featureDetail.Id,
                 Name = feature.Name,
-                Content = featureDetail.Content
+                Content = featureDetail.Content,
+                IsSearchFeature = feature.IsSearchFeature
             };
         }
 
@@ -139,6 +140,8 @@ namespace MakeFriendSolution.Application
             {
                 FeatureId = feature.Id,
                 FeatureDetailId = featureDetail.Id,
+                IsSearchFeature = feature.IsSearchFeature,
+                IsCalculated = feature.IsCalculated,
                 Name = feature.Name,
                 Content = featureDetail.Content,
                 Rate = feature.WeightRate,
@@ -160,6 +163,132 @@ namespace MakeFriendSolution.Application
             await Save();
             await UpdateGlobalVariable();
             return updateFeatureDetail;
+        }
+
+        public async Task<List<FeatureViewModel>> GetFeatureViewModelByUserId(Guid userId)
+        {
+            var haveFeatures = await _context.UserFeatures.Where(x => x.UserId == userId).ToListAsync();    
+            var features = await GetFeatures();
+            var featureDetails = await GetFeatureDetails();
+            var details = new List<FeatureViewModel>();
+
+            foreach (var item in haveFeatures)
+            {
+                var detail = await GetFeatureViewModel(item.FeatureDetailId);
+                details.Add(detail);
+            }
+
+            return details;
+        }
+        public async Task<(List<FeatureResponse>, List<FeatureResponse>)> GetFeatureResponseByUserId(Guid userId)
+        {
+            var haveFeatures = await _context.UserFeatures.Where(x => x.UserId == userId).ToListAsync();
+            var features = await GetFeatures();
+
+            var featureDetails = await GetFeatureDetails();
+
+            var details = new List<FeatureResponse>();
+
+            foreach (var item in haveFeatures)
+            {
+                var detail = await GetFeatureResponse(item.FeatureDetailId);
+                details.Add(detail);
+            }
+
+            //
+
+            var searchFeatures = await _context.SearchFeatures.Where(x => x.UserId == userId).ToListAsync();
+
+            var searchFeatureDetails = new List<FeatureResponse>();
+
+            foreach (var item in searchFeatures)
+            {
+                var detail = await GetFeatureResponse(item.FeatureDetailId);
+                searchFeatureDetails.Add(detail);
+            }
+
+            return (details, searchFeatureDetails);
+        }
+
+        public async Task<bool> CreateUserFeature(Guid userId, int featureId, int detailId)
+        {
+            var userFeature = await GetUserFeature(userId, detailId);
+            if(userFeature != null)
+            {
+                _context.UserFeatures.Remove(userFeature);
+            }
+            var newUserFeature = new UserFeature()
+            {
+                FeatureId = featureId,
+                FeatureDetailId = detailId,
+                UserId = userId
+            };
+
+            _context.UserFeatures.Add(newUserFeature);
+            try
+            {
+                await Save();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateUserFeature(Guid userId, int featureId, int newDetailId) {
+            var userFeature = await GetUserFeature(userId, featureId);
+            if(userFeature == null)
+            {
+                userFeature = new UserFeature()
+                {
+                    UserId = userId,
+                    FeatureId = featureId,
+                    FeatureDetailId = newDetailId
+                };
+                _context.UserFeatures.Add(userFeature);
+            }
+            else
+            {
+                userFeature.FeatureDetailId = newDetailId;
+                _context.UserFeatures.Update(userFeature);
+            }
+            try
+            {
+                await Save();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<UserFeature> GetUserFeature(Guid userId, int featureId)
+        {
+            var userFeatures = await _context.UserFeatures
+                .Where(x => x.UserId == userId && x.FeatureId == featureId)
+                .FirstOrDefaultAsync();
+
+            return userFeatures;
+        }
+        public async Task<bool> CheckUserFeature(Guid userId)
+        {
+            var features = await GetFeatures();
+            var userFeatures = await _context.UserFeatures.Where(x => x.UserId == userId).ToListAsync();
+
+            foreach (var item in features)
+            {
+                if(!userFeatures.Any(x=>x.FeatureId == item.Id))
+                {
+                    var user = await _context.Users.FindAsync(userId);
+                    user.IsInfoUpdated = false;
+
+                    _context.Users.Update(user);
+                    await Save();
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

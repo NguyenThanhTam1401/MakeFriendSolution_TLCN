@@ -38,7 +38,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 1,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    IsSearchFeature = true,
                     Name = "Dáng người",
                     WeightRate = 1
                 },
@@ -46,7 +46,8 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 2,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
+                    IsSearchFeature = true,
                     Name = "Học vấn",
                     WeightRate = 1
                 },
@@ -54,23 +55,15 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 3,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Phong cách sống",
-                    WeightRate = 1
-                },
-                new Feature()
-                {
-                    Id = 4,
-                    IsCalculated = true,
-                    IsDisplay = true,
-                    Name = "Điều quan trọng nhất",
                     WeightRate = 1
                 },
                 new Feature()
                 {
                     Id = 5,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Tôn giáo",
                     WeightRate = 1
                 },
@@ -78,7 +71,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 6,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Thể loại phim ưa thích",
                     WeightRate = 1
                 },
@@ -86,7 +79,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 7,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Nhạc ưa thích",
                     WeightRate = 1
                 },
@@ -94,7 +87,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 8,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Bầu không khí ưa thích",
                     WeightRate = 1
                 },
@@ -102,7 +95,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 9,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Đi mua sắm",
                     WeightRate = 1
                 },
@@ -110,7 +103,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 10,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Đi du lịch",
                     WeightRate = 1
                 },
@@ -118,7 +111,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 11,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Chơi game",
                     WeightRate = 1
                 },
@@ -126,7 +119,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 12,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Nấu ăn",
                     WeightRate = 1
                 },
@@ -134,7 +127,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 13,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Công nghệ",
                     WeightRate = 1
                 },
@@ -142,7 +135,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 14,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Thú cưng",
                     WeightRate = 1
                 },
@@ -150,7 +143,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 15,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Chơi thể thao",
                     WeightRate = 1
                 },
@@ -158,7 +151,7 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 16,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Hút thuốc",
                     WeightRate = 1
                 },
@@ -166,23 +159,9 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 17,
                     IsCalculated = true,
-                    IsDisplay = true,
+                    
                     Name = "Uống rượu bia",
                     WeightRate = 1
-                },
-                new Feature()
-                {
-                    Id = 18,
-                    IsCalculated = true,
-                    IsDisplay = false,
-                    Name = "Giới tính"
-                },
-                new Feature()
-                {
-                    Id = 19, 
-                    IsCalculated = true,
-                    IsDisplay = false,
-                    Name = "Nhóm tuổi"
                 }
             );
 
@@ -322,57 +301,6 @@ namespace MakeFriendSolution.EF
                     Id = 19,
                     FeatureId = 3,
                     Content = "Tự do",
-                    Weight = 7
-                }
-                //Điều quan trọng nhất Id = 4, max = 26
-                ,
-                new FeatureDetail()
-                {
-                    Id = 20,
-                    FeatureId = 4,
-                    Content = "Sức khỏe",
-                    Weight = 1
-                },
-                new FeatureDetail()
-                {
-                    Id = 21,
-                    FeatureId = 4,
-                    Content = "Thời gian",
-                    Weight = 2
-                },
-                new FeatureDetail()
-                {
-                    Id = 22,
-                    FeatureId = 4,
-                    Content = "Bạn bè",
-                    Weight = 3
-                },
-                new FeatureDetail()
-                {
-                    Id = 23,
-                    FeatureId = 4,
-                    Content = "Bạn đời",
-                    Weight = 4
-                },
-                new FeatureDetail()
-                {
-                    Id = 24,
-                    FeatureId = 4,
-                    Content = "Gia đình",
-                    Weight = 5
-                },
-                new FeatureDetail()
-                {
-                    Id = 25,
-                    FeatureId = 4,
-                    Content = "Sự nghiệp",
-                    Weight = 6
-                },
-                new FeatureDetail()
-                {
-                    Id = 26,
-                    FeatureId = 4,
-                    Content = "Niềm vui mỗi ngày",
                     Weight = 7
                 }
                 //Tôn giáo Id = 5, max = 29
@@ -772,66 +700,6 @@ namespace MakeFriendSolution.EF
                     Content = "Uống nhiều",
                     Weight = 3
                 }
-                //Giới tính ID = 18, max = 80
-                ,
-                new FeatureDetail()
-                {
-                    Id = 79,
-                    FeatureId = 18,
-                    Content = "Khác giới",
-                    Weight = 1
-                },
-                new FeatureDetail()
-                {
-                    Id = 80,
-                    FeatureId = 18,
-                    Content = "Cùng giới",
-                    Weight = -1
-                }
-                //Nhóm tuổi ID = 19, max = 86
-                ,
-                new FeatureDetail()
-                {
-                    Id = 81,
-                    FeatureId = 19,
-                    Content = EAgeGroup.Dưới_18_Tuổi.ToString(),
-                    Weight = 1
-                },
-                new FeatureDetail()
-                {
-                    Id = 82,
-                    FeatureId = 19,
-                    Content = EAgeGroup.Từ_18_Đến_25.ToString(),
-                    Weight = 2
-                },
-                new FeatureDetail()
-                {
-                    Id = 83,
-                    FeatureId = 19,
-                    Content = EAgeGroup.Từ_25_Đến_30.ToString(),
-                    Weight = 3
-                },
-                new FeatureDetail()
-                {
-                    Id = 84,
-                    FeatureId = 19,
-                    Content = EAgeGroup.Từ_31_Đến_40.ToString(),
-                    Weight = 4
-                },
-                new FeatureDetail()
-                {
-                    Id = 85,
-                    FeatureId = 19,
-                    Content = EAgeGroup.Từ_41_Đến_50.ToString(),
-                    Weight = 5
-                },
-                new FeatureDetail()
-                {
-                    Id = 86,
-                    FeatureId = 19,
-                    Content = EAgeGroup.Trên_50.ToString(),
-                    Weight = 6
-                }
             );
 
 
@@ -894,7 +762,6 @@ namespace MakeFriendSolution.EF
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
 
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -920,7 +787,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nam,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -945,7 +811,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nữ,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Người_Yêu_Lâu_Dài,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -971,7 +836,6 @@ namespace MakeFriendSolution.EF
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
 
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -996,7 +860,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nữ,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1021,7 +884,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nữ,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1046,7 +908,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nữ,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1071,7 +932,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nữ,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1096,7 +956,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nữ,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1121,7 +980,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nam,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1146,7 +1004,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nam,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1171,7 +1028,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nam,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 },
@@ -1196,7 +1052,6 @@ namespace MakeFriendSolution.EF
                     FindPeople = EGender.Nam,
                     Job = EJob.IT_Công_Nghệ_Thông_Tin,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                    Target = ETarget.Tìm_Bạn_Đời,
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
                 }

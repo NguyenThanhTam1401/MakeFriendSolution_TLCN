@@ -11,7 +11,7 @@ namespace MakeFriendSolution.Models
         //public string FromMailPassword { get; set; } = "Tamdeveloper1401";
 
         public string FromMail { get; set; } = "ng.th.tam1401@gmail.com";
-        public string FromMailPassword { get; set; } = "14011998Aa";
+        public string FromMailPassword { get; set; } = "14011998@Aa";
         public List<string> ToMails { get; set; } = new List<string>();
         public string Subject { get; set; } = "";
         public string Body { get; set; } = "";

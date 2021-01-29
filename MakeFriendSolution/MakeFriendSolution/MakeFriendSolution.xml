@@ -310,13 +310,7 @@
             Dưới đây là các thông số dùng để tính toán
             </summary>
         </member>
-        <member name="P:MakeFriendSolution.Models.ViewModels.ProfileResponse.Marriage">
-             <summary>
-             Dưới đây là các thông số dùng để tính toán
-             </summary>
-            
-        </member>
-        <member name="P:MakeFriendSolution.Models.ViewModels.UserRequest.Marriage">
+        <member name="P:MakeFriendSolution.Models.ViewModels.UserRequest.HaveFeatures">
              <summary>
              Dưới đây là các thông số dùng để tính toán
              </summary>

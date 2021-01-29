@@ -23,13 +23,15 @@ namespace MakeFriendSolution.Controllers
         private readonly IStorageService _storageService;
         private ISessionService _sessionService;
         private readonly IUserApplication _userApplication;
+        private readonly IFeatureApplication _featureApplication;
 
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication)
+        public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication, IFeatureApplication featureApplication)
         {
             _context = context;
             _storageService = storageService;
             _sessionService = sessionService;
             _userApplication = userApplication;
+            _featureApplication = featureApplication;
         }
 
         /// <summary>
@@ -255,10 +257,12 @@ namespace MakeFriendSolution.Controllers
             respone.Favorited = await _userApplication.IsLiked(userId, sessionUser.UserId);
 
             respone.Blocked = await _userApplication.GetBlockStatus(sessionUser.UserId, userId);
-
+            var features = await _featureApplication.GetFeatureResponseByUserId(user.Id);
+            respone.Features = features.Item1;
+            respone.SearchFeatures = features.Item2;
             return Ok(respone);
         }
-
+    
 
         /// <summary>
         /// Follow người dùng
@@ -701,5 +705,6 @@ namespace MakeFriendSolution.Controllers
                 Message = Message
             });
         }
+
     }
 }

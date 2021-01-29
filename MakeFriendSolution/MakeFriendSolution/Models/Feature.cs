@@ -11,10 +11,10 @@ namespace MakeFriendSolution.Models
         public string Name { get; set; }
         public double WeightRate { get; set; }
         public bool IsCalculated { get; set; }
-        public bool Delete { get; set; }
-        public bool IsDisplay { get; set; }
+        public bool IsSearchFeature { get; set; }
 
         public ICollection<UserFeature> UserFeatures { get; set; }
+        public ICollection<SearchFeature> SearchFeatures { get; set; }
         public ICollection<FeatureDetail> FeatureDetails { get; set; }
     }
 }

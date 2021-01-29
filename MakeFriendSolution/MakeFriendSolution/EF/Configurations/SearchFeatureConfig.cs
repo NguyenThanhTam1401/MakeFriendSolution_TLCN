@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.EF.Configurations
 {
-    public class UserFeatureConfig : IEntityTypeConfiguration<UserFeature>
+    public class SearchFeatureConfig : IEntityTypeConfiguration<SearchFeature>
     {
-        public void Configure(EntityTypeBuilder<UserFeature> builder)
+        public void Configure(EntityTypeBuilder<SearchFeature> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
 
-            builder.HasOne(x => x.User).WithMany(x => x.HaveFeatures)
+            builder.HasOne(x => x.User).WithMany(x => x.SearchFeatures)
                 .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.FeatureDetail).WithMany(x => x.UserFeatures)
+            builder.HasOne(x => x.FeatureDetail).WithMany(x => x.SearchFeatures)
                 .HasForeignKey(x => x.FeatureDetailId).OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.Feature).WithMany(x => x.UserFeatures)
+            builder.HasOne(x => x.Feature).WithMany(x => x.SearchFeatures)
                 .HasForeignKey(x => x.FeatureId).OnDelete(DeleteBehavior.NoAction);
         }
     }

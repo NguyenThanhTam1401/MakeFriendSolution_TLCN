@@ -22,7 +22,7 @@ namespace MakeFriendSolution.Application
 
         Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId);
 
-        int CalculateAge(DateTime birthDay);
+        //int CalculateAge(DateTime birthDay);
 
         void FilterUers(ref List<AppUser> users, FilterUserViewModel filter);
 
@@ -47,5 +47,6 @@ namespace MakeFriendSolution.Application
         Task<Tuple<List<UserDisplay>, int>> GetSimilarityScores(Guid userId, FilterUserViewModel request);
 
         Task<Tuple<List<UserDisplay>, int>> GetSimilarityUsers(Guid userId, FilterUserViewModel request);
+
     }
 }

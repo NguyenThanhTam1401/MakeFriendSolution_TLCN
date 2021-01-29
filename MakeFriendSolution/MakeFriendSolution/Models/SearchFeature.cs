@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MakeFriendSolution.Models
 {
-    public class UserFeature
+    public class SearchFeature
     {
         public int Id { get; set; }
         public Guid UserId { get; set; }

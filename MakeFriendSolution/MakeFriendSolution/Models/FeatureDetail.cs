@@ -13,5 +13,6 @@ namespace MakeFriendSolution.Models
         public int FeatureId { get; set; }
         public Feature Feature { get; set; }
         public ICollection<UserFeature> UserFeatures { get; set; }
+        public ICollection<SearchFeature> SearchFeatures { get; set; }
     }
 }

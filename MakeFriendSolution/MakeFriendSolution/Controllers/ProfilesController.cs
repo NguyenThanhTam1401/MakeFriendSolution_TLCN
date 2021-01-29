@@ -22,17 +22,16 @@ namespace MakeFriendSolution.Controllers
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
-        private ISessionService _sessionService;
         private readonly IUserApplication _userApplication;
+        private readonly IFeatureApplication _featureApplication;
 
-        public ProfilesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication)
+        public ProfilesController(MakeFriendDbContext context, IStorageService storageService, IUserApplication userApplication, IFeatureApplication featureApplication)
         {
             _context = context;
             _storageService = storageService;
-            _sessionService = sessionService;
             _userApplication = userApplication;
+            _featureApplication = featureApplication;
         }
-        
         
         /// <summary>
         /// Generate dữ liệu giả phục vụ demo
@@ -74,23 +73,24 @@ namespace MakeFriendSolution.Controllers
             //Random Nu
             for (int i = 0; i < 40; i++)
             {
-                var user = new AppUser();
-                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
-                user.Gender = EGender.Nữ;
+                var user = new AppUser
+                {
+                    FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)],
+                    Gender = EGender.Nữ,
 
-                user.Email = (gmailCount++).ToString() + "@gmail.com";
-                user.FindPeople = RandomEnumValue<EGender>();
-                user.Height = random.Next(145, 180);
-                user.Weight = random.Next(30, 70);
-                user.IsInfoUpdated = true;
-                user.Job = RandomEnumValue<EJob>();
-                user.Location = RandomEnumValue<ELocation>();
-                user.PassWord = "1111";
-                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
-                user.Role = ERole.User;
-                user.Status = EUserStatus.Active;
+                    Email = (gmailCount++).ToString() + "@gmail.com",
+                    FindPeople = RandomEnumValue<EGender>(),
+                    Height = random.Next(145, 180),
+                    Weight = random.Next(30, 70),
+                    IsInfoUpdated = true,
+                    Job = RandomEnumValue<EJob>(),
+                    Location = RandomEnumValue<ELocation>(),
+                    PassWord = "1111",
+                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+                    Role = ERole.User,
+                    Status = EUserStatus.Active
+                };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Target = RandomEnumValue<ETarget>();
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
                 user.TypeAccount = ETypeAccount.Facebook;
                 user.UserName = user.Email;
@@ -117,23 +117,24 @@ namespace MakeFriendSolution.Controllers
             //Random Nam
             for (int i = 0; i < 50; i++)
             {
-                var user = new AppUser();
-                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
-                user.Gender = EGender.Nam;
+                var user = new AppUser
+                {
+                    FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)],
+                    Gender = EGender.Nam,
 
-                user.Email = (gmailCount++).ToString() + "@gmail.com";
-                user.FindPeople = RandomEnumValue<EGender>();
-                user.Height = random.Next(150, 200);
-                user.Weight = random.Next(40, 80);
-                user.IsInfoUpdated = true;
-                user.Job = RandomEnumValue<EJob>();
-                user.Location = RandomEnumValue<ELocation>();
-                user.PassWord = "1111";
-                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
-                user.Role = ERole.User;
-                user.Status = EUserStatus.Active;
+                    Email = (gmailCount++).ToString() + "@gmail.com",
+                    FindPeople = RandomEnumValue<EGender>(),
+                    Height = random.Next(150, 200),
+                    Weight = random.Next(40, 80),
+                    IsInfoUpdated = true,
+                    Job = RandomEnumValue<EJob>(),
+                    Location = RandomEnumValue<ELocation>(),
+                    PassWord = "1111",
+                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+                    Role = ERole.User,
+                    Status = EUserStatus.Active
+                };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Target = RandomEnumValue<ETarget>();
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
                 user.TypeAccount = ETypeAccount.Facebook;
                 user.UserName = user.Email;
@@ -160,23 +161,24 @@ namespace MakeFriendSolution.Controllers
             //Random Nu
             for (int i = 0; i < 80; i++)
             {
-                var user = new AppUser();
-                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
-                user.Gender = EGender.Nữ;
-                
-                user.Email = (gmailCount++).ToString() + "@gmail.com";
-                user.FindPeople = RandomEnumValue<EGender>();
-                user.Height = random.Next(145, 180);
-                user.Weight = random.Next(30, 70);
-                user.IsInfoUpdated = true;
-                user.Job = RandomEnumValue<EJob>();
-                user.Location = RandomEnumValue<ELocation>();
-                user.PassWord = "1111";
-                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
-                user.Role = ERole.User;
-                user.Status = EUserStatus.Active;
+                var user = new AppUser
+                {
+                    FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)],
+                    Gender = EGender.Nữ,
+
+                    Email = (gmailCount++).ToString() + "@gmail.com",
+                    FindPeople = RandomEnumValue<EGender>(),
+                    Height = random.Next(145, 180),
+                    Weight = random.Next(30, 70),
+                    IsInfoUpdated = true,
+                    Job = RandomEnumValue<EJob>(),
+                    Location = RandomEnumValue<ELocation>(),
+                    PassWord = "1111",
+                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+                    Role = ERole.User,
+                    Status = EUserStatus.Active
+                };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Target = RandomEnumValue<ETarget>();
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
@@ -203,23 +205,24 @@ namespace MakeFriendSolution.Controllers
             //Random Nam
             for (int i = 0; i < 90; i++)
             {
-                var user = new AppUser();
-                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)];
-                user.Gender = EGender.Nam;
-                
-                user.Email = (gmailCount++).ToString() + "@gmail.com";
-                user.FindPeople = RandomEnumValue<EGender>();
-                user.Height = random.Next(150, 200);
-                user.Weight = random.Next(40, 80);
-                user.IsInfoUpdated = true;
-                user.Job = RandomEnumValue<EJob>();
-                user.Location = RandomEnumValue<ELocation>();
-                user.PassWord = "1111";
-                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
-                user.Role = ERole.User;
-                user.Status = EUserStatus.Active;
+                var user = new AppUser
+                {
+                    FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)],
+                    Gender = EGender.Nam,
+
+                    Email = (gmailCount++).ToString() + "@gmail.com",
+                    FindPeople = RandomEnumValue<EGender>(),
+                    Height = random.Next(150, 200),
+                    Weight = random.Next(40, 80),
+                    IsInfoUpdated = true,
+                    Job = RandomEnumValue<EJob>(),
+                    Location = RandomEnumValue<ELocation>(),
+                    PassWord = "1111",
+                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+                    Role = ERole.User,
+                    Status = EUserStatus.Active
+                };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Target = RandomEnumValue<ETarget>();
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
                 user.TypeAccount = ETypeAccount.System;
                 user.UserName = user.Email;
@@ -246,27 +249,33 @@ namespace MakeFriendSolution.Controllers
             //Random InActive Account
             for (int i = 0; i < 36; i++)
             {
-                var user = new AppUser();
-                user.FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)];
-                user.Gender = RandomEnumValue<EGender>();
-               
-                user.Email = (gmailCount++).ToString() + "@gmail.com";
-                user.FindPeople = RandomEnumValue<EGender>();
-                user.Height = random.Next(145, 180);
-                user.Weight = random.Next(30, 70);
-                user.IsInfoUpdated = true;
-                user.Job = RandomEnumValue<EJob>();
-                user.Location = RandomEnumValue<ELocation>();
-                user.PassWord = "1111";
-                user.PhoneNumber = "+84" + (random.Next(100000000, 999999999));
-                user.Role = ERole.User;
-                user.Status = RandomEnumValue<EUserStatus>();
+                var user = new AppUser
+                {
+                    FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)],
+                    Gender = RandomEnumValue<EGender>(),
+
+                    Email = (gmailCount++).ToString() + "@gmail.com",
+                    FindPeople = RandomEnumValue<EGender>(),
+                    Height = random.Next(145, 180),
+                    Weight = random.Next(30, 70),
+                    IsInfoUpdated = true,
+                    Job = RandomEnumValue<EJob>(),
+                    Location = RandomEnumValue<ELocation>(),
+                    PassWord = "1111",
+                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+                    Role = ERole.User,
+                    Status = RandomEnumValue<EUserStatus>()
+                };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Target = RandomEnumValue<ETarget>();
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
                 user.TypeAccount = ETypeAccount.Google;
                 user.UserName = user.Email;
                 user.NumberOfLikes = random.Next(10, 10000);
+
+                while(user.Gender == EGender.Tất_Cả)
+                {
+                    user.Gender = RandomEnumValue<EGender>();
+                }
 
                 if (user.Gender == EGender.Nữ)
                 {
@@ -306,10 +315,12 @@ namespace MakeFriendSolution.Controllers
 
             while (toDate > fromDate)
             {
-                var access = new Access();
-                access.AuthorizeCount = random.Next(500, 2000);
-                access.UnauthorizeCount = random.Next(200, 800);
-                access.Date = fromDate.Date;
+                var access = new Access
+                {
+                    AuthorizeCount = random.Next(500, 2000),
+                    UnauthorizeCount = random.Next(200, 800),
+                    Date = fromDate.Date
+                };
                 fromDate = fromDate.AddDays(1);
                 accesses.Add(access);
             }
@@ -364,7 +375,7 @@ namespace MakeFriendSolution.Controllers
         [HttpPut()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Update([FromForm] UserRequest request)
+        public async Task<IActionResult> Update([FromBody] UserRequest request)
         {
             var user = await _userApplication.GetById(request.Id);
             if (user == null)
@@ -425,7 +436,7 @@ namespace MakeFriendSolution.Controllers
                 });
 
             }
-            var data = await filterFeatures(requests);
+            var data = await FilterFeatures(requests);
 
             var pageTotal = data.Count / pagingRequest.PageSize;
 
@@ -438,11 +449,11 @@ namespace MakeFriendSolution.Controllers
             return Ok(new
             {
                 data = response,
-                pageTotal = pageTotal
+                pageTotal
             });
         }
 
-        private async Task<List<AppUser>> filterFeatures(List<FilterFeaturesRequest> requests)
+        private async Task<List<AppUser>> FilterFeatures(List<FilterFeaturesRequest> requests)
         {
             //List<EBody> bodies = new List<EBody>();
             List<EGender> genders = new List<EGender>();
@@ -928,62 +939,8 @@ namespace MakeFriendSolution.Controllers
 
         [AllowAnonymous]
         [HttpGet("features")]
-        public IActionResult GetFeatures()
+        public async Task<IActionResult> GetFeatures()
         {
-            //var AtmosphereLike = new List<string>();
-            //List<EAtmosphereLike> AtmosphereLikes = Enum.GetValues(typeof(EAtmosphereLike))
-            //        .Cast<EAtmosphereLike>()
-            //        .ToList();
-            //foreach (var item in AtmosphereLikes)
-            //{
-            //    AtmosphereLike.Add(item.ToString());
-            //}
-
-            //var Body = new List<string>();
-            //List<EBody> Bodys = Enum.GetValues(typeof(EBody))
-            //        .Cast<EBody>()
-            //        .ToList();
-            //foreach (var item in Bodys)
-            //{
-            //    Body.Add(item.ToString());
-            //}
-
-            //var Character = new List<string>();
-            //List<ECharacter> Characters = Enum.GetValues(typeof(ECharacter))
-            //        .Cast<ECharacter>()
-            //        .ToList();
-            //foreach (var item in Characters)
-            //{
-            //    Character.Add(item.ToString());
-            //}
-
-            //var DrinkBeer = new List<string>();
-            //List<EDrinkBeer> DrinkBeers = Enum.GetValues(typeof(EDrinkBeer))
-            //        .Cast<EDrinkBeer>()
-            //        .ToList();
-            //foreach (var item in DrinkBeers)
-            //{
-            //    DrinkBeer.Add(item.ToString());
-            //}
-
-            //var Education = new List<string>();
-            //List<EEducation> Educations = Enum.GetValues(typeof(EEducation))
-            //        .Cast<EEducation>()
-            //        .ToList();
-            //foreach (var item in Educations)
-            //{
-            //    Education.Add(item.ToString());
-            //}
-
-            //var FavoriteMovie = new List<string>();
-            //List<EFavoriteMovie> FavoriteMovies = Enum.GetValues(typeof(EFavoriteMovie))
-            //        .Cast<EFavoriteMovie>()
-            //        .ToList();
-            //foreach (var item in FavoriteMovies)
-            //{
-            //    FavoriteMovie.Add(item.ToString());
-            //}
-
             var Gender = new List<string>();
             List<EGender> Genders = Enum.GetValues(typeof(EGender))
                     .Cast<EGender>()
@@ -1011,15 +968,6 @@ namespace MakeFriendSolution.Controllers
                 Job.Add(item.ToString());
             }
 
-            //var LifeStyle = new List<string>();
-            //List<ELifeStyle> LifeStyles = Enum.GetValues(typeof(ELifeStyle))
-            //        .Cast<ELifeStyle>()
-            //        .ToList();
-            //foreach (var item in LifeStyles)
-            //{
-            //    LifeStyle.Add(item.ToString());
-            //}
-
             var Location = new List<string>();
             List<ELocation> Locations = Enum.GetValues(typeof(ELocation))
                     .Cast<ELocation>()
@@ -1029,139 +977,23 @@ namespace MakeFriendSolution.Controllers
                 Location.Add(item.ToString());
             }
 
-            //var Marriage = new List<string>();
-            //List<EMarriage> Marriages = Enum.GetValues(typeof(EMarriage))
-            //        .Cast<EMarriage>()
+
+            //var TypeAccount = new List<string>();
+            //List<ETypeAccount> TypeAccounts = Enum.GetValues(typeof(ETypeAccount))
+            //        .Cast<ETypeAccount>()
             //        .ToList();
-            //foreach (var item in Marriages)
+            //foreach (var item in TypeAccounts)
             //{
-            //    Marriage.Add(item.ToString());
+            //    TypeAccount.Add(item.ToString());
             //}
 
-            //var MostValuable = new List<string>();
-            //List<EMostValuable> MostValuables = Enum.GetValues(typeof(EMostValuable))
-            //        .Cast<EMostValuable>()
+            //var UserStatus = new List<string>();
+            //List<EUserStatus> UserStatuses = Enum.GetValues(typeof(EUserStatus))
+            //        .Cast<EUserStatus>()
             //        .ToList();
-            //foreach (var item in MostValuables)
+            //foreach (var item in UserStatuses)
             //{
-            //    MostValuable.Add(item.ToString());
-            //}
-
-            var OperationType = new List<string>();
-            List<EOperationType> OperationTypes = Enum.GetValues(typeof(EOperationType))
-                    .Cast<EOperationType>()
-                    .ToList();
-            foreach (var item in OperationTypes)
-            {
-                OperationType.Add(item.ToString());
-            }
-
-            //var Religion = new List<string>();
-            //List<EReligion> Religions = Enum.GetValues(typeof(EReligion))
-            //        .Cast<EReligion>()
-            //        .ToList();
-            //foreach (var item in Religions)
-            //{
-            //    Religion.Add(item.ToString());
-            //}
-
-            //var Smoking = new List<string>();
-            //List<ESmoking> Smokings = Enum.GetValues(typeof(ESmoking))
-            //        .Cast<ESmoking>()
-            //        .ToList();
-            //foreach (var item in Smokings)
-            //{
-            //    Smoking.Add(item.ToString());
-            //}
-
-            var Target = new List<string>();
-            List<ETarget> Targets = Enum.GetValues(typeof(ETarget))
-                    .Cast<ETarget>()
-                    .ToList();
-            foreach (var item in Targets)
-            {
-                Target.Add(item.ToString());
-            }
-
-            var TypeAccount = new List<string>();
-            List<ETypeAccount> TypeAccounts = Enum.GetValues(typeof(ETypeAccount))
-                    .Cast<ETypeAccount>()
-                    .ToList();
-            foreach (var item in TypeAccounts)
-            {
-                TypeAccount.Add(item.ToString());
-            }
-
-            var UserStatus = new List<string>();
-            List<EUserStatus> UserStatuses = Enum.GetValues(typeof(EUserStatus))
-                    .Cast<EUserStatus>()
-                    .ToList();
-            foreach (var item in UserStatuses)
-            {
-                UserStatus.Add(item.ToString());
-            }
-
-            var Cook = new List<string>();
-            //List<ECook> Cooks = Enum.GetValues(typeof(ECook))
-            //        .Cast<ECook>()
-            //        .ToList();
-            //foreach (var item in Cooks)
-            //{
-            //    Cook.Add(item.ToString());
-            //}
-
-            //var Game = new List<string>();
-            //List<EGame> Games = Enum.GetValues(typeof(EGame))
-            //        .Cast<EGame>()
-            //        .ToList();
-            //foreach (var item in Games)
-            //{
-            //    Game.Add(item.ToString());
-            //}
-
-            //var Travel = new List<string>();
-            //List<ETravel> Travels = Enum.GetValues(typeof(ETravel))
-            //        .Cast<ETravel>()
-            //        .ToList();
-            //foreach (var item in Travels)
-            //{
-            //    Travel.Add(item.ToString());
-            //}
-
-            //var PlaySport = new List<string>();
-            //List<EPlaySport> LikeSports = Enum.GetValues(typeof(EPlaySport))
-            //        .Cast<EPlaySport>()
-            //        .ToList();
-            //foreach (var item in LikeSports)
-            //{
-            //    PlaySport.Add(item.ToString());
-            //}
-
-            //var Shopping = new List<string>();
-            //List<EShopping> Shoppings = Enum.GetValues(typeof(EShopping))
-            //        .Cast<EShopping>()
-            //        .ToList();
-            //foreach (var item in Shoppings)
-            //{
-            //    Shopping.Add(item.ToString());
-            //}
-
-            //var LikePet = new List<string>();
-            //List<ELikePet> LikePets = Enum.GetValues(typeof(ELikePet))
-            //        .Cast<ELikePet>()
-            //        .ToList();
-            //foreach (var item in LikePets)
-            //{
-            //    LikePet.Add(item.ToString());
-            //}
-
-            //var LikeTechnology = new List<string>();
-            //List<ELikeTechnology> LikeTechnologies = Enum.GetValues(typeof(ELikeTechnology))
-            //        .Cast<ELikeTechnology>()
-            //        .ToList();
-            //foreach (var item in LikeTechnologies)
-            //{
-            //    LikeTechnology.Add(item.ToString());
+            //    UserStatus.Add(item.ToString());
             //}
 
             var AgeGroup = new List<string>();
@@ -1172,6 +1004,8 @@ namespace MakeFriendSolution.Controllers
             {
                 AgeGroup.Add(item.ToString());
             }
+
+            var features = await _featureApplication.GetFeatures();
 
             var response = new
             {
@@ -1188,51 +1022,59 @@ namespace MakeFriendSolution.Controllers
                 Location,
                 //Marriage,
                 //MostValuable,
-                OperationType,
                 //Religion,
                 //Smoking,
-                Target,
-                Cook,
                 //LikeTechnology,
                 //LikePet,
                 //PlaySport,
                 //Travel,
                 //Game,
                 //Shopping,
-                TypeAccount,
-                UserStatus,
-                AgeGroup
+                AgeGroup,
+                features
             };
 
             return Ok(response);
         }
 
-        public async Task GenData(AppUser user)
+        private async Task GenData(AppUser user)
         {
             var random = new Random();
             var features = await _context.Features.Include(x => x.FeatureDetails).ToListAsync();
             var userFeatures = new List<UserFeature>();
+            var searchFeatures = new List<SearchFeature>();
             foreach (var item in features)
             {
                 var featureDetailId = item.FeatureDetails.ToList()[random.Next(item.FeatureDetails.Count)].Id;
                 
                 var uf = new UserFeature()
                 {
-                    Count = 0,
-                    Enable = true,
                     FeatureDetailId = featureDetailId,
                     UserId = user.Id,
                     FeatureId = item.Id
                 };
                 userFeatures.Add(uf);
+
+                if (item.IsSearchFeature)
+                {
+                    featureDetailId = item.FeatureDetails.ToList()[random.Next(item.FeatureDetails.Count)].Id;
+                    var searchfeature = new SearchFeature()
+                    {
+                        FeatureDetailId = featureDetailId,
+                        UserId = user.Id,
+                        FeatureId = item.Id
+                    };
+                    searchFeatures.Add(searchfeature);
+                }
             }
             _context.UserFeatures.AddRange(userFeatures);
+            _context.SearchFeatures.AddRange(searchFeatures);
             await _context.SaveChangesAsync();
         }
 
         [AllowAnonymous]
         [HttpGet("testData")]
-        public IActionResult testData()
+        public IActionResult TestData()
         {
             var users = _context.Users.Include(x => x.HaveFeatures).Take(2).ToList();
             return Ok(users);

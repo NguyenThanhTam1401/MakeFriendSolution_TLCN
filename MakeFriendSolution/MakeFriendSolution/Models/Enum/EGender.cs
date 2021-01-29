@@ -8,6 +8,7 @@ namespace MakeFriendSolution.Models.Enum
     public enum EGender
     {
         Nữ,
-        Nam
+        Nam,
+        Tất_Cả
     }
 }

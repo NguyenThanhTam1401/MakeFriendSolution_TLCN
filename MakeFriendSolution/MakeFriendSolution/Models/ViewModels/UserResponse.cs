@@ -30,12 +30,14 @@ namespace MakeFriendSolution.Models.ViewModels
             NumberOfImages = user.NumberOfImages;
             Age = this.CalculateAge(user.Dob);
             //
-            Job = Job.ToString();
-            Location = Location.ToString();
-            Title = Title;
-            Weight = Weight;
-            Height = Height;
-            Dob = Dob;
+            Job = user.Job.ToString();
+            Location = user.Location.ToString();
+            Title = user.Title;
+            Weight = user.Weight;
+            Height = user.Height;
+            Dob = user.Dob;
+            FindPeople = user.FindPeople.ToString();
+            FindAgeGroup = user.FindAgeGroup.ToString();
 
             GetImagePath(user);
         }
@@ -44,7 +46,8 @@ namespace MakeFriendSolution.Models.ViewModels
         {
             try
             {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+                var a = _storageService.GetFileUrl(user.AvatarPath);
+                byte[] imageBits = System.IO.File.ReadAllBytes($"./{a}");
                 this.AvatarPath = Convert.ToBase64String(imageBits);
                 this.HasAvatar = true;
             }
@@ -93,6 +96,9 @@ namespace MakeFriendSolution.Models.ViewModels
         public DateTime Dob { get; set; }
         public string Job { get; set; }
         public string Location { get; set; }
-        List<FeatureResponse> Features { get; set; }
+        public string FindPeople { get; set; }
+        public string FindAgeGroup { get; set; }
+        public List<FeatureResponse> Features { get; set; }
+        public List<FeatureResponse> SearchFeatures { get; set; }
     }
 }

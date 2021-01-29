@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    [Migration("20210110113111_Init")]
+    [Migration("20210128094308_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,20 +54,8 @@ namespace MakeFriendSolution.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AtmosphereLike")
-                        .HasColumnType("int");
-
                     b.Property<string>("AvatarPath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Body")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Character")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Cook")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -75,18 +63,12 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DrinkBeer")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Education")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<int>("FavoriteMovie")
+                    b.Property<int>("FindAgeGroup")
                         .HasColumnType("int");
 
                     b.Property<int>("FindPeople")
@@ -96,9 +78,6 @@ namespace MakeFriendSolution.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
-
-                    b.Property<int>("Game")
-                        .HasColumnType("int");
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
@@ -114,22 +93,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<int>("Job")
                         .HasColumnType("int");
 
-                    b.Property<int>("LifeStyle")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LikePet")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LikeTechnology")
-                        .HasColumnType("int");
-
                     b.Property<int>("Location")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Marriage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MostValuable")
                         .HasColumnType("int");
 
                     b.Property<int>("NumberOfFiends")
@@ -171,19 +135,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlaySport")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Religion")
-                        .HasColumnType("int");
-
                     b.Property<int>("Role")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Shopping")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Smoking")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -192,14 +144,8 @@ namespace MakeFriendSolution.Migrations
                     b.Property<string>("Summary")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Target")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Travel")
-                        .HasColumnType("int");
 
                     b.Property<int>("TypeAccount")
                         .ValueGeneratedOnAdd()
@@ -209,7 +155,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 10, 18, 31, 10, 998, DateTimeKind.Local).AddTicks(1911));
+                        .HasDefaultValue(new DateTime(2021, 1, 28, 16, 43, 8, 381, DateTimeKind.Local).AddTicks(3914));
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -228,30 +174,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96d"),
-                            AtmosphereLike = 4,
                             AvatarPath = "tam.jpg",
-                            Body = 2,
-                            Character = 2,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 3,
-                            Education = 3,
                             Email = "tam@gmail.com",
-                            FavoriteMovie = 9,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Nguyễn Thành Tâm",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 6,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 2,
-                            MostValuable = 5,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -259,16 +193,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "admin",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 1,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 0,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Admin",
@@ -277,30 +205,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c967"),
-                            AtmosphereLike = 3,
                             AvatarPath = "nhung2.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "nhung@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 1,
                             FullName = "Nguyễn Huyền Nhung",
-                            Game = 0,
                             Gender = 0,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 6,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 3,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -308,16 +224,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0369875463",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 1,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "nhung2",
@@ -326,30 +236,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96e"),
-                            AtmosphereLike = 0,
                             AvatarPath = "vuong.jpg",
-                            Body = 3,
-                            Character = 3,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 1,
-                            Education = 4,
                             Email = "vuong@gmail.com",
-                            FavoriteMovie = 7,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Nguyên Vương",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 1,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 38,
-                            Marriage = 3,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -357,16 +255,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 2,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
-                            Target = 3,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "vuong",
@@ -375,30 +267,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c96f"),
-                            AtmosphereLike = 3,
                             AvatarPath = "hieu.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "hieu@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Võ Minh Hiếu",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -406,16 +286,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "hieu",
@@ -424,30 +298,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c965"),
-                            AtmosphereLike = 3,
                             AvatarPath = "tien.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "tien@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Lê Minh Tiến",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -455,16 +317,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "tien",
@@ -473,30 +329,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c961"),
-                            AtmosphereLike = 3,
                             AvatarPath = "dinh.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "dinh@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Lê Kim Đỉnh",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -504,16 +348,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Dinh",
@@ -522,30 +360,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c962"),
-                            AtmosphereLike = 3,
                             AvatarPath = "dat.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "dat@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Hồ Quốc Đạt",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -553,16 +379,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Dat",
@@ -571,30 +391,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c963"),
-                            AtmosphereLike = 3,
                             AvatarPath = "son.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "son@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Phan Sơn",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -602,16 +410,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Son",
@@ -620,30 +422,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c964"),
-                            AtmosphereLike = 3,
                             AvatarPath = "duc.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "duc@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 0,
                             FullName = "Trí Đức",
-                            Game = 0,
                             Gender = 1,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -651,16 +441,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Duc",
@@ -669,30 +453,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c966"),
-                            AtmosphereLike = 3,
                             AvatarPath = "nhung.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "nhung1@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 1,
                             FullName = "Gia Nhung",
-                            Game = 0,
                             Gender = 0,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -700,16 +472,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "GiaNhung",
@@ -718,30 +484,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c968"),
-                            AtmosphereLike = 3,
                             AvatarPath = "diem.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "diem@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 1,
                             FullName = "Kiều Diễm",
-                            Game = 0,
                             Gender = 0,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -749,16 +503,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Diem",
@@ -767,30 +515,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c969"),
-                            AtmosphereLike = 3,
                             AvatarPath = "han.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "han@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 1,
                             FullName = "Gia Hân",
-                            Game = 0,
                             Gender = 0,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -798,16 +534,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Han",
@@ -816,30 +546,18 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = new Guid("ec826af8-0310-48cf-8a14-da11bdb1c977"),
-                            AtmosphereLike = 3,
                             AvatarPath = "mai.jpg",
-                            Body = 2,
-                            Character = 1,
-                            Cook = 0,
                             CreatedAt = new DateTime(2020, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Dob = new DateTime(1999, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DrinkBeer = 4,
-                            Education = 2,
                             Email = "mai@gmail.com",
-                            FavoriteMovie = 11,
+                            FindAgeGroup = 0,
                             FindPeople = 1,
                             FullName = "Xuân Maiii",
-                            Game = 0,
                             Gender = 0,
                             Height = 170,
                             IsInfoUpdated = true,
                             Job = 7,
-                            LifeStyle = 3,
-                            LikePet = 0,
-                            LikeTechnology = 0,
                             Location = 37,
-                            Marriage = 1,
-                            MostValuable = 2,
                             NumberOfFiends = 0,
                             NumberOfImages = 0,
                             NumberOfLikes = 0,
@@ -847,16 +565,10 @@ namespace MakeFriendSolution.Migrations
                             PassWord = "1111",
                             PasswordForgottenPeriod = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PhoneNumber = "0396925225",
-                            PlaySport = 0,
-                            Religion = 0,
                             Role = 0,
-                            Shopping = 0,
-                            Smoking = 1,
                             Status = 0,
                             Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
-                            Target = 4,
                             Title = "Thông tin của tôi",
-                            Travel = 0,
                             TypeAccount = 0,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Mai",
@@ -930,17 +642,12 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Delete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
                     b.Property<bool>("IsCalculated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("IsDisplay")
+                    b.Property<bool>("IsSearchFeature")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -960,173 +667,130 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 1,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = true,
                             Name = "Dáng người",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 2,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = true,
                             Name = "Học vấn",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 3,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Phong cách sống",
                             WeightRate = 1.0
                         },
                         new
                         {
-                            Id = 4,
-                            Delete = false,
-                            IsCalculated = true,
-                            IsDisplay = true,
-                            Name = "Điều quan trọng nhất",
-                            WeightRate = 1.0
-                        },
-                        new
-                        {
                             Id = 5,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Tôn giáo",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 6,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Thể loại phim ưa thích",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 7,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Nhạc ưa thích",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 8,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Bầu không khí ưa thích",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 9,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Đi mua sắm",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 10,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Đi du lịch",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 11,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Chơi game",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 12,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Nấu ăn",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 13,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Công nghệ",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 14,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Thú cưng",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 15,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Chơi thể thao",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 16,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Hút thuốc",
                             WeightRate = 1.0
                         },
                         new
                         {
                             Id = 17,
-                            Delete = false,
                             IsCalculated = true,
-                            IsDisplay = true,
+                            IsSearchFeature = false,
                             Name = "Uống rượu bia",
                             WeightRate = 1.0
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Delete = false,
-                            IsCalculated = true,
-                            IsDisplay = false,
-                            Name = "Giới tính",
-                            WeightRate = 0.0
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Delete = false,
-                            IsCalculated = true,
-                            IsDisplay = false,
-                            Name = "Nhóm tuổi",
-                            WeightRate = 0.0
                         });
                 });
 
@@ -1289,55 +953,6 @@ namespace MakeFriendSolution.Migrations
                             Id = 19,
                             Content = "Tự do",
                             FeatureId = 3,
-                            Weight = 7
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Content = "Sức khỏe",
-                            FeatureId = 4,
-                            Weight = 1
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Content = "Thời gian",
-                            FeatureId = 4,
-                            Weight = 2
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Content = "Bạn bè",
-                            FeatureId = 4,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Content = "Bạn đời",
-                            FeatureId = 4,
-                            Weight = 4
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Content = "Gia đình",
-                            FeatureId = 4,
-                            Weight = 5
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Content = "Sự nghiệp",
-                            FeatureId = 4,
-                            Weight = 6
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Content = "Niềm vui mỗi ngày",
-                            FeatureId = 4,
                             Weight = 7
                         },
                         new
@@ -1710,62 +1325,6 @@ namespace MakeFriendSolution.Migrations
                             Content = "Uống nhiều",
                             FeatureId = 17,
                             Weight = 3
-                        },
-                        new
-                        {
-                            Id = 79,
-                            Content = "Khác giới",
-                            FeatureId = 18,
-                            Weight = 1
-                        },
-                        new
-                        {
-                            Id = 80,
-                            Content = "Cùng giới",
-                            FeatureId = 18,
-                            Weight = -1
-                        },
-                        new
-                        {
-                            Id = 81,
-                            Content = "Dưới_18_Tuổi",
-                            FeatureId = 19,
-                            Weight = 1
-                        },
-                        new
-                        {
-                            Id = 82,
-                            Content = "Từ_18_Đến_25",
-                            FeatureId = 19,
-                            Weight = 2
-                        },
-                        new
-                        {
-                            Id = 83,
-                            Content = "Từ_25_Đến_30",
-                            FeatureId = 19,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 84,
-                            Content = "Từ_31_Đến_40",
-                            FeatureId = 19,
-                            Weight = 4
-                        },
-                        new
-                        {
-                            Id = 85,
-                            Content = "Từ_41_Đến_50",
-                            FeatureId = 19,
-                            Weight = 5
-                        },
-                        new
-                        {
-                            Id = 86,
-                            Content = "Trên_50",
-                            FeatureId = 19,
-                            Weight = 6
                         });
                 });
 
@@ -1857,6 +1416,35 @@ namespace MakeFriendSolution.Migrations
                     b.ToTable("LikeImages");
                 });
 
+            modelBuilder.Entity("MakeFriendSolution.Models.SearchFeature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FeatureDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FeatureId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeatureDetailId");
+
+                    b.HasIndex("FeatureId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SearchFeatures");
+                });
+
             modelBuilder.Entity("MakeFriendSolution.Models.SimilarityFeature", b =>
                 {
                     b.Property<int>("Id")
@@ -1867,7 +1455,7 @@ namespace MakeFriendSolution.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 1, 10, 18, 31, 11, 24, DateTimeKind.Local).AddTicks(134));
+                        .HasDefaultValue(new DateTime(2021, 1, 28, 16, 43, 8, 406, DateTimeKind.Local).AddTicks(1534));
 
                     b.HasKey("Id");
 
@@ -1877,7 +1465,7 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 1,
-                            UpdatedAt = new DateTime(2021, 1, 10, 18, 31, 11, 31, DateTimeKind.Local).AddTicks(8622)
+                            UpdatedAt = new DateTime(2021, 1, 28, 16, 43, 8, 414, DateTimeKind.Local).AddTicks(8978)
                         });
                 });
 
@@ -1951,12 +1539,6 @@ namespace MakeFriendSolution.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Enable")
-                        .HasColumnType("bit");
 
                     b.Property<int>("FeatureDetailId")
                         .HasColumnType("int");
@@ -2059,6 +1641,27 @@ namespace MakeFriendSolution.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MakeFriendSolution.Models.SearchFeature", b =>
+                {
+                    b.HasOne("MakeFriendSolution.Models.FeatureDetail", "FeatureDetail")
+                        .WithMany("SearchFeatures")
+                        .HasForeignKey("FeatureDetailId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MakeFriendSolution.Models.Feature", "Feature")
+                        .WithMany("SearchFeatures")
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MakeFriendSolution.Models.AppUser", "User")
+                        .WithMany("SearchFeatures")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

@@ -24,5 +24,13 @@ namespace MakeFriendSolution.Application
 
         Task<FeatureViewModel> GetFeatureViewModel(int featureDetailId);
         Task<FeatureResponse> GetFeatureResponse(int featureDetailId);
+        Task<List<FeatureViewModel>> GetFeatureViewModelByUserId(Guid userId);
+        Task<(List<FeatureResponse>, List<FeatureResponse>)> GetFeatureResponseByUserId(Guid userId);
+
+        Task<bool> CreateUserFeature(Guid userId, int featureId, int detailId);
+        Task<bool> UpdateUserFeature(Guid userId, int featureId, int newDetailId);
+        Task<UserFeature> GetUserFeature(Guid userId, int featureId);
+
+        Task<bool> CheckUserFeature(Guid userId);
     }
 }

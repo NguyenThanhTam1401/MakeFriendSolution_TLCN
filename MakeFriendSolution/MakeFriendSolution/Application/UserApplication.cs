@@ -19,7 +19,7 @@ namespace MakeFriendSolution.Application
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
-        private ISessionService _sessionService;
+        private readonly ISessionService _sessionService;
         private readonly IFeatureApplication _featureApplication;
 
         public UserApplication()
@@ -57,7 +57,7 @@ namespace MakeFriendSolution.Application
             return await _context.BlockUsers.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == toUserId && x.IsLock);
         }
 
-        public int CalculateAge(DateTime birthDay)
+        public static int CalculateAge(DateTime birthDay)
         {
             var today = DateTime.Today;
             var age = today.Year - birthDay.Year;
@@ -126,9 +126,30 @@ namespace MakeFriendSolution.Application
             return userDisplays;
         }
 
+        public async Task<UserResponse> GetUserResponse(AppUser user)
+        {
+            var Features = await _featureApplication.GetFeatureResponseByUserId(user.Id);
+            var userResponse = new UserResponse(user, _storageService)
+            {
+                Features = Features.Item1,
+                SearchFeatures = Features.Item2
+            };
+            return userResponse;
+        }
+
         public async Task<AppUser> BidingUserRequest(AppUser user, UserRequest request)
         {
             if (Enum.TryParse(request.Gender, out EGender gender))
+            {
+                user.Gender = gender;
+            }
+
+            if (Enum.TryParse(request.FindPeople, out EGender findPeople))
+            {
+                user.Gender = gender;
+            }
+
+            if (Enum.TryParse(request.FindAgeGroup, out EAgeGroup findAgeGroup))
             {
                 user.Gender = gender;
             }
@@ -163,10 +184,10 @@ namespace MakeFriendSolution.Application
             //    user.Body = body;
             //}
 
-            if (Enum.TryParse(request.Target, out ETarget target))
-            {
-                user.Target = target;
-            }
+            //if (Enum.TryParse(request.Target, out ETarget target))
+            //{
+            //    user.Target = target;
+            //}
 
             //if (Enum.TryParse(request.Education, out EEducation education))
             //{
@@ -275,10 +296,6 @@ namespace MakeFriendSolution.Application
                 user.Dob = request.Dob;
             }
 
-            if (request.AvatarFile != null)
-            {
-                user.AvatarPath = await this.SaveFile(request.AvatarFile);
-            }
             return user;
         }
 
@@ -301,21 +318,6 @@ namespace MakeFriendSolution.Application
         public async Task<AppUser> GetById(Guid id)
         {
             return await _context.Users.FindAsync(id);
-        }
-        public async Task<AppUser> GetFullById(Guid id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            var haveFeatures = await _context.UserFeatures.Where(x => x.UserId == id).ToListAsync();
-            var features = await _featureApplication.GetFeatures();
-            var featureDetails = await _featureApplication.GetFeatureDetails();
-            var details = new List<FeatureViewModel>();
-
-            foreach (var item in haveFeatures)
-            {
-                var detail = await _featureApplication.GetFeatureViewModel(item.FeatureDetailId);
-            }
-
-            return user;
         }
         public async Task<AppUser> UpdateUser(AppUser user, bool isUpdateScore)
         {
@@ -404,40 +406,34 @@ namespace MakeFriendSolution.Application
 
         public async Task<bool> UpdateSimilarityScores(Guid userId)
         {
-            var user = await GetById(userId);
             var oldScores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
+            var features = (await _featureApplication.GetFeatures()).Where(x=>x.IsCalculated).ToList();
+            var columns = features.Count;
+
+            var users = await GetUsersToCalculate(userId);
             
-            var tempUsers = new List<AppUser>();
-            var users = await GetActiveUsers(userId, true);
-            users.Remove(users.Where(x => x.Id == userId).FirstOrDefault());
-            //var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsInfoUpdated && x.Id != userId).ToListAsync();
 
-            //
-            tempUsers = users
-                .Where(x => x.Id != userId && x.Gender == user.FindPeople)
-                .ToList();
-            users = new List<AppUser>();
-            var userAgeGroup = GetAgeGroup(user.Dob);
-            int userAgeValue = Convert.ToInt32(userAgeGroup);
+            int rows = users.Count;
 
-            foreach (var item in tempUsers)
+            double[,] usersMatrix = new double[rows, columns];
+            for (int i = 0; i < rows; i++)
             {
-                var ageGroup = GetAgeGroup(item.Dob);
-                int ageValue = Convert.ToInt32(ageGroup);
-
-                if (Math.Abs(userAgeValue - ageValue) <= 1)
+                for (int j = 0; j < columns; j++)
                 {
-                    users.Add(item);
+                    var vm = users[i].FeatureViewModels.Where(x => x.FeatureId == features[j].Id && !x.IsSearchFeature).FirstOrDefault();
+
+                    if (vm == null)
+                        usersMatrix[i, j] = -1;
+                    else
+                    {
+                        if (!vm.IsCalculated)
+                        {
+                            usersMatrix[i, j] = 0;
+                            continue;
+                        }
+                        usersMatrix[i, j] = vm.Rate * vm.weight;
+                    }
                 }
-            }
-
-            //
-            users.Insert(0, user);
-            int sl = users.Count;
-
-            double[,] usersMatrix = new double[sl, 19];
-            for (int i = 0; i < sl; i++)
-            {
                 //usersMatrix[i, 0] = (double)users[i].Marriage;
                 //usersMatrix[i, 1] = (double)users[i].Target;
                 //usersMatrix[i, 2] = (double)users[i].Education;
@@ -459,10 +455,12 @@ namespace MakeFriendSolution.Application
                 //usersMatrix[i, 18] = (double)users[i].MostValuable;
             }
 
-            SimilarityMatrix m = new SimilarityMatrix();
-            m.Row = sl;
-            m.Column = 19;
-            m.Matrix = usersMatrix;
+            SimilarityMatrix m = new SimilarityMatrix
+            {
+                Row = rows,
+                Column = columns,
+                Matrix = usersMatrix
+            };
 
             List<double> kq = new List<double>();
             kq = m.SimilarityCalculate();
@@ -477,7 +475,7 @@ namespace MakeFriendSolution.Application
                 var score = new SimilarityScore()
                 {
                     FromUserId = userId,
-                    ToUserId = users[i - 1].Id,
+                    ToUserId = users[i - 1].UserId,
                     Score = kq[i]
                 };
                 similarityScores.Add(score);
@@ -550,7 +548,74 @@ namespace MakeFriendSolution.Application
 
             return result;
         }
-        
-        
+
+        public async Task<List<UserCalculateVM>> GetUsersToCalculate(Guid userId)
+        {
+            var blockUser = await _context.BlockUsers
+                .Where(x => x.FromUserId == userId || x.ToUserId == userId).ToListAsync();
+
+            var users = await (from u in _context.Users
+                         select new UserCalculateVM()
+                         {
+                             UserId = u.Id,
+                             Age = CalculateAge(u.Dob),
+                             Gender = u.Gender
+                         }).ToListAsync();
+
+            List<Guid> userIds = new List<Guid>
+            {
+                userId
+            };
+
+            foreach (var item in blockUser)
+            {
+                if (item.FromUserId == userId)
+                    userIds.Add(item.ToUserId);
+                else
+                    userIds.Add(item.FromUserId);
+            }
+
+            foreach (var item in userIds)
+            {
+                users.Remove(users.Where(x => x.UserId == item).FirstOrDefault());
+            }
+
+            var user = await GetById(userId);
+
+
+
+            foreach (var item in users)
+            {
+                item.FeatureViewModels = await _featureApplication.GetFeatureViewModelByUserId(item.UserId);
+            }
+
+            //users.Add();
+            var calculateUser = new UserCalculateVM()
+            {
+                UserId = user.Id,
+                Age = CalculateAge(user.Dob),
+                Gender = user.Gender
+            };
+
+            calculateUser.FeatureViewModels = await _featureApplication.GetFeatureViewModelByUserId(calculateUser.UserId);
+
+            var searchFeatures = await _context.SearchFeatures.Where(x => x.UserId == userId).ToListAsync();
+
+            for (int i = 0; i < calculateUser.FeatureViewModels.Count; i++)
+            {
+                for (int j = 0; j < searchFeatures.Count; j++)
+                {
+                    if(calculateUser.FeatureViewModels[i].FeatureId == searchFeatures[j].FeatureId)
+                    {
+                        var search = await _featureApplication.GetFeatureViewModel(searchFeatures[j].FeatureDetailId);
+                        calculateUser.FeatureViewModels[i] = search;
+                    }
+                }
+            }
+
+            users.Insert(0, calculateUser);
+
+            return users;
+        }
     }
 }
