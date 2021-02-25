@@ -32,5 +32,7 @@ namespace MakeFriendSolution.Application
         Task<UserFeature> GetUserFeature(Guid userId, int featureId);
 
         Task<bool> CheckUserFeature(Guid userId);
+        Task<bool> UpdateHaveFeatures(List<UserFeature> haveFeatures, Guid userId);
+        Task<bool> UpdateSearchFeatures(List<SearchFeature> searchFeatures, Guid userId);
     }
 }

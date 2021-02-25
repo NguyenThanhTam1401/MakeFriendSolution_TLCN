@@ -28,7 +28,7 @@ namespace MakeFriendSolution.Models.ViewModels
         /// Dưới đây là các thông số dùng để tính toán
         /// </summary>
         ///
-        public List<UserFeature> HaveFeatures { get; set; }
-        public List<SearchFeature> searchFeatures { get; set; }
+        public List<UserFeature> Features { get; set; }
+        public List<SearchFeature> SearchFeatures { get; set; }
     }
 }

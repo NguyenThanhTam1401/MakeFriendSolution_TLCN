@@ -3,6 +3,7 @@ using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace MakeFriendSolution.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class FeaturesController : ControllerBase
     {
         private readonly MakeFriendDbContext _context;
@@ -39,7 +41,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(features);
         }
         [HttpPost]
-        public async Task<IActionResult> AddFeature(CreateFeatureRequest request)
+        public async Task<IActionResult> AddFeature([FromBody] CreateFeatureRequest request)
         {
             var feature = new Feature()
             {
@@ -50,10 +52,11 @@ namespace MakeFriendSolution.Controllers
             };
 
             feature = await _featureApplication.AddFeature(feature);
+            await SetUpdateScore();
             return Ok(feature);
         }
-
-        public async Task<IActionResult> AddFeatureDetail(CreateFeatureDetailRequest request)
+        [HttpPost("content")]
+        public async Task<IActionResult> AddFeatureDetail([FromBody] CreateFeatureDetailRequest request)
         {
             var featureDetail = new FeatureDetail()
             {
@@ -63,13 +66,34 @@ namespace MakeFriendSolution.Controllers
             };
 
             featureDetail = await _featureApplication.AddFeatureDetail(featureDetail);
+            await SetUpdateScore();
             return Ok(featureDetail);
         }
+        [HttpPut("content")]
+        public async Task<IActionResult> UpdateFeatureDetail([FromBody] UpdateFeatureDetailRequest request)
+        {
+            var featureDetail = await _context.FeatureDetails.FindAsync(request.Id);
+            
+            if (featureDetail == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Can not find feature with Id = " + request.Id
+                });
+            }
 
-        public async Task<IActionResult> UpdateFeature(UpdateFeatureRequest request)
+            featureDetail.Weight = request.Weight;
+            featureDetail.Content = request.Content;
+            var updateContent = await _featureApplication.UpdateFeatureDetail(featureDetail);
+            await SetUpdateScore();
+            return Ok(updateContent);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateFeature([FromBody] UpdateFeatureRequest request)
         {
             var updateFeature = await _featureApplication.GetFeatureById(request.Id);
-            if(updateFeature == null)
+            if (updateFeature == null)
             {
                 return NotFound(new
                 {
@@ -82,47 +106,58 @@ namespace MakeFriendSolution.Controllers
             updateFeature.WeightRate = request.WeightRate;
             updateFeature.IsSearchFeature = request.IsSearchFeature;
             updateFeature = await _featureApplication.UpdateFeature(updateFeature);
-
+            await SetUpdateScore();
             return Ok(updateFeature);
         }
-
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFeature(int id)
         {
-            var userFeature = await _context.UserFeatures.Where(x => x.FeatureId == id).ToListAsync();
-            var featureDetails = await _context.FeatureDetails.Where(x => x.FeatureId == id).ToListAsync();
-            var feature = await _featureApplication.GetFeatureById(id);
-            _context.UserFeatures.RemoveRange(userFeature);
-            _context.FeatureDetails.RemoveRange(featureDetails);
-            _context.Features.Remove(feature);
 
-            try
+            var status = await _featureApplication.DeleteFeature(id);
+            if (status)
             {
-                await _context.SaveChangesAsync();
+                await SetUpdateScore();
                 return Ok();
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
 
+            else
+                return BadRequest(new
+                {
+                    Message = "Không thể xóa feature!"
+                });
         }
 
+        [HttpDelete("content/{id}")]
         public async Task<IActionResult> DeleteFeatureDetail(int id)
         {
-            var featureDetail = await _context.FeatureDetails.FindAsync(id);
-            var userFeature = await _context.UserFeatures.Where(x => x.FeatureDetailId == id).ToListAsync();
+            var status = await _featureApplication.DeleteFeatureDetail(id);
+            if (status)
+            {
+                await SetUpdateScore();
+                return Ok();
+            }
+            else
+                return BadRequest(new
+                {
+                    Message = "Không thể xóa feature content!"
+                });
+        }
 
-            _context.UserFeatures.RemoveRange(userFeature);
-            _context.FeatureDetails.Remove(featureDetail);
+        private async Task<bool> SetUpdateScore()
+        {
+            var update = await _context.SimilariryFeatures.FirstOrDefaultAsync();
+            update.UpdatedAt = DateTime.Now;
+
+            _context.SimilariryFeatures.Update(update);
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok();
+                return true;
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return false;
             }
         }
     }

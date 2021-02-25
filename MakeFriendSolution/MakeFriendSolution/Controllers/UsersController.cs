@@ -286,13 +286,13 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            if (sessionUser.UserId == userId)
-            {
-                return BadRequest(new
-                {
-                    Message = "Can not follow yourself"
-                });
-            }
+            //if (sessionUser.UserId == userId)
+            //{
+            //    return BadRequest(new
+            //    {
+            //        Message = "Can not follow yourself"
+            //    });
+            //}
 
             var followed = await _context.Follows
                 .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
@@ -311,7 +311,6 @@ namespace MakeFriendSolution.Controllers
                     ToUserId = userId
                 };
                 user.NumberOfFiends++;
-
                 user = await _userApplication.UpdateUser(user, false);
                 _context.Follows.Add(follow);
                 message = "Followed";
@@ -319,7 +318,6 @@ namespace MakeFriendSolution.Controllers
             else
             {
                 user.NumberOfFiends--;
-
                 user = await _userApplication.UpdateUser(user, false);
                 _context.Follows.Remove(followed);
                 message = "Unfollowed";
@@ -328,6 +326,7 @@ namespace MakeFriendSolution.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                await _userApplication.UpdateSimilarityScores(sessionUser.UserId);
             }
             catch (Exception e)
             {
@@ -659,6 +658,17 @@ namespace MakeFriendSolution.Controllers
                 });
 
             var userInfo = _sessionService.GetDataFromToken();
+            if(userId == userInfo.UserId)
+            {
+                return BadRequest(new
+                {
+                    Message = "Can not block yourself"
+                });
+            }
+            var follow = await _context.Follows
+                .Where(x => (x.FromUserId == userId && x.ToUserId == userInfo.UserId) || 
+                    (x.FromUserId == userInfo.UserId && x.ToUserId == userId))
+                .ToListAsync();
 
             var block = await _context.BlockUsers
                 .Where(x => x.FromUserId == userInfo.UserId && x.ToUserId == userId)
@@ -695,6 +705,8 @@ namespace MakeFriendSolution.Controllers
             block.IsLock = !block.IsLock;
             var user = await _userApplication.GetById(userInfo.UserId);
             user.UpdatedAt = DateTime.Now;
+
+            _context.Follows.RemoveRange(follow);
             _context.Users.Update(user);
             _context.BlockUsers.Update(block);
             await _context.SaveChangesAsync();
@@ -706,5 +718,23 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+        [HttpPut("hub")]
+        [Authorize]
+        public async Task<IActionResult> SaveConnectionId([FromQuery]Guid userId, [FromForm] string connectionId)
+        {
+            var userInfo = _sessionService.GetDataFromToken();
+
+            if (userInfo.UserId != userId || string.IsNullOrEmpty(connectionId)) {
+                return BadRequest();
+            }
+
+            var user = await _userApplication.GetById(userId);
+
+            user.ConnectionId = connectionId;
+
+            await _userApplication.UpdateUser(user, false);
+
+            return Ok(new { Message = "Saved connectionId"});
+        }
     }
 }

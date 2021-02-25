@@ -25,6 +25,7 @@ namespace MakeFriendSolution.Application
         {
             _context.Features.Add(feature);
             await Save();
+            await UpdateGlobalVariable();
             return feature;
         }
 
@@ -32,16 +33,22 @@ namespace MakeFriendSolution.Application
         {
             _context.FeatureDetails.Add(featureDetail);
             await Save();
+            await UpdateGlobalVariable();
             return featureDetail;
         }
 
         public async Task<bool> DeleteFeature(int id)
         {
             var userFeatures = await _context.UserFeatures.Where(x => x.FeatureId == id).ToListAsync();
+            var searchFeatures = await _context.SearchFeatures.Where(x => x.FeatureId == id).ToListAsync();
             var featureDetail = await _context.FeatureDetails.Where(x => x.FeatureId == id).ToListAsync();
+            var feature = await _context.Features.FindAsync(id);
 
             _context.UserFeatures.RemoveRange(userFeatures);
+            _context.SearchFeatures.RemoveRange(searchFeatures);
             _context.FeatureDetails.RemoveRange(featureDetail);
+
+            _context.Features.Remove(feature);
             try
             {
                 await Save();
@@ -57,8 +64,10 @@ namespace MakeFriendSolution.Application
         public async Task<bool> DeleteFeatureDetail(int id)
         {
             var userFeatures = await _context.UserFeatures.Where(x => x.FeatureDetailId == id).ToListAsync();
+            var searchFeatures = await _context.SearchFeatures.Where(x => x.FeatureDetailId == id).ToListAsync();
             var featureDetail = await _context.FeatureDetails.FindAsync(id);
             _context.UserFeatures.RemoveRange(userFeatures);
+            _context.SearchFeatures.RemoveRange(searchFeatures);
             _context.FeatureDetails.Remove(featureDetail);
             try
             {
@@ -235,9 +244,10 @@ namespace MakeFriendSolution.Application
                 return false;
             }
         }
-        public async Task<bool> UpdateUserFeature(Guid userId, int featureId, int newDetailId) {
+        public async Task<bool> UpdateUserFeature(Guid userId, int featureId, int newDetailId)
+        {
             var userFeature = await GetUserFeature(userId, featureId);
-            if(userFeature == null)
+            if (userFeature == null)
             {
                 userFeature = new UserFeature()
                 {
@@ -262,6 +272,35 @@ namespace MakeFriendSolution.Application
                 return false;
             }
         }
+
+        public async Task<bool> UpdateSearchFeature(Guid userId, int featureId, int newDetailId)
+        {
+            var search = await GetSearchFeature(userId, featureId);
+            if (search == null)
+            {
+                search = new SearchFeature()
+                {
+                    UserId = userId,
+                    FeatureId = featureId,
+                    FeatureDetailId = newDetailId
+                };
+                _context.SearchFeatures.Add(search);
+            }
+            else
+            {
+                search.FeatureDetailId = newDetailId;
+                _context.SearchFeatures.Update(search);
+            }
+            try
+            {
+                await Save();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public async Task<UserFeature> GetUserFeature(Guid userId, int featureId)
         {
             var userFeatures = await _context.UserFeatures
@@ -269,6 +308,15 @@ namespace MakeFriendSolution.Application
                 .FirstOrDefaultAsync();
 
             return userFeatures;
+        }
+
+        public async Task<SearchFeature> GetSearchFeature(Guid userId, int featureId)
+        {
+            var search = await _context.SearchFeatures
+                .Where(x => x.UserId == userId && x.FeatureId == featureId)
+                .FirstOrDefaultAsync();
+
+            return search;
         }
         public async Task<bool> CheckUserFeature(Guid userId)
         {
@@ -288,6 +336,38 @@ namespace MakeFriendSolution.Application
                 }
             }
 
+            return true;
+        }
+
+        public async Task<bool> UpdateHaveFeatures(List<UserFeature> haveFeatures, Guid userId)
+        {
+            foreach (var item in haveFeatures)
+            {
+                try
+                {
+                    await UpdateUserFeature(userId, item.FeatureId, item.FeatureDetailId);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public async Task<bool> UpdateSearchFeatures(List<SearchFeature> searchFeatures, Guid userId)
+        {
+            foreach (var item in searchFeatures)
+            {
+                try
+                {
+                    await UpdateSearchFeature(userId, item.FeatureId, item.FeatureDetailId);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
             return true;
         }
     }

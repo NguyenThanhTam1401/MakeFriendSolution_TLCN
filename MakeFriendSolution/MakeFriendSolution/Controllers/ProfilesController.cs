@@ -391,6 +391,8 @@ namespace MakeFriendSolution.Controllers
             {
                 user.IsInfoUpdated = true;
                 user = await _userApplication.UpdateUser(user, true);
+                bool isUpdateHaveFeature = await _featureApplication.UpdateHaveFeatures(request.Features, request.Id);
+                bool isUpdateSearchFeature = await _featureApplication.UpdateSearchFeatures(request.SearchFeatures, request.Id);
             }
             catch (DbUpdateConcurrencyException e)
             {

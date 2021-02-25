@@ -1,5 +1,6 @@
 ﻿using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
+using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ namespace MakeFriendSolution.Application
 
         public async Task<List<ImageResponse>> GetImageByUserId(Guid userId)
         {
-            var images = await _context.ThumbnailImages.Where(x => x.UserId == userId).ToListAsync();
+            var images = await _context.ThumbnailImages.Where(x => x.UserId == userId && x.Status == Models.Enum.ImageStatus.Approved).ToListAsync();
             var response = new List<ImageResponse>();
             foreach (var image in images)
             {
@@ -126,9 +127,132 @@ namespace MakeFriendSolution.Application
             var imagesResponse = new List<ImageResponse>();
             foreach (var image in images)
             {
+                if(image.Status == Models.Enum.ImageStatus.Approved)
+                    imagesResponse.Add(new ImageResponse(image, _storageService));
+            }
+            return imagesResponse;
+        }
+
+        public async Task<List<ImageResponse>> GetWaitingImages(PagingRequest request)
+        {
+            var images = await _context.ThumbnailImages.Where(x => x.Status == Models.Enum.ImageStatus.Waiting)
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToListAsync();
+
+            var imagesResponse = new List<ImageResponse>();
+            foreach (var image in images)
+            {
                 imagesResponse.Add(new ImageResponse(image, _storageService));
             }
             return imagesResponse;
+        }
+
+        public async Task<bool> ApproveImage(int imageId)
+        {
+            var image = await GetImageById(imageId);
+
+            if (image == null || image.Status == ImageStatus.BlockOut)
+            {
+                return false;
+            }
+
+            image.Status = ImageStatus.Approved;
+
+            try
+            {
+                _context.ThumbnailImages.Update(image);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<bool> BlockOutImage(int imageId)
+        {
+            var image = await GetImageById(imageId);
+
+            if (image == null)
+            {
+                return false;
+            }
+
+            image.Status = ImageStatus.BlockOut;
+
+            try
+            {
+                _context.ThumbnailImages.Update(image);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<NewsResponse>> GetNewImages(PagingRequest request)
+        {
+            var userInfo = _sessionService.GetDataFromToken();
+            var images = await _context.ThumbnailImages.Where(x => x.Status == ImageStatus.Approved)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
+
+            var blocks = await _context.BlockUsers
+                .Where(x => x.FromUserId == userInfo.UserId || x.ToUserId == userInfo.UserId)
+                .ToListAsync();
+
+            var blockIds = new List<Guid>();
+            foreach (var item in blocks)
+            {
+                if (item.FromUserId == userInfo.UserId)
+                    blockIds.Add(item.ToUserId);
+                else
+                    blockIds.Add(item.FromUserId);
+            }
+
+            images = (from i in images
+                      where !blockIds.Contains(i.UserId)
+                      select i).ToList().Skip((request.PageIndex - 1) * request.PageSize)
+                      .Take(request.PageSize).ToList();
+
+            foreach (var item in images)
+            {
+                item.User = await _context.Users.FindAsync(item.UserId);
+            }
+
+            //foreach (var item in blocks)
+            //{
+            //    var block = images.Where(x => x.UserId == item.FromUserId).ToList();
+            //    foreach (var image in block)
+            //    {
+            //        images.Remove(image);
+            //    }
+            //}
+
+            var response = new List<NewsResponse>();
+            foreach (var item in images)
+            {
+                var imageRes = new NewsResponse(item, _storageService);
+                imageRes.liked = await this.IsLiked(userInfo.UserId, item.Id);
+                imageRes.Followed = await this.IsFollowed(userInfo.UserId, item.UserId);
+                response.Add(imageRes);
+            }
+
+            return response;
+        }
+
+        private async Task<bool> IsLiked(Guid userId, int imageId)
+        {
+            return await _context.LikeImages.AnyAsync(x => x.UserId == userId && x.ImageId == imageId);
+        }
+        private async Task<bool> IsFollowed(Guid fromId, Guid toId)
+        {
+            return await _context.Follows.Where(x => x.FromUserId == fromId && x.ToUserId == toId).AnyAsync();
         }
     }
 }

@@ -146,12 +146,12 @@ namespace MakeFriendSolution.Application
 
             if (Enum.TryParse(request.FindPeople, out EGender findPeople))
             {
-                user.Gender = gender;
+                user.FindPeople = findPeople;
             }
 
             if (Enum.TryParse(request.FindAgeGroup, out EAgeGroup findAgeGroup))
             {
-                user.Gender = gender;
+                user.FindAgeGroup = findAgeGroup;
             }
 
             //if (Enum.TryParse(request.Cook, out ECook cook))
@@ -412,7 +412,6 @@ namespace MakeFriendSolution.Application
 
             var users = await GetUsersToCalculate(userId);
             
-
             int rows = users.Count;
 
             double[,] usersMatrix = new double[rows, columns];
@@ -420,7 +419,9 @@ namespace MakeFriendSolution.Application
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    var vm = users[i].FeatureViewModels.Where(x => x.FeatureId == features[j].Id && !x.IsSearchFeature).FirstOrDefault();
+                    var vm = users[i].FeatureViewModels
+                        .Where(x => x.FeatureId == features[j].Id)
+                        .FirstOrDefault();
 
                     if (vm == null)
                         usersMatrix[i, j] = -1;
@@ -434,25 +435,6 @@ namespace MakeFriendSolution.Application
                         usersMatrix[i, j] = vm.Rate * vm.weight;
                     }
                 }
-                //usersMatrix[i, 0] = (double)users[i].Marriage;
-                //usersMatrix[i, 1] = (double)users[i].Target;
-                //usersMatrix[i, 2] = (double)users[i].Education;
-                //usersMatrix[i, 3] = (double)users[i].Body;
-                //usersMatrix[i, 4] = (double)users[i].Religion;
-                //usersMatrix[i, 5] = (double)users[i].Smoking;
-                //usersMatrix[i, 6] = (double)users[i].DrinkBeer;
-                //usersMatrix[i, 7] = (double)users[i].Cook;
-                //usersMatrix[i, 8] = (double)users[i].Game;
-                //usersMatrix[i, 9] = (double)users[i].Travel;
-                //usersMatrix[i, 10] = (double)users[i].LikePet;
-                //usersMatrix[i, 11] = (double)users[i].LikeTechnology;
-                //usersMatrix[i, 12] = (double)users[i].Shopping;
-                //usersMatrix[i, 13] = (double)users[i].PlaySport;
-                //usersMatrix[i, 14] = (double)users[i].FavoriteMovie;
-                //usersMatrix[i, 15] = (double)users[i].AtmosphereLike;
-                //usersMatrix[i, 16] = (double)users[i].Character;
-                //usersMatrix[i, 17] = (double)users[i].LifeStyle;
-                //usersMatrix[i, 18] = (double)users[i].MostValuable;
             }
 
             SimilarityMatrix m = new SimilarityMatrix
@@ -554,6 +536,9 @@ namespace MakeFriendSolution.Application
             var blockUser = await _context.BlockUsers
                 .Where(x => x.FromUserId == userId || x.ToUserId == userId).ToListAsync();
 
+            var follow = await _context.Follows
+                .Where(x => x.FromUserId == userId).ToListAsync();
+
             var users = await (from u in _context.Users
                          select new UserCalculateVM()
                          {
@@ -575,13 +560,17 @@ namespace MakeFriendSolution.Application
                     userIds.Add(item.FromUserId);
             }
 
+            foreach (var item in follow)
+            {
+                userIds.Add(item.ToUserId);
+            }
+
             foreach (var item in userIds)
             {
                 users.Remove(users.Where(x => x.UserId == item).FirstOrDefault());
             }
 
             var user = await GetById(userId);
-
 
 
             foreach (var item in users)

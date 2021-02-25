@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MakeFriendSolution.Application;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
+using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -25,13 +26,18 @@ namespace MakeFriendSolution.Controllers
         private readonly ISessionService _sessionService;
         private readonly IImageApplication _imageApplication;
         private readonly IUserApplication _userApplication;
-        public ImagesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IImageApplication imageApplication, IUserApplication userApplication)
+        private readonly IDetectImageService _detectService;
+        private readonly IImageScoreApplication _imageScoreApplication;
+        public ImagesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, 
+            IImageApplication imageApplication, IUserApplication userApplication, IDetectImageService detectImageService, IImageScoreApplication imageScoreApplication)
         {
             _context = context;
             _storageService = storageService;
             _sessionService = sessionService;
             _imageApplication = imageApplication;
             _userApplication = userApplication;
+            _detectService = detectImageService;
+            _imageScoreApplication = imageScoreApplication;
         }
 
 
@@ -55,7 +61,7 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find User with id = " + userId
                 });
             }
-            var images = await _context.ThumbnailImages.Where(x => x.UserId == userId).ToListAsync();
+            var images = await _context.ThumbnailImages.Where(x => x.UserId == userId && x.Status == ImageStatus.Approved).ToListAsync();
             var errorImages = new List<ThumbnailImage>();
             var response = new List<ImageResponse>();
             foreach (var item in images)
@@ -121,6 +127,14 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
+            if(image.Status != ImageStatus.Approved)
+            {
+                return NotFound(new
+                {
+                    Message = "Can not find image with id = " + imageId
+                });
+            }
+
             var imageResponse = new ImageResponse(image, _storageService);
 
             return Ok(imageResponse);
@@ -155,25 +169,68 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find user with id = " + request.UserId
                 });
             }
-            
+
+            int notOk = 0;
+
             var newImages = new List<ThumbnailImage>();
-            for (int i = 0; i < request.Images.Count; i++)
+
+            var imageScores = await _imageScoreApplication.GetImageScore();
+
+            if (imageScores.Active)
             {
-                var image = new ThumbnailImage();
-                image.CreatedAt = DateTime.Now;
-                image.Title = request.Title;
-                image.UserId = request.UserId;
-
-                if (request.Images[i] != null)
+                for (int i = 0; i < request.Images.Count; i++)
                 {
-                    image.ImagePath = await _storageService.SaveFile(request.Images[i]);
-                }
+                    var image = new ThumbnailImage();
+                    image.CreatedAt = DateTime.Now;
+                    image.Title = request.Title;
+                    image.UserId = request.UserId;
 
-                newImages.Add(image);
+                    bool isOk = false;
+                    if (request.Images[i] != null)
+                    {
+                        image.ImagePath = await _storageService.SaveFile(request.Images[i]);
+                        var score = _detectService.DetectImage("." + _storageService.GetFileUrl(image.ImagePath));
+                        isOk = await _imageScoreApplication.ValidateImage(score);
+                    }
+
+                    if (!isOk)
+                    {
+                        if (imageScores.AutoFilter)
+                            image.Status = ImageStatus.BlockOut;
+                        else
+                            image.Status = ImageStatus.Waiting;
+                        notOk++;
+                    }
+                    else
+                    {
+                        image.Status = ImageStatus.Approved;
+                    }
+
+                    newImages.Add(image);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < request.Images.Count; i++)
+                {
+                    var image = new ThumbnailImage();
+                    image.CreatedAt = DateTime.Now;
+                    image.Title = request.Title;
+                    image.UserId = request.UserId;
+
+                    if (request.Images[i] != null)
+                    {
+                        image.ImagePath = await _storageService.SaveFile(request.Images[i]);
+                    }
+
+                    image.Status = ImageStatus.Approved;
+
+                    newImages.Add(image);
+                }
             }
 
-            user.NumberOfImages += newImages.Count;
-            var imagesResponse = new List<ImageResponse>();
+            user.NumberOfImages += (newImages.Count - notOk);
+            List<ImageResponse> imagesResponse;
             try
             {
                 _context.Users.Update(user);
@@ -187,7 +244,25 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            return Ok(imagesResponse);
+            string message;
+            bool Approved;
+            if (notOk == 0)
+            {
+                message = "Hình của bạn đã được upload!";
+                Approved = true;
+            }
+            else
+            {
+                Approved = false;
+                message = "Chúng tôi nhận thấy hình ảnh của bạn có thể đã vi phạm chuẩn mực của chúng tôi, xin lỗi vì sự bất tiện này!";
+            }
+
+            return Ok(new
+            {
+                Data = imagesResponse,
+                Message = message,
+                Approved = Approved
+            });
         }
 
 
@@ -278,10 +353,57 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
+
+        [AllowAnonymous]
+        [HttpGet("WaitingImage")]
+        public async Task<IActionResult> GetInvalidImage([FromQuery] PagingRequest request)
+        {
+            var images = await _imageApplication.GetWaitingImages(request);
+            return Ok(images);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("Approved/{imageId}")]
+        public async Task<IActionResult> ApprovedImage(int imageId)
+        {
+            return Ok();
+            if (await _imageApplication.ApproveImage(imageId))
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        [AllowAnonymous]
+        [HttpPut("BlockOut/{imageId}")]
+        public async Task<IActionResult> BlockOutImage(int imageId)
+        {
+            return Ok();
+            if (await _imageApplication.BlockOutImage(imageId))
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        [Authorize]
+        [HttpGet("new")]
+        public async Task<IActionResult> GetNewImages([FromQuery] PagingRequest request)
+        {
+            try
+            {
+                var images = await _imageApplication.GetNewImages(request);
+                return Ok(images);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { 
+                    Message = "Không tải được hình ảnh!"
+                });
+            }
+            
+        }
         private async Task<bool> IsLiked(Guid userId, int imageId)
         {
             return await _context.LikeImages.AnyAsync(x => x.UserId == userId && x.ImageId == imageId);
         }
-
     }
 }

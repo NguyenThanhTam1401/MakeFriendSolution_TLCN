@@ -42,7 +42,7 @@ namespace MakeFriendSolution.Controllers
         [Authorize]
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChatResponse))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]  
         public async Task<IActionResult> Post([FromForm] CreateMessageRequest request)
         {
             var result = await SaveMessage(request);
@@ -52,6 +52,7 @@ namespace MakeFriendSolution.Controllers
             }
 
             var sender = await _context.Users.FindAsync(request.SenderId);
+            var receiver = await _context.Users.FindAsync(request.ReceiverId);
 
             var display = new UserDisplay(sender, _storageService);
 
@@ -68,7 +69,8 @@ namespace MakeFriendSolution.Controllers
             };
 
             //var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferchartdata", response));
-            await _hub.Clients.All.SendAsync("transferData", response);
+            await _hub.Clients.Clients(receiver.ConnectionId, sender.ConnectionId).SendAsync("transferData", response);
+            //await _hub.Clients.All.SendAsync("transferData", response);
 
             return Ok(new { Message = "Request complete!" });
         }

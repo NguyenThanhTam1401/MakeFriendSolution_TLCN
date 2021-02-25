@@ -45,7 +45,7 @@ namespace MakeFriendSolution
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuit.tech:4200")
+                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuvm.xyz:5300")
                     //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
@@ -67,6 +67,8 @@ namespace MakeFriendSolution
             services.AddSingleton<IMailchimpService, MailchimpService>();
             services.AddTransient<IImageApplication, ImageApplication>();
             services.AddTransient<IFeatureApplication, FeatureApplication>();
+            services.AddTransient<IDetectImageService, DetectImageService>();
+            services.AddTransient<IImageScoreApplication, ImageScoreApplication>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -152,7 +154,6 @@ namespace MakeFriendSolution
                 };
             });
             services.AddTransient<AccessMiddleware>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

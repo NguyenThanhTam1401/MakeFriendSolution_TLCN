@@ -35,5 +35,7 @@ namespace MakeFriendSolution.HubConfig
 
 			await this.Clients.All.SendAsync("transferData", response);
 		}
+
+		public string GetConnectionId() => Context.ConnectionId;
 	}
 }
