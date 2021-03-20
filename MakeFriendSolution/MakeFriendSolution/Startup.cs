@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MakeFriendSolution.Application;
+using MakeFriendSolution.Common;
 using MakeFriendSolution.EF;
 using MakeFriendSolution.HubConfig;
 using MakeFriendSolution.Middlewares;
@@ -19,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -38,14 +40,17 @@ namespace MakeFriendSolution
 
         public IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDirectoryBrowser();
+
             services.AddCors(options => 
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuvm.xyz:5300")
+                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuit.tech:5200", "https://hieuit.tech:5200", "http://hieuit.tech", "https://hieuit.tech")
                     //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
@@ -59,16 +64,17 @@ namespace MakeFriendSolution
     options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")));
 
             //Declare DI
-            services.AddTransient<IStorageService, FileStorageService>();
-            services.AddTransient<IMailService, MailService>();
+            services.AddScoped<IStorageService, FileStorageService>();
+            services.AddScoped<IMailService, MailService>();
             services.AddHttpContextAccessor();
             services.AddScoped<ISessionService, SessionService>();
-            services.AddTransient<IUserApplication, UserApplication>();
+            services.AddScoped<IUserApplication, UserApplication>();
             services.AddSingleton<IMailchimpService, MailchimpService>();
-            services.AddTransient<IImageApplication, ImageApplication>();
-            services.AddTransient<IFeatureApplication, FeatureApplication>();
-            services.AddTransient<IDetectImageService, DetectImageService>();
-            services.AddTransient<IImageScoreApplication, ImageScoreApplication>();
+            services.AddScoped<IImageApplication, ImageApplication>();
+            services.AddScoped<IFeatureApplication, FeatureApplication>();
+            services.AddScoped<IDetectImageService, DetectImageService>();
+            services.AddScoped<IImageScoreApplication, ImageScoreApplication>();
+            services.AddScoped<INotificationApplication, NotificationApplication>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -166,6 +172,24 @@ namespace MakeFriendSolution
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors("CorsPolicy");
+
+            //
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+        Path.Combine(env.ContentRootPath, "user-content")),
+                RequestPath = "/user-content"
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "user-content")),
+                RequestPath = "/user-content"
+            });
+            //
+
+
             app.UseRouting();
 
             //Adding

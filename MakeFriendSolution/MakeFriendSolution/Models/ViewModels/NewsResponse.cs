@@ -8,8 +8,6 @@ namespace MakeFriendSolution.Models.ViewModels
 {
     public class NewsResponse
     {
-        private IStorageService _storageService;
-
         public int Id { get; set; }
         public Guid UserId { get; set; }
         public string FullName { get; set; }
@@ -30,8 +28,6 @@ namespace MakeFriendSolution.Models.ViewModels
 
         public NewsResponse(ThumbnailImage image, IStorageService storageService)
         {
-            this._storageService = storageService;
-
             Id = image.Id;
             UserId = image.UserId;
             Title = image.Title;
@@ -40,38 +36,40 @@ namespace MakeFriendSolution.Models.ViewModels
             NumberOfLikes = image.NumberOflikes;
             FullName = image.User.FullName;
             Location = image.User.Location.ToString();
-            GetImagePath(image);
-            GetAvatarPath(image.User);
+            ImagePath = storageService.GetFileUrl(image.ImagePath);
+            AvatarPath = storageService.GetFileUrl(image.User.AvatarPath);
+            //GetImagePath(image);
+            //GetAvatarPath(image.User);
         }
 
-        private void GetImagePath(ThumbnailImage image)
-        {
-            try
-            {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(image.ImagePath)}");
-                this.ImagePath = Convert.ToBase64String(imageBits);
-                this.HasImage = true;
-            }
-            catch
-            {
-                this.HasImage = false;
-                this.ImagePath = image.ImagePath;
-            }
-        }
-        private void GetAvatarPath(AppUser user)
-        {
-            try
-            {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
-                this.AvatarPath = Convert.ToBase64String(imageBits);
-                this.HasAvatar = true;
-            }
-            catch
-            {
-                this.HasAvatar = false;
-                this.AvatarPath = user.AvatarPath;
-            }
-        }
+        //private void GetImagePath(ThumbnailImage image)
+        //{
+        //    try
+        //    {
+        //        byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(image.ImagePath)}");
+        //        this.ImagePath = Convert.ToBase64String(imageBits);
+        //        this.HasImage = true;
+        //    }
+        //    catch
+        //    {
+        //        this.HasImage = false;
+        //        this.ImagePath = image.ImagePath;
+        //    }
+        //}
+        //private void GetAvatarPath(AppUser user)
+        //{
+        //    try
+        //    {
+        //        byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(user.AvatarPath)}");
+        //        this.AvatarPath = Convert.ToBase64String(imageBits);
+        //        this.HasAvatar = true;
+        //    }
+        //    catch
+        //    {
+        //        this.HasAvatar = false;
+        //        this.AvatarPath = user.AvatarPath;
+        //    }
+        //}
 
     }
 }

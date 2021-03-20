@@ -57,12 +57,12 @@ namespace MakeFriendSolution.Application
             if (isLike)
             {
                 await this.Unlike(request);
-                message = "Liked";
+                message = "Unliked";
             }
             else
             {
                 await this.Like(request);
-                message = "Unliked";
+                message = "Liked";
             }
 
             return message;

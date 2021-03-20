@@ -113,7 +113,7 @@ namespace MakeFriendSolution.Application
 
             foreach (var user in users)
             {
-                var userDisplay = new UserDisplay(user, _storageService, nonImage);
+                var userDisplay = new UserDisplay(user, _storageService);
 
                 if (!nonImage)
                 {

@@ -21,17 +21,19 @@ namespace MakeFriendSolution.Controllers
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
-        private ISessionService _sessionService;
+        private readonly ISessionService _sessionService;
         private readonly IUserApplication _userApplication;
         private readonly IFeatureApplication _featureApplication;
+        private readonly INotificationApplication _notificationApp;
 
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication, IFeatureApplication featureApplication)
+        public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication, IFeatureApplication featureApplication, INotificationApplication notificationApp)
         {
             _context = context;
             _storageService = storageService;
             _sessionService = sessionService;
             _userApplication = userApplication;
             _featureApplication = featureApplication;
+            _notificationApp = notificationApp;
         }
 
         /// <summary>
@@ -80,7 +82,7 @@ namespace MakeFriendSolution.Controllers
                 users = users.Where(x => x.Id != loginInfo.UserId).ToList();
             }
             //Get user display
-            var userDisplays = await _userApplication.GetUserDisplay(users, true);
+            var userDisplays = await _userApplication.GetUserDisplay(users);
 
             var response = userDisplays
                 .OrderByDescending(x => x.NumberOfFavoritors)
@@ -90,7 +92,7 @@ namespace MakeFriendSolution.Controllers
 
             foreach (UserDisplay item in response)
             {
-                item.GetImagePath();
+                item.AvatarPath = _storageService.GetFileUrl(item.AvatarPath);
                 if (loginInfo != null)
                 {
                     item.Followed = await _userApplication.IsFollowed(item.Id, loginInfo.UserId);
@@ -314,6 +316,19 @@ namespace MakeFriendSolution.Controllers
                 user = await _userApplication.UpdateUser(user, false);
                 _context.Follows.Add(follow);
                 message = "Followed";
+
+                var nt = new Notification()
+                {
+                    CreatedAt = DateTime.Now,
+                    FromId = sessionUser.UserId,
+                    ToId = userId,
+                    Type = "follow"
+                };
+                var noticeRes = await _notificationApp.CreateNotification(nt);
+                if(noticeRes != null)
+                {
+                    await _notificationApp.SendNotification(noticeRes);
+                }
             }
             else
             {
@@ -391,6 +406,19 @@ namespace MakeFriendSolution.Controllers
                 user = await _userApplication.UpdateUser(user, false);
                 _context.Favorites.Add(favorite);
                 message = "Favorited";
+
+                var nt = new Notification()
+                {
+                    CreatedAt = DateTime.Now,
+                    FromId = sessionUser.UserId,
+                    ToId = userId,
+                    Type = "like"
+                };
+                var noticeRes = await _notificationApp.CreateNotification(nt);
+                if (noticeRes != null)
+                {
+                    await _notificationApp.SendNotification(noticeRes);
+                }
             }
             else
             {
@@ -736,5 +764,6 @@ namespace MakeFriendSolution.Controllers
 
             return Ok(new { Message = "Saved connectionId"});
         }
+
     }
 }

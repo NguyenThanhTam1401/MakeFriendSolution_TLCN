@@ -9,11 +9,10 @@ namespace MakeFriendSolution.Models.ViewModels
 {
     public class UserResponse
     {
-        private IStorageService _storageService;
+        //private IStorageService _storageService;
 
         public UserResponse(AppUser user, IStorageService storageService)
         {
-            this._storageService = storageService;
 
             Id = user.Id;
             UserName = user.UserName;
@@ -39,24 +38,25 @@ namespace MakeFriendSolution.Models.ViewModels
             FindPeople = user.FindPeople.ToString();
             FindAgeGroup = user.FindAgeGroup.ToString();
 
-            GetImagePath(user);
+            //GetImagePath(user);
+            AvatarPath = storageService.GetFileUrl(user.AvatarPath);
         }
 
-        private void GetImagePath(AppUser user)
-        {
-            try
-            {
-                var a = _storageService.GetFileUrl(user.AvatarPath);
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{a}");
-                this.AvatarPath = Convert.ToBase64String(imageBits);
-                this.HasAvatar = true;
-            }
-            catch
-            {
-                this.HasAvatar = false;
-                this.AvatarPath = user.AvatarPath;
-            }
-        }
+        //private void GetImagePath(AppUser user)
+        //{
+        //    try
+        //    {
+        //        var a = _storageService.GetFileUrl(user.AvatarPath);
+        //        byte[] imageBits = System.IO.File.ReadAllBytes($"./{a}");
+        //        this.AvatarPath = Convert.ToBase64String(imageBits);
+        //        this.HasAvatar = true;
+        //    }
+        //    catch
+        //    {
+        //        this.HasAvatar = false;
+        //        this.AvatarPath = user.AvatarPath;
+        //    }
+        //}
 
         private int CalculateAge(DateTime birthDay)
         {

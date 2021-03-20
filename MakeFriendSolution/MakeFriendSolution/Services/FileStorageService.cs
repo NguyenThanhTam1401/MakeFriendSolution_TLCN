@@ -11,7 +11,7 @@ namespace MakeFriendSolution.Services
 {
     public class FileStorageService : IStorageService
     {
-        private readonly string _userContentFolder;
+        public readonly string _userContentFolder;
         private const string USER_CONTENT_FOLDER_NAME = "user-content";
 
         public FileStorageService(IWebHostEnvironment webHostEnviroment)
@@ -38,7 +38,10 @@ namespace MakeFriendSolution.Services
 
         public string GetFileUrl(string fileName)
         {
-            return $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
+            if (!string.IsNullOrEmpty(fileName) && fileName.Contains("http"))
+                return fileName;
+
+            return Startup.DomainName + $"/{USER_CONTENT_FOLDER_NAME}/{fileName}";
         }
 
         public async Task SaveFileAsync(Stream mediaBinaryStream, string fileName)

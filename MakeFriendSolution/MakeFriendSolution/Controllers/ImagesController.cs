@@ -28,8 +28,10 @@ namespace MakeFriendSolution.Controllers
         private readonly IUserApplication _userApplication;
         private readonly IDetectImageService _detectService;
         private readonly IImageScoreApplication _imageScoreApplication;
+        private readonly INotificationApplication _notificationApp;
         public ImagesController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, 
-            IImageApplication imageApplication, IUserApplication userApplication, IDetectImageService detectImageService, IImageScoreApplication imageScoreApplication)
+            IImageApplication imageApplication, IUserApplication userApplication, IDetectImageService detectImageService, 
+            IImageScoreApplication imageScoreApplication, INotificationApplication notificationApp)
         {
             _context = context;
             _storageService = storageService;
@@ -38,6 +40,7 @@ namespace MakeFriendSolution.Controllers
             _userApplication = userApplication;
             _detectService = detectImageService;
             _imageScoreApplication = imageScoreApplication;
+            _notificationApp = notificationApp;
         }
 
 
@@ -189,8 +192,16 @@ namespace MakeFriendSolution.Controllers
                     if (request.Images[i] != null)
                     {
                         image.ImagePath = await _storageService.SaveFile(request.Images[i]);
-                        var score = _detectService.DetectImage("." + _storageService.GetFileUrl(image.ImagePath));
-                        isOk = await _imageScoreApplication.ValidateImage(score);
+                        try
+                        {
+                            var score = _detectService.DetectImage("." + _storageService.GetFileUrl(image.ImagePath));
+                            isOk = await _imageScoreApplication.ValidateImage(score);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Không thể kết nối đến detect image service.");
+                            isOk = true;
+                        }
                     }
 
                     if (!isOk)
@@ -328,8 +339,8 @@ namespace MakeFriendSolution.Controllers
                     Message = "userId is not correct"
                 });
             }
-
-            if (!await _imageApplication.IsExist(request.ImageId))
+            var image = await _imageApplication.GetImageById(request.ImageId);
+            if (image == null)
             {
                 return BadRequest(new
                 {
@@ -346,7 +357,22 @@ namespace MakeFriendSolution.Controllers
             }
 
             var message = await _imageApplication.LikeImage(request);
-            
+
+            if(message== "Liked")
+            {
+                var nt = new Notification()
+                {
+                    CreatedAt = DateTime.Now,
+                    FromId = userInfo.UserId,
+                    ToId = image.UserId,
+                    Type = "likeImage"
+                };
+                var noticeRes = await _notificationApp.CreateNotification(nt);
+                if (noticeRes != null)
+                {
+                    await _notificationApp.SendNotification(noticeRes);
+                }
+            }
             return Ok(new
             {
                 Message = message

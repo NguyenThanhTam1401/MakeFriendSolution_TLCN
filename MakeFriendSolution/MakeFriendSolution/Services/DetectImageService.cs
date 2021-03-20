@@ -17,7 +17,7 @@ namespace MakeFriendSolution.Services
     {
         public DetectImageResponse DetectImage(string fileName)
         {
-            var client = new RestClient("http://hieuvm.xyz/predict-image");
+            var client = new RestClient("http://hieuit.tech/predict-image");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "multipart/form-data");

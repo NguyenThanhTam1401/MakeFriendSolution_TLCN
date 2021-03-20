@@ -64,13 +64,10 @@ namespace MakeFriendSolution.Controllers
                 SentAt = result.SentAt,
                 Id = result.Id,
                 FullName = display.FullName,
-                hasAvatar = display.HasAvatar,
                 Avatar = display.AvatarPath
             };
-
-            //var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferchartdata", response));
+            
             await _hub.Clients.Clients(receiver.ConnectionId, sender.ConnectionId).SendAsync("transferData", response);
-            //await _hub.Clients.All.SendAsync("transferData", response);
 
             return Ok(new { Message = "Request complete!" });
         }

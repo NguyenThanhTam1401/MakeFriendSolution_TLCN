@@ -13,7 +13,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public DateTime Dob { get; set; }
         public DateTime CreatedAt { get; set; }
         public string AvatarPath { get; set; }
-        public bool HasAvatar { get; set; }
+        //public bool HasAvatar { get; set; }
         public string Summary { get; set; }
         public int NumberOfFollowers { get; set; } = 0;
         public bool Followed { get; set; } = false;
@@ -29,7 +29,7 @@ namespace MakeFriendSolution.Models.ViewModels
         {
         }
 
-        public UserDisplay(AppUser user, IStorageService storageService, bool nonImage = false)
+        public UserDisplay(AppUser user, IStorageService storageService)
         {
             this._storageService = storageService;
             Id = user.Id;
@@ -43,24 +43,21 @@ namespace MakeFriendSolution.Models.ViewModels
             NumberOfFollowers = user.NumberOfFiends;
             NumberOfImages = user.NumberOfImages;
             Status = user.Status.ToString();
-            if (!nonImage)
-            {
-                GetImagePath();
-            }
+            this.AvatarPath = storageService.GetFileUrl(AvatarPath);
         }
 
-        public void GetImagePath()
-        {
-            try
-            {
-                byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(this.AvatarPath)}");
-                this.AvatarPath = Convert.ToBase64String(imageBits);
-                this.HasAvatar = true;
-            }
-            catch
-            {
-                this.HasAvatar = false;
-            }
-        }
+        //public void GetImagePath()
+        //{
+        //    try
+        //    {
+        //        byte[] imageBits = System.IO.File.ReadAllBytes($"./{_storageService.GetFileUrl(this.AvatarPath)}");
+        //        this.AvatarPath = Convert.ToBase64String(imageBits);
+        //        this.HasAvatar = true;
+        //    }
+        //    catch
+        //    {
+        //        this.HasAvatar = false;
+        //    }
+        //}
     }
 }
