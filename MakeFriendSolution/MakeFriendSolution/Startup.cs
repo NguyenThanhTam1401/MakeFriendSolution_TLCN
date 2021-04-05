@@ -61,7 +61,11 @@ namespace MakeFriendSolution
             services.AddSignalR();
             
             services.AddDbContext<MakeFriendDbContext>(options =>
-    options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")));
+                //options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
+                options.UseMySql(
+                    //"server=hieuit.tech;user=tamxix;password=Sql@@123;database=ANGELLIGHT"
+                    Configuration.GetConnectionString("MakeFriendConnectionMYSQL")
+                ));
 
             //Declare DI
             services.AddScoped<IStorageService, FileStorageService>();
@@ -188,7 +192,6 @@ namespace MakeFriendSolution
                 RequestPath = "/user-content"
             });
             //
-
 
             app.UseRouting();
 

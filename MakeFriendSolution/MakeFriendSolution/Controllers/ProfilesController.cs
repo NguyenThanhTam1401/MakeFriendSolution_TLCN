@@ -70,8 +70,8 @@ namespace MakeFriendSolution.Controllers
             int tenNuSize = tenNu.Count;
             Random random = new Random();
             int gmailCount = 1;
-            //Random Nu
-            for (int i = 0; i < 40; i++)
+            //Random Nu 40
+            for (int i = 0; i < 20; i++)
             {
                 var user = new AppUser
                 {
@@ -114,8 +114,8 @@ namespace MakeFriendSolution.Controllers
 
                 users.Add(user);
             }
-            //Random Nam
-            for (int i = 0; i < 50; i++)
+            //Random Nam 50
+            for (int i = 0; i < 10; i++)
             {
                 var user = new AppUser
                 {
@@ -158,8 +158,8 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
 
-            //Random Nu
-            for (int i = 0; i < 80; i++)
+            //Random Nu 80
+            for (int i = 0; i < 20; i++)
             {
                 var user = new AppUser
                 {
@@ -202,8 +202,8 @@ namespace MakeFriendSolution.Controllers
 
                 users.Add(user);
             }
-            //Random Nam
-            for (int i = 0; i < 90; i++)
+            //Random Nam 90
+            for (int i = 0; i < 10; i++)
             {
                 var user = new AppUser
                 {
@@ -246,8 +246,8 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
 
-            //Random InActive Account
-            for (int i = 0; i < 36; i++)
+            //Random InActive Account 36
+            for (int i = 0; i < 16; i++)
             {
                 var user = new AppUser
                 {
