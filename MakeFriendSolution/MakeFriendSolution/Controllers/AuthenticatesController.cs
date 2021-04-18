@@ -673,7 +673,7 @@ namespace MakeFriendSolution.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.Now.AddYears(1),
                 signingCredentials: credentials
             );
 

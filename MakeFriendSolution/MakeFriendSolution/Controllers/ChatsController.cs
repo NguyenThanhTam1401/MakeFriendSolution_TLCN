@@ -7,6 +7,7 @@ using MakeFriendSolution.HubConfig;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
+using MakeFriendSolution.HubConfig.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,12 +67,24 @@ namespace MakeFriendSolution.Controllers
                 FullName = display.FullName,
                 Avatar = display.AvatarPath
             };
-            
-            await _hub.Clients.Clients(receiver.ConnectionId, sender.ConnectionId).SendAsync("transferData", response);
+
+            //await _hub.Clients.Clients(receiver.ConnectionId, sender.ConnectionId).SendAsync("transferData", response);
+            ChatHub hub = new ChatHub();
+            await SendMessage(sender.Id, receiver.Id, response);
 
             return Ok(new { Message = "Request complete!" });
         }
 
+        private async Task SendMessage(Guid senderId, Guid receiverId, ChatResponse messageResponse)
+        {
+            var sender = UserConnection.Get(senderId);
+            var receiver = UserConnection.Get(receiverId);
+
+            if (receiver == null)
+                await _hub.Clients.Clients(sender.ConnectionId).SendAsync("messageResponse", messageResponse);
+            else
+                await _hub.Clients.Clients(sender.ConnectionId, receiver.ConnectionId).SendAsync("messageResponse", messageResponse);
+        }
 
         /// <summary>
         /// Lấy tin nhắn giữa hai người
@@ -216,7 +229,7 @@ namespace MakeFriendSolution.Controllers
                 .Where(x => (x.SenderId == userId && x.ReceiverId == friendId)
                     || (x.SenderId == friendId && x.ReceiverId == friendId))
                 .OrderByDescending(x => x.SentAt)
-                //.Take(20)
+                .Take(20)
                 .ToListAsync();
 
             List<MessageResponse> messageResponses = new List<MessageResponse>();
