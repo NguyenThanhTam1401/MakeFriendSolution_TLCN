@@ -1,5 +1,6 @@
 ﻿using MakeFriendSolution.EF;
 using MakeFriendSolution.HubConfig;
+using MakeFriendSolution.HubConfig.Models;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
 using MakeFriendSolution.Services;
@@ -53,18 +54,7 @@ namespace MakeFriendSolution.Application
                                        UserId = i.Id
                                    }).FirstOrDefaultAsync();
 
-            //try
-            //{
-            //    var a = _storageService.GetFileUrl(imagePath.AvatarPath);
-            //    byte[] imageBits = System.IO.File.ReadAllBytes($"./{a}");
-            //    r.Avatar = Convert.ToBase64String(imageBits);
-            //    r.HasAvatar = true;
-            //}
-            //catch
-            //{
-            //    r.HasAvatar = false;
-            //    r.Avatar = imagePath.AvatarPath;
-            //}
+
             r.Avatar = _storageService.GetFileUrl(imagePath.AvatarPath);
             r.FromId = notification.FromId;
             r.ToId = notification.ToId;
@@ -129,12 +119,9 @@ namespace MakeFriendSolution.Application
 
         public async Task SendNotification(NotificationResponse notification)
         {
-            var connectionId = await(from c in _context.Users
-                                     where c.Id == notification.ToId
-                                     select c.ConnectionId).FirstOrDefaultAsync();
+            var receiver = UserConnection.Get(notification.ToId);
 
-
-            await _hub.Clients.Clients(connectionId).SendAsync("transferData", notification);
+            await _hub.Clients.Clients(receiver.ConnectionId).SendAsync("notification", notification);
         }
 
         private class AvatarResponse

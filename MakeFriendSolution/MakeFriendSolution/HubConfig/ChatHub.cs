@@ -33,18 +33,16 @@ namespace MakeFriendSolution.HubConfig
 
 		private async Task Response()
         {
-			var response = new
-			{
-				type = "onlineCount",
-				onlineCount = _userCount
-			};
+			//var response = new
+			//{
+			//	type = "onlineCount",
+			//	onlineCount = _userCount
+			//};
 
-			await this.Clients.All.SendAsync("messageResponse", response);
+			await this.Clients.All.SendAsync("onlineCount", _userCount);
 		}
 
 		public string GetConnectionId() => Context.ConnectionId;
-
-
 
         /////////////////////////////////////////////////////////////////
 

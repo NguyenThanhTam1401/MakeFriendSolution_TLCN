@@ -288,14 +288,6 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            //if (sessionUser.UserId == userId)
-            //{
-            //    return BadRequest(new
-            //    {
-            //        Message = "Can not follow yourself"
-            //    });
-            //}
-
             var followed = await _context.Follows
                 .Where(x => x.FromUserId == sessionUser.UserId && x.ToUserId == userId)
                 .FirstOrDefaultAsync();

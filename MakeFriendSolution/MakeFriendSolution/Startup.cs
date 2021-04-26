@@ -61,10 +61,10 @@ namespace MakeFriendSolution
             services.AddSignalR();
             
             services.AddDbContext<MakeFriendDbContext>(options =>
-                //options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
-                options.UseMySql(
-                    //"server=hieuit.tech;user=tamxix;password=Sql@@123;database=ANGELLIGHT"
-                    Configuration.GetConnectionString("MakeFriendConnectionMYSQL")
+                options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
+                //options.UseMySql(
+                //    //"server=hieuit.tech;user=tamxix;password=Sql@@123;database=ANGELLIGHT"
+                //    Configuration.GetConnectionString("MakeFriendConnectionMYSQL")
                 ));
 
             //Declare DI
