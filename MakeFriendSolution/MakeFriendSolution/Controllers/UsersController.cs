@@ -25,8 +25,11 @@ namespace MakeFriendSolution.Controllers
         private readonly IUserApplication _userApplication;
         private readonly IFeatureApplication _featureApplication;
         private readonly INotificationApplication _notificationApp;
+        private readonly IRelationshipApplication _relationshipApp;
 
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, ISessionService sessionService, IUserApplication userApplication, IFeatureApplication featureApplication, INotificationApplication notificationApp)
+        public UsersController(MakeFriendDbContext context, IStorageService storageService, 
+            ISessionService sessionService, IUserApplication userApplication, IFeatureApplication featureApplication,
+            INotificationApplication notificationApp, IRelationshipApplication relationshipApp)
         {
             _context = context;
             _storageService = storageService;
@@ -34,6 +37,7 @@ namespace MakeFriendSolution.Controllers
             _userApplication = userApplication;
             _featureApplication = featureApplication;
             _notificationApp = notificationApp;
+            _relationshipApp = relationshipApp;
         }
 
         /// <summary>
@@ -262,9 +266,23 @@ namespace MakeFriendSolution.Controllers
             var features = await _featureApplication.GetFeatureResponseByUserId(user.Id);
             respone.Features = features.Item1;
             respone.SearchFeatures = features.Item2;
+
+            var relationship = new RelationshipResponse();
+
+            try
+            {
+                relationship = await _relationshipApp.GetByUserId(userId);
+            }
+            catch (Exception e)
+            {
+                relationship = null;
+            }
+
+            if (relationship != null)
+                respone.Relationship = relationship;
+
             return Ok(respone);
         }
-    
 
         /// <summary>
         /// Follow người dùng

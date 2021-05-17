@@ -78,7 +78,8 @@ namespace MakeFriendSolution.Application
 
             if (filter.FullName != null && filter.FullName.Trim() != "")
             {
-                users = users.Where(x => x.FullName.Contains(filter.FullName.Trim())).ToList();
+                string name = filter.FullName.NonUnicode().ToLower().Trim();
+                users = users.Where(x => x.FullName.NonUnicode().ToLower().Contains(name)).ToList();
             }
 
             if (filter.Gender != null && filter.Gender.Trim() != "")

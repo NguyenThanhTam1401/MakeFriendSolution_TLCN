@@ -61,10 +61,8 @@ namespace MakeFriendSolution
             services.AddSignalR();
             
             services.AddDbContext<MakeFriendDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
-                //options.UseMySql(
-                //    //"server=hieuit.tech;user=tamxix;password=Sql@@123;database=ANGELLIGHT"
-                //    Configuration.GetConnectionString("MakeFriendConnectionMYSQL")
+                //options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
+                options.UseMySql(Configuration.GetConnectionString("MakeFriendConnection")
                 ));
 
             //Declare DI
@@ -79,6 +77,8 @@ namespace MakeFriendSolution
             services.AddScoped<IDetectImageService, DetectImageService>();
             services.AddScoped<IImageScoreApplication, ImageScoreApplication>();
             services.AddScoped<INotificationApplication, NotificationApplication>();
+            services.AddScoped<IFeedbackApplication, FeedbackApplication>();
+            services.AddScoped<IRelationshipApplication, RelationshipApplication>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

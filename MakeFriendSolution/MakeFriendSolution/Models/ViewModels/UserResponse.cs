@@ -98,6 +98,7 @@ namespace MakeFriendSolution.Models.ViewModels
         public string Location { get; set; }
         public string FindPeople { get; set; }
         public string FindAgeGroup { get; set; }
+        public RelationshipResponse Relationship { get; set; }
         public List<FeatureResponse> Features { get; set; }
         public List<FeatureResponse> SearchFeatures { get; set; }
     }

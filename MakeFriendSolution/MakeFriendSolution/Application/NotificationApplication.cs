@@ -121,7 +121,13 @@ namespace MakeFriendSolution.Application
         {
             var receiver = UserConnection.Get(notification.ToId);
 
-            await _hub.Clients.Clients(receiver.ConnectionId).SendAsync("notification", notification);
+            try
+            {
+                await _hub.Clients.Clients(receiver.ConnectionId).SendAsync("notification", notification);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private class AvatarResponse

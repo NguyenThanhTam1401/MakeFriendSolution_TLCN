@@ -67,6 +67,10 @@ namespace MakeFriendSolution.Models
 
         public ICollection<UserFeature> HaveFeatures { get; set; }
         public ICollection<SearchFeature> SearchFeatures { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
+
+        public ICollection<Relationship> RelationshipFrom { get; set; }
+        public ICollection<Relationship> RelationshipTo { get; set; }
 
         [NotMapped]
         public double Point { get; set; } = 0;

@@ -30,15 +30,8 @@ namespace MakeFriendSolution.HubConfig
             await base.OnDisconnectedAsync(exception);
         }
 
-
 		private async Task Response()
         {
-			//var response = new
-			//{
-			//	type = "onlineCount",
-			//	onlineCount = _userCount
-			//};
-
 			await this.Clients.All.SendAsync("onlineCount", _userCount);
 		}
 
@@ -78,15 +71,14 @@ namespace MakeFriendSolution.HubConfig
             return user;
         }
 
-        public async Task Join(Guid userId, string connectionId, string userName, string roomName)
+        public async Task Join(Guid userId, string connectionId, string userName, string roomName, bool isMobile = false)
         {
-            var user = UserConnection.Get(userId, connectionId, userName);
+            var user = UserConnection.Get(userId, connectionId, userName, isMobile);
             var room = Room.Get(roomName);
 
             if (user.CurrentRoom != null)
             {
                 room.Users.Remove(user);
-                await SendUserListUpdate(Clients.Others, room, false);
             }
 
             user.CurrentRoom = room;
@@ -95,13 +87,6 @@ namespace MakeFriendSolution.HubConfig
             await SendUserListUpdate(Clients.Caller, room, true);
             await SendUserListUpdate(Clients.Others, room, false);
         }
-
-        //public override async Task OnDisconnectedAsync(Exception exception)
-        //{
-        //    await HangUp();
-
-        //    await base.OnDisconnectedAsync(exception);
-        //}
 
         public async Task HangUp()
         {
@@ -118,6 +103,7 @@ namespace MakeFriendSolution.HubConfig
                 await SendUserListUpdate(Clients.Others, callingUser.CurrentRoom, false);
             }
 
+            var user = callingUser;
             UserConnection.Remove(callingUser);
         }
 
@@ -139,7 +125,8 @@ namespace MakeFriendSolution.HubConfig
 
         private async Task SendUserListUpdate(IClientProxy to, Room room, bool callTo)
         {
-            await to.SendAsync(callTo ? "callToUserList" : "updateUserList", room.Name, room.Users);
+            var users = room.Users.Where(x => x.IsCalling).ToList();
+            await to.SendAsync(callTo ? "callToUserList" : "updateUserList", room.Name, users);
         }
     }
 }
