@@ -30,7 +30,7 @@ namespace MakeFriendSolution.Application
 
         EAgeGroup GetAgeGroup(DateTime birthDay);
 
-        Task<AppUser> BidingUserRequest(AppUser user, UserRequest request);
+        AppUser BidingUserRequest(AppUser user, UserRequest request);
 
         Task<bool> IsExist(Guid userId);
 

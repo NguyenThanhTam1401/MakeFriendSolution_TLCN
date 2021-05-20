@@ -12,5 +12,8 @@ namespace MakeFriendSolution.Application
         Task<Relationship> Create(RelationshipRequest request);
         Task Delete(Guid userId);
         Task<RelationshipResponse> GetByUserId(Guid userId);
+        Task<RelationshipResponse> GetById(Guid fromId, Guid toId);
+        Task Accept(int id);
+        Task Decline(int id);
     }
 }

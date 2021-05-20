@@ -138,7 +138,7 @@ namespace MakeFriendSolution.Application
             return userResponse;
         }
 
-        public async Task<AppUser> BidingUserRequest(AppUser user, UserRequest request)
+        public AppUser BidingUserRequest(AppUser user, UserRequest request)
         {
             if (Enum.TryParse(request.Gender, out EGender gender))
             {
@@ -155,112 +155,18 @@ namespace MakeFriendSolution.Application
                 user.FindAgeGroup = findAgeGroup;
             }
 
-            //if (Enum.TryParse(request.Cook, out ECook cook))
-            //{
-            //    user.Cook = cook;
-            //}
-
-            //if (Enum.TryParse(request.Game, out EGame game))
-            //{
-            //    user.Game = game;
-            //}
-
-            //if (Enum.TryParse(request.Travel, out ETravel travel))
-            //{
-            //    user.Travel = travel;
-            //}
-
-            //if (Enum.TryParse(request.Shopping, out EShopping shopping))
-            //{
-            //    user.Shopping = shopping;
-            //}
 
             if (Enum.TryParse(request.Location, out ELocation location))
             {
                 user.Location = location;
             }
 
-            //if (Enum.TryParse(request.Body, out EBody body))
-            //{
-            //    user.Body = body;
-            //}
-
-            //if (Enum.TryParse(request.Target, out ETarget target))
-            //{
-            //    user.Target = target;
-            //}
-
-            //if (Enum.TryParse(request.Education, out EEducation education))
-            //{
-            //    user.Education = education;
-            //}
-
-            //if (Enum.TryParse(request.LikePet, out ELikePet pet))
-            //{
-            //    user.LikePet = pet;
-            //}
-
-            //if (Enum.TryParse(request.LikeTechnology, out ELikeTechnology technology))
-            //{
-            //    user.LikeTechnology = technology;
-            //}
-
-            //if (Enum.TryParse(request.PlaySport, out EPlaySport playSport))
-            //{
-            //    user.PlaySport = playSport;
-            //}
-
-            //if (Enum.TryParse(request.Character, out ECharacter character))
-            //{
-            //    user.Character = character;
-            //}
-
-            //if (Enum.TryParse(request.LifeStyle, out ELifeStyle lifeStyle))
-            //{
-            //    user.LifeStyle = lifeStyle;
-            //}
-
-            //if (Enum.TryParse(request.MostValuable, out EMostValuable mostValuable))
-            //{
-            //    user.MostValuable = mostValuable;
-            //}
-
-            //if (Enum.TryParse(request.Marriage, out EMarriage marriage))
-            //{
-            //    user.Marriage = marriage;
-            //}
 
             if (Enum.TryParse(request.Job, out EJob job))
             {
                 user.Job = job;
             }
 
-            //if (Enum.TryParse(request.Religion, out EReligion religion))
-            //{
-            //    user.Religion = religion;
-            //}
-
-            //if (Enum.TryParse(request.FavoriteMovie, out EFavoriteMovie favoriteMovie))
-            //{
-            //    user.FavoriteMovie = favoriteMovie;
-            //}
-
-            //if (Enum.TryParse(request.AtmosphereLike, out EAtmosphereLike atmosphereLike))
-            //{
-            //    user.AtmosphereLike = atmosphereLike;
-            //}
-
-            //if (Enum.TryParse(request.Smoking, out ESmoking smoking))
-            //{
-            //    user.Smoking = smoking;
-            //}
-
-            //if (Enum.TryParse(request.DrinkBeer, out EDrinkBeer drinkBeer))
-            //{
-            //    user.DrinkBeer = drinkBeer;
-            //}
-
-            //
 
             if (request.PhoneNumber != "" && request.PhoneNumber != null)
             {
@@ -304,15 +210,15 @@ namespace MakeFriendSolution.Application
         {
             int age = CalculateAge(birthDay);
             if (age < 18)
-                return EAgeGroup.Dưới_18_Tuổi;
+                return EAgeGroup.Dưới_18_tuổi;
             else if (age < 26)
-                return EAgeGroup.Từ_18_Đến_25;
+                return EAgeGroup.Từ_18_đến_25;
             else if (age < 31)
-                return EAgeGroup.Từ_25_Đến_30;
+                return EAgeGroup.Từ_25_đến_30;
             else if (age < 41)
-                return EAgeGroup.Từ_31_Đến_40;
+                return EAgeGroup.Từ_31_đến_40;
             else if (age < 51)
-                return EAgeGroup.Từ_41_Đến_50;
+                return EAgeGroup.Từ_41_đến_50;
             else return EAgeGroup.Trên_50;
         }
 

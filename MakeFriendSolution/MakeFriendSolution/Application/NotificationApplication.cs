@@ -61,24 +61,31 @@ namespace MakeFriendSolution.Application
             r.Id = notification.Id;
             r.FullName = imagePath.FullName;
             r.CreatedAt = notification.CreatedAt;
-            r.Type = "notification";
 
             if(notification.Type == "follow")
             {
                 r.Content =" đã theo dõi bạn.";
+                r.Type = "follow";
             }
             else if(notification.Type == "likeImage")
             {
                 r.Content = " đã thích hình ảnh của bạn.";
+                r.Type = "likeImage";
             }
             else if(notification.Type == "like")
             {
                 r.Content = " đã bày tỏ cảm xúc với bạn.";
+                r.Type = "like";
+            }
+            else if(notification.Type == "relationship")
+            {
+                r.Content = " đã tạo quan hệ với bạn.";
+                r.Type = "relationship";
             }
             
             return r;
         }
-
+        
         public async Task<bool> DeleteNotification(int id)
         {
             var notice = await _context.Notifications.FindAsync(id);
@@ -120,6 +127,9 @@ namespace MakeFriendSolution.Application
         public async Task SendNotification(NotificationResponse notification)
         {
             var receiver = UserConnection.Get(notification.ToId);
+
+            if (receiver == null)
+                return;
 
             try
             {

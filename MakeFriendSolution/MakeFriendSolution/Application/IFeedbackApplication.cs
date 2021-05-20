@@ -11,5 +11,6 @@ namespace MakeFriendSolution.Application
         Task<FeedbackResponse> Create(FeedbackRequest request);
         Task<FeedbackResponse> Update(FeedbackRequest request);
         Task<List<FeedbackResponse>> Get(PagingRequest request);
+        Task Delete(Guid userId, int feedbackId);
     }
 }

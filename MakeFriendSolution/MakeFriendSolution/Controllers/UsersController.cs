@@ -27,7 +27,7 @@ namespace MakeFriendSolution.Controllers
         private readonly INotificationApplication _notificationApp;
         private readonly IRelationshipApplication _relationshipApp;
 
-        public UsersController(MakeFriendDbContext context, IStorageService storageService, 
+        public UsersController(MakeFriendDbContext context, IStorageService storageService,
             ISessionService sessionService, IUserApplication userApplication, IFeatureApplication featureApplication,
             INotificationApplication notificationApp, IRelationshipApplication relationshipApp)
         {
@@ -267,19 +267,15 @@ namespace MakeFriendSolution.Controllers
             respone.Features = features.Item1;
             respone.SearchFeatures = features.Item2;
 
-            var relationship = new RelationshipResponse();
 
             try
             {
-                relationship = await _relationshipApp.GetByUserId(userId);
+                respone.Relationship = await _relationshipApp.GetByUserId(userId);
+                
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                relationship = null;
             }
-
-            if (relationship != null)
-                respone.Relationship = relationship;
 
             return Ok(respone);
         }
@@ -335,7 +331,7 @@ namespace MakeFriendSolution.Controllers
                     Type = "follow"
                 };
                 var noticeRes = await _notificationApp.CreateNotification(nt);
-                if(noticeRes != null)
+                if (noticeRes != null)
                 {
                     await _notificationApp.SendNotification(noticeRes);
                 }
@@ -696,7 +692,7 @@ namespace MakeFriendSolution.Controllers
                 });
 
             var userInfo = _sessionService.GetDataFromToken();
-            if(userId == userInfo.UserId)
+            if (userId == userInfo.UserId)
             {
                 return BadRequest(new
                 {
@@ -704,7 +700,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
             var follow = await _context.Follows
-                .Where(x => (x.FromUserId == userId && x.ToUserId == userInfo.UserId) || 
+                .Where(x => (x.FromUserId == userId && x.ToUserId == userInfo.UserId) ||
                     (x.FromUserId == userInfo.UserId && x.ToUserId == userId))
                 .ToListAsync();
 
@@ -758,11 +754,12 @@ namespace MakeFriendSolution.Controllers
 
         [HttpPut("hub")]
         [Authorize]
-        public async Task<IActionResult> SaveConnectionId([FromQuery]Guid userId, [FromForm] string connectionId)
+        public async Task<IActionResult> SaveConnectionId([FromQuery] Guid userId, [FromForm] string connectionId)
         {
             var userInfo = _sessionService.GetDataFromToken();
 
-            if (userInfo.UserId != userId || string.IsNullOrEmpty(connectionId)) {
+            if (userInfo.UserId != userId || string.IsNullOrEmpty(connectionId))
+            {
                 return BadRequest();
             }
 
@@ -772,7 +769,7 @@ namespace MakeFriendSolution.Controllers
 
             await _userApplication.UpdateUser(user, false);
 
-            return Ok(new { Message = "Saved connectionId"});
+            return Ok(new { Message = "Saved connectionId" });
         }
 
     }

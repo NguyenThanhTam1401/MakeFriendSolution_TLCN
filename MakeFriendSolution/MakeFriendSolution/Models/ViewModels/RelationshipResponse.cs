@@ -1,4 +1,5 @@
 ﻿using MakeFriendSolution.Models.Enum;
+using MakeFriendSolution.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MakeFriendSolution.Models.ViewModels
     public class RelationshipResponse
     {
         public RelationshipResponse() { }
-        public RelationshipResponse(Relationship relationShip, AppUser fromUser, AppUser toUser)
+        public RelationshipResponse(Relationship relationShip, AppUser fromUser, AppUser toUser, IStorageService storageService)
         {
             Id = relationShip.Id;
             FromId = fromUser.Id;
@@ -18,8 +19,8 @@ namespace MakeFriendSolution.Models.ViewModels
             UpdatedAt = relationShip.UpdatedAt;
             FromName = fromUser.FullName;
             ToName = toUser.FullName;
-            FromAvatar = fromUser.AvatarPath;
-            ToAvatar = toUser.AvatarPath;
+            FromAvatar = storageService.GetFileUrl(fromUser.AvatarPath);
+            ToAvatar = storageService.GetFileUrl(toUser.AvatarPath);
             RelationshipType = relationShip.RelationShipType;
         }
         public int Id { get; set; }

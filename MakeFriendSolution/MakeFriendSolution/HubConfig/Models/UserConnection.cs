@@ -39,19 +39,18 @@ namespace MakeFriendSolution.HubConfig.Models
 
                 if (current == default(UserConnection))
                 {
-                    var duplicate = Users.Where(x => x.UserId == userId).ToList();
-
-                    if(duplicate.Count >= 0)
+                    current = new UserConnection
                     {
-                        current = new UserConnection
-                        {
-                            UserId = userId,
-                            UserName = userName,
-                            ConnectionId = connectionId,
-                            IsCalling = true
-                        };
-                        Users.Add(current);
-                    }
+                        UserId = userId,
+                        UserName = userName,
+                        ConnectionId = connectionId,
+                        IsCalling = false
+                    };
+
+                    if (u != null)
+                        current.IsCalling = true;
+
+                    Users.Add(current);
                 }
                 else
                 {

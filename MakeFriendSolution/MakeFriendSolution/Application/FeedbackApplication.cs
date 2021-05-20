@@ -1,6 +1,7 @@
 ﻿using MakeFriendSolution.EF;
 using MakeFriendSolution.Models;
 using MakeFriendSolution.Models.ViewModels;
+using MakeFriendSolution.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,11 @@ namespace MakeFriendSolution.Application
     public class FeedbackApplication : IFeedbackApplication
     {
         private readonly MakeFriendDbContext _context;
-        public FeedbackApplication(MakeFriendDbContext context)
+        private readonly IStorageService _storageService;
+        public FeedbackApplication(MakeFriendDbContext context, IStorageService storageService)
         {
             _context = context;
+            _storageService = storageService;
         }
         public async Task<FeedbackResponse> Create(FeedbackRequest request)
         {
@@ -24,7 +27,7 @@ namespace MakeFriendSolution.Application
             }
 
             var feedback = new Feedback(request);
-
+            
             try
             {
                 _context.Feedbacks.Add(feedback);
@@ -37,9 +40,30 @@ namespace MakeFriendSolution.Application
             }
         }
 
+        public async Task Delete(Guid userId, int feedbackId)
+        {
+            var feedback = await _context.Feedbacks.FindAsync(feedbackId);
+            if (feedback == null)
+                return;
+
+            if (feedback.UserId != userId)
+                throw new Exception("Permission denied");
+
+            try
+            {
+                _context.Feedbacks.Remove(feedback);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Can not delete feedback");
+            }
+        }
+
         public async Task<List<FeedbackResponse>> Get(PagingRequest request)
         {
             var feedbacks = await _context.Feedbacks
+                .OrderByDescending(x=>x.CreatedAt)
                 .Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync();
@@ -50,6 +74,8 @@ namespace MakeFriendSolution.Application
             {
                 var user = await _context.Users.FindAsync(item.UserId);
                 var response = new FeedbackResponse(item, user);
+
+                response.Avatar = _storageService.GetFileUrl(response.Avatar);
 
                 responses.Add(response);
             }

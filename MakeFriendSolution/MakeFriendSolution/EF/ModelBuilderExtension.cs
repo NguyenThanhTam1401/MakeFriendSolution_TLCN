@@ -72,7 +72,7 @@ namespace MakeFriendSolution.EF
                     Id = 6,
                     IsCalculated = true,
                     
-                    Name = "Thể loại phim ưa thích",
+                    Name = "Phim ưa thích",
                     WeightRate = 1
                 },
                 new Feature()
@@ -88,7 +88,7 @@ namespace MakeFriendSolution.EF
                     Id = 8,
                     IsCalculated = true,
                     
-                    Name = "Bầu không khí ưa thích",
+                    Name = "Không khí ưa thích",
                     WeightRate = 1
                 },
                 new Feature()
@@ -759,7 +759,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Công_nghệ_thông_tin,
 
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
@@ -785,7 +785,7 @@ namespace MakeFriendSolution.EF
                     Weight = 65,
 
                     FindPeople = EGender.Nam,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Tài_chính_ngân_hàng,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -809,7 +809,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Chủ_doanh_nghiệp,
                     Summary = "Tôi là Vương, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -833,7 +833,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Giáo_viên_giảng_viên,
 
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
@@ -858,7 +858,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Kỹ_sư,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -882,7 +882,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Lao_động_tự_do,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -906,7 +906,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Marketing,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -930,7 +930,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Máy_tính,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -954,7 +954,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nữ,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Nghề_nghiệp_khác,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -978,7 +978,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Nhà_hàng_khách_sạn,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -1002,7 +1002,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Thiết_kế_tạo_mẫu,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -1026,7 +1026,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Văn_phòng,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true
@@ -1050,7 +1050,7 @@ namespace MakeFriendSolution.EF
                     Height = 170,
                     Weight = 65,
                     FindPeople = EGender.Nam,
-                    Job = EJob.IT_Công_Nghệ_Thông_Tin,
+                    Job = EJob.Vận_động_viên,
                     Summary = "Tôi là Tâm, rất vui khi được làm quen với bạn",
                     Title = "Thông tin của tôi",
                     IsInfoUpdated = true

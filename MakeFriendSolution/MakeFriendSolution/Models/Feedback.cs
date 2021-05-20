@@ -15,6 +15,7 @@ namespace MakeFriendSolution.Models
             Title = request.Title;
             Content = request.Content;
             Vote = request.Vote;
+            CreatedAt = DateTime.Now;
         }
         public int Id { get; set; }
         public Guid UserId { get; set; }

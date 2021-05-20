@@ -386,7 +386,7 @@ namespace MakeFriendSolution.Controllers
                 });
             }
 
-            user = await _userApplication.BidingUserRequest(user, request);
+            user = _userApplication.BidingUserRequest(user, request);
             try
             {
                 user.IsInfoUpdated = true;

@@ -7,7 +7,7 @@ namespace MakeFriendSolution.Models.Enum
 {
     public enum ERelationShip
     {
-        Bạn_bè,
+        Không_có_gì,
         Đang_tìm_hiểu,
         Đang_yêu,
         Đã_kết_hôn
