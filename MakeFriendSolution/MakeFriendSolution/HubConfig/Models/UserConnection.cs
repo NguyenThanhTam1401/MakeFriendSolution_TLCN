@@ -11,6 +11,7 @@ namespace MakeFriendSolution.HubConfig.Models
         private static readonly List<UserConnection> Users = new List<UserConnection>();
         public Guid UserId { get; set; }
         public string UserName { get; set; }
+        public string AvatarPath { get; set; }
         public string ConnectionId { get; set; }
         [JsonIgnore]
         public Room CurrentRoom { get; set; }
@@ -30,7 +31,7 @@ namespace MakeFriendSolution.HubConfig.Models
             return Users.Where(u => u.UserId == userId).FirstOrDefault();
         }
 
-        public static UserConnection Get(Guid userId, string connectionId, string userName, bool isMobile = false)
+        public static UserConnection Get(Guid userId, string connectionId, string userName, string avatarPath, bool isMobile = false)
         {
             lock (Users)
             {
@@ -43,6 +44,7 @@ namespace MakeFriendSolution.HubConfig.Models
                     {
                         UserId = userId,
                         UserName = userName,
+                        AvatarPath = avatarPath,
                         ConnectionId = connectionId,
                         IsCalling = false
                     };
@@ -56,6 +58,7 @@ namespace MakeFriendSolution.HubConfig.Models
                 {
                     current.UserId = userId;
                     current.UserName = userName;
+                    current.AvatarPath = avatarPath;
                     current.IsCalling = (u == null) ? false : true;
                 }
 

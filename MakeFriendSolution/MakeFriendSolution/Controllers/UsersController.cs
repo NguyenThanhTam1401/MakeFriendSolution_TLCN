@@ -271,7 +271,7 @@ namespace MakeFriendSolution.Controllers
             try
             {
                 respone.Relationship = await _relationshipApp.GetByUserId(userId);
-                
+
             }
             catch (Exception)
             {
@@ -752,25 +752,63 @@ namespace MakeFriendSolution.Controllers
             });
         }
 
-        [HttpPut("hub")]
+        [HttpPut("position")]
         [Authorize]
-        public async Task<IActionResult> SaveConnectionId([FromQuery] Guid userId, [FromForm] string connectionId)
+        public async Task<IActionResult> SavePosition([FromBody] SavePositionRequest request)
         {
-            var userInfo = _sessionService.GetDataFromToken();
-
-            if (userInfo.UserId != userId || string.IsNullOrEmpty(connectionId))
+            try
             {
-                return BadRequest();
+                await _userApplication.SavePostion(request);
+                return Ok(new { Message = "Saved successful" });
             }
-
-            var user = await _userApplication.GetById(userId);
-
-            user.ConnectionId = connectionId;
-
-            await _userApplication.UpdateUser(user, false);
-
-            return Ok(new { Message = "Saved connectionId" });
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
         }
 
+        [HttpPost("around")]
+        [Authorize]
+        public async Task<IActionResult> FindAround(FindAroundRequest request)
+        {
+            try
+            {
+                var users = await _userApplication.FindAround(request);
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpGet("friends")]
+        [Authorize]
+        public async Task<IActionResult> SearchFriend([FromQuery] string name)
+        {
+            var userInfo = _sessionService.GetDataFromToken();
+            try
+            {
+                var users = await _userApplication.SearchFriend(userInfo.UserId, name);
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
+
+        [HttpGet("display/{userId}")]
+        public async Task<IActionResult> GetDisplayUser(Guid userId)
+        {
+            try
+            {
+                return Ok(await _userApplication.GetUserDisplayById(userId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { Message = e.Message });
+            }
+        }
     }
 }

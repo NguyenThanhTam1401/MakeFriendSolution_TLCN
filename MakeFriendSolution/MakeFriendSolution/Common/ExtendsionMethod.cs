@@ -9,6 +9,8 @@ namespace MakeFriendSolution.Common
     {
         public static string NonUnicode(this string text)
         {
+            if (text == null)
+                return "";
             string[] arr1 = new string[] { "á", "à", "ả", "ã", "ạ", "â", "ấ", "ầ", "ẩ", "ẫ", "ậ", "ă", "ắ", "ằ", "ẳ", "ẵ", "ặ",
     "đ",
     "é","è","ẻ","ẽ","ẹ","ê","ế","ề","ể","ễ","ệ",

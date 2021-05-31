@@ -50,7 +50,7 @@ namespace MakeFriendSolution
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuit.tech:5200", "https://hieuit.tech:5200", "http://hieuit.tech", "https://hieuit.tech")
+                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuit.tech", "https://hieuit.tech")
                     //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
@@ -61,8 +61,8 @@ namespace MakeFriendSolution
             services.AddSignalR();
             
             services.AddDbContext<MakeFriendDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
-                //options.UseMySql(Configuration.GetConnectionString("MakeFriendConnection")
+                //options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
+                options.UseMySql(Configuration.GetConnectionString("MakeFriendConnection")
                 ));
 
             //Declare DI

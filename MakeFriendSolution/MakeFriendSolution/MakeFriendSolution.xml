@@ -76,7 +76,7 @@
             <param name="request">Thông tin đăng nhập</param>
             <returns></returns>
         </member>
-        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.FacebookLogin(MakeFriendSolution.Models.ViewModels.FacebookLoginRequest)">
+        <member name="M:MakeFriendSolution.Controllers.AuthenticatesController.FacebookLogin(MakeFriendSolution.Models.ViewModels.SocialLoginRequest)">
             <summary>
             Đăng nhập với tài khoản facebook
             </summary>

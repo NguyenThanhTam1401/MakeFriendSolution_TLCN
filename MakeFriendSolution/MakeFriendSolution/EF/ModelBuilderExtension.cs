@@ -79,8 +79,8 @@ namespace MakeFriendSolution.EF
                 {
                     Id = 7,
                     IsCalculated = true,
-                    
-                    Name = "Nhạc ưa thích",
+                    IsSearchFeature = true,
+                    Name = "Tính cách",
                     WeightRate = 1
                 },
                 new Feature()
@@ -88,7 +88,7 @@ namespace MakeFriendSolution.EF
                     Id = 8,
                     IsCalculated = true,
                     
-                    Name = "Không khí ưa thích",
+                    Name = "Thích không khí",
                     WeightRate = 1
                 },
                 new Feature()
@@ -405,42 +405,78 @@ namespace MakeFriendSolution.EF
                     Content = "Hoạt hình",
                     Weight = 9
                 }
+
                 //Nhạc yêu thích Id = 7, max = 43
                 ,
                 new FeatureDetail()
                 {
                     Id = 39,
                     FeatureId = 7,
-                    Content = "Nhạc trẻ",
+                    Content = "Vui vẻ",
                     Weight = 1
                 },
                 new FeatureDetail()
                 {
                     Id = 40,
                     FeatureId = 7,
-                    Content = "Pop",
+                    Content = "Cẩn thận",
                     Weight = 2
                 },
                 new FeatureDetail()
                 {
-                    Id = 41,
+                    Id = 193,
                     FeatureId = 7,
-                    Content = "Dance",
+                    Content = "Lịch sự",
                     Weight = 3
                 },
                 new FeatureDetail()
                 {
-                    Id = 42,
+                    Id = 194,
                     FeatureId = 7,
-                    Content = "Rap - Hip hop",
+                    Content = "Tự tin",
                     Weight = 4
                 },
                 new FeatureDetail()
                 {
-                    Id = 43,
+                    Id = 195,
                     FeatureId = 7,
-                    Content = "Nhạc Bolero",
+                    Content = "Trung thực",
                     Weight = 5
+                },
+                new FeatureDetail()
+                {
+                    Id = 196,
+                    FeatureId = 7,
+                    Content = "Lạc quan",
+                    Weight = 6
+                },
+                new FeatureDetail()
+                {
+                    Id = 197,
+                    FeatureId = 7,
+                    Content = "Bướng bỉnh",
+                    Weight = 7
+                },
+                new FeatureDetail()
+                {
+                    Id = 198,
+                    FeatureId = 7,
+                    Content = "Lạnh lùng",
+                    Weight = 8
+                },
+                new FeatureDetail()
+                {
+                    Id = 199,
+                    FeatureId = 7,
+                    Content = "Khó tính",
+                    Weight = 9
+                },
+                new FeatureDetail()
+                {
+                    Id = 200,
+                    FeatureId = 7,
+                    Content = "Ngốc nghếch",
+                    Weight = 10
                 }
                 //Bầu không khí Id = 8, max = 48
                 ,

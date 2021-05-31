@@ -14,7 +14,7 @@ namespace MakeFriendSolution.Services
     {
         public string GetMailBody(LoginInfo info)
         {
-            string url = Startup.DomainName + "api/v1/Authenticates/confirmMail?userId=" + info.UserId;
+            string url = Startup.DomainName + "/api/v1/Authenticates/confirmMail?userId=" + info.UserId;
             return string.Format(@"<div style='text-align:center;'>
                                     <h1>Welcome to our Web Site</h1>
                                     <h3>Click below button for verify your Email Id</h3>

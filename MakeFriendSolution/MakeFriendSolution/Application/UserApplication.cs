@@ -52,7 +52,7 @@ namespace MakeFriendSolution.Application
             return await _context.Follows.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == userId);
         }
 
-        public async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)   
+        public async Task<bool> GetBlockStatus(Guid currentUserId, Guid toUserId)
         {
             return await _context.BlockUsers.AnyAsync(x => x.FromUserId == currentUserId && x.ToUserId == toUserId && x.IsLock);
         }
@@ -121,6 +121,31 @@ namespace MakeFriendSolution.Application
                     userDisplay.Followed = await IsFollowed(user.Id, sessionUser.UserId);
                     userDisplay.Favorited = await IsLiked(user.Id, sessionUser.UserId);
                 }
+
+                userDisplays.Add(userDisplay);
+            }
+            return userDisplays;
+        }
+
+        public async Task<List<UserDisplay>> GetUserDisplayByUserResponse(List<UserResponse> users)
+        {
+            var userDisplays = new List<UserDisplay>();
+            //Get Session user - Check login
+            var sessionUser = _sessionService.GetDataFromToken();
+            if (sessionUser == null)
+            {
+                sessionUser = new LoginInfo()
+                {
+                    UserId = Guid.NewGuid()
+                };
+            }
+
+            foreach (var user in users)
+            {
+                var userDisplay = new UserDisplay(user);
+
+                userDisplay.Followed = await IsFollowed(user.Id, sessionUser.UserId);
+                userDisplay.Favorited = await IsLiked(user.Id, sessionUser.UserId);
 
                 userDisplays.Add(userDisplay);
             }
@@ -314,11 +339,11 @@ namespace MakeFriendSolution.Application
         public async Task<bool> UpdateSimilarityScores(Guid userId)
         {
             var oldScores = await _context.SimilarityScores.Where(x => x.FromUserId == userId).ToListAsync();
-            var features = (await _featureApplication.GetFeatures()).Where(x=>x.IsCalculated).ToList();
+            var features = (await _featureApplication.GetFeatures()).Where(x => x.IsCalculated).ToList();
             var columns = features.Count;
 
             var users = await GetUsersToCalculate(userId);
-            
+
             int rows = users.Count;
 
             double[,] usersMatrix = new double[rows, columns];
@@ -447,12 +472,12 @@ namespace MakeFriendSolution.Application
                 .Where(x => x.FromUserId == userId).ToListAsync();
 
             var users = await (from u in _context.Users
-                         select new UserCalculateVM()
-                         {
-                             UserId = u.Id,
-                             Age = CalculateAge(u.Dob),
-                             Gender = u.Gender
-                         }).ToListAsync();
+                               select new UserCalculateVM()
+                               {
+                                   UserId = u.Id,
+                                   Age = CalculateAge(u.Dob),
+                                   Gender = u.Gender
+                               }).ToListAsync();
 
             List<Guid> userIds = new List<Guid>
             {
@@ -501,7 +526,7 @@ namespace MakeFriendSolution.Application
             {
                 for (int j = 0; j < searchFeatures.Count; j++)
                 {
-                    if(calculateUser.FeatureViewModels[i].FeatureId == searchFeatures[j].FeatureId)
+                    if (calculateUser.FeatureViewModels[i].FeatureId == searchFeatures[j].FeatureId)
                     {
                         var search = await _featureApplication.GetFeatureViewModel(searchFeatures[j].FeatureDetailId);
                         calculateUser.FeatureViewModels[i] = search;
@@ -512,6 +537,125 @@ namespace MakeFriendSolution.Application
             users.Insert(0, calculateUser);
 
             return users;
+        }
+
+        public async Task SavePostion(SavePositionRequest request)
+        {
+            var user = await _context.Users.FindAsync(request.UserId);
+
+            if (user == null)
+                throw new Exception("Can not find user with id = " + request.UserId);
+
+            user.Latitude = request.Latitude;
+            user.Longitude = request.Longitude;
+            user.IsUpdatePosition = true;
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Can not save position");
+            }
+        }
+
+        public async Task<List<UserDisplay>> FindAround(FindAroundRequest request)
+        {
+            var user = await _context.Users.FindAsync(request.UserId);
+
+            if (user == null)
+                throw new Exception("Can not find user");
+
+            var users = await _context.Users.Where(x => x.Status == EUserStatus.Active && x.IsUpdatePosition).ToListAsync();
+
+            users.Remove(user);
+
+            try
+            {
+                if (request.Gender == 1)
+                {
+                    users = users.Where(x => x.Gender == EGender.Nam).ToList();
+                }
+
+                else if (request.Gender == 2)
+                {
+                    users = users.Where(x => x.Gender == EGender.Nữ).ToList();
+                }
+
+                if (request.AgeGroup != -1)
+                {
+                    users = users.Where(x => GetAgeGroup(x.Dob) == (EAgeGroup)request.AgeGroup).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Parameter not correct");
+            }
+
+
+            var currentCoordinates = new Coordinates(user.Latitude, user.Longitude);
+
+            foreach (var u in users)
+            {
+                var distance = new Coordinates(u.Latitude, u.Longitude).DistanceTo(currentCoordinates);
+                u.Distance = distance;
+            }
+
+            users = users.OrderBy(x => x.Distance)
+                    .Skip((request.PageIndex - 1) * request.PageSize)
+                    .Take(request.PageSize).ToList();
+
+            var responses = new List<UserDisplay>();
+            foreach (var item in users)
+            {
+                var res = new UserDisplay(item, _storageService);
+                res.Followed = await IsFollowed(request.UserId, item.Id);
+                res.Favorited = await IsLiked(request.UserId, item.Id);
+
+                responses.Add(res);
+            }
+
+            return responses;
+        }
+
+        public async Task<List<UserDisplay>> SearchFriend(Guid userId, string name)
+        {
+            name = name.NonUnicode().ToLower().Trim();
+
+            var follows = await _context.Follows
+                .Where(x => x.FromUserId == userId)
+                .Include(x => x.ToUser)
+                .ToListAsync();
+
+            var users = follows.Select(x => x.ToUser).ToList();
+
+            users = users.Where(x => x.FullName.NonUnicode().ToLower().Contains(name)).ToList();
+
+            users = users
+                .Take(9).ToList();
+
+            var resposnes = new List<UserDisplay>();
+
+            foreach (var item in users)
+            {
+                var user = new UserDisplay(item, _storageService);
+                resposnes.Add(user);
+            }
+
+            return resposnes;
+        }
+
+        public async Task<UserDisplay> GetUserDisplayById(Guid userId)
+        {
+            try
+            {
+                return new UserDisplay(await _context.Users.FindAsync(userId), _storageService);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Can not find user");
+            }
         }
     }
 }

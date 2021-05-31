@@ -35,7 +35,7 @@ namespace MakeFriendSolution.Application
                     && x.HasRelationship && x.IsAccept)
                 .FirstOrDefaultAsync();
 
-            if (existFrom != null)
+            if (existFrom != null && existFrom.ToId != relationship.ToId)
                 throw new Exception("Người dùng đang trong mối quan hệ khác");
 
             if (relationship.IsAccept)
@@ -59,11 +59,11 @@ namespace MakeFriendSolution.Application
         public async Task<Relationship> Create(RelationshipRequest request)
         {
 
-            var isExist = await _context.Relationships
-                .AnyAsync(x => (x.FromId == request.ToId || x.ToId == request.ToId)
-                && x.HasRelationship && x.IsAccept);
+            var re = await _context.Relationships
+                .Where(x => (x.FromId == request.ToId || x.ToId == request.ToId)
+                && x.HasRelationship && x.IsAccept).FirstOrDefaultAsync();
 
-            if (isExist)
+            if (re != null && re.ToId != request.ToId)
                 throw new Exception("Người dùng đang trong mối quan hệ với người khác");
 
             var existFrom = await _context.Relationships
@@ -114,10 +114,13 @@ namespace MakeFriendSolution.Application
 
                 if(request.RelationShipType == Models.Enum.ERelationShip.Không_có_gì)
                 {
+                    relationship.IsAccept = false;
                     relationship.HasRelationship = false;
                 }
                 else
                 {
+                    relationship.IsAccept = false;
+                    relationship.HasRelationship = true;
                     relationship.RelationShipType = request.RelationShipType;
                     relationship.UpdatedAt = DateTime.Now;
                 }

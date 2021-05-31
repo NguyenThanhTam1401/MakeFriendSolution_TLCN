@@ -194,10 +194,10 @@ namespace MakeFriendSolution.Controllers
                         image.ImagePath = await _storageService.SaveFile(request.Images[i]);
                         try
                         {
-                            var score = _detectService.DetectImage("." + _storageService.GetFileUrl(image.ImagePath));
+                            var score = _detectService.DetectImage("." + _storageService.GetFileUrlWithoutDomain(image.ImagePath));
                             isOk = await _imageScoreApplication.ValidateImage(score);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             Console.WriteLine("Không thể kết nối đến detect image service.");
                             isOk = true;
@@ -237,7 +237,7 @@ namespace MakeFriendSolution.Controllers
                     image.Status = ImageStatus.Approved;
 
                     newImages.Add(image);
-                }
+                }   
             }
 
             user.NumberOfImages += (newImages.Count - notOk);
@@ -265,7 +265,7 @@ namespace MakeFriendSolution.Controllers
             else
             {
                 Approved = false;
-                message = "Chúng tôi nhận thấy hình ảnh của bạn có thể đã vi phạm chuẩn mực của chúng tôi, xin lỗi vì sự bất tiện này!";
+                message = "Hình ảnh có thể đã vi phạm chuẩn mực của chúng tôi, có thể cần kiểm duyệt, xin lỗi vì sự bất tiện này!";
             }
 
             return Ok(new
