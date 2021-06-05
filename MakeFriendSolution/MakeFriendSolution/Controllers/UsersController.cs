@@ -462,7 +462,7 @@ namespace MakeFriendSolution.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDisplay>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetFriends(Guid userId)
+        public async Task<IActionResult> GetFriends(Guid userId, [FromQuery] PagingRequest request)
         {
             var sessionUser = _sessionService.GetDataFromToken();
             if (sessionUser == null)
@@ -479,7 +479,10 @@ namespace MakeFriendSolution.Controllers
             }
 
             var followers = await _context.Follows.Where(x => x.FromUserId == userId).Include(x => x.ToUser).ToListAsync();
-            var response = followers.Select(x => new UserDisplay(x.ToUser, _storageService));
+            var response = followers.Select(x => new UserDisplay(x.ToUser, _storageService))
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .OrderByDescending(x => x.CreatedAt).ToList();
             foreach (var item in response)
             {
                 item.Followed = await _userApplication.IsFollowed(item.Id, sessionUser.UserId);

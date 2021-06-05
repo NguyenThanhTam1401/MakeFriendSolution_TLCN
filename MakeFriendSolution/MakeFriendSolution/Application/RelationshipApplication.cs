@@ -23,6 +23,7 @@ namespace MakeFriendSolution.Application
 
         public async Task Accept(int id)
         {
+            // 1. Kiểm tra tồn tại
             var relationship = await _context.Relationships
                 .Where(x => x.Id == id && x.HasRelationship)
                 .FirstOrDefaultAsync();
@@ -30,22 +31,32 @@ namespace MakeFriendSolution.Application
             if (relationship == null)
                 throw new Exception("Can not find relationship");
 
-            var existFrom = await _context.Relationships
-                .Where(x => (x.FromId == relationship.FromId || x.ToId == relationship.ToId)
-                    && x.HasRelationship && x.IsAccept)
-                .FirstOrDefaultAsync();
+            var relationShipsFrom = await _context.Relationships
+                .Where(x => (x.FromId == relationship.FromId || x.ToId == relationship.FromId) && x.HasRelationship)
+                .ToListAsync();
 
-            if (existFrom != null && existFrom.ToId != relationship.ToId)
-                throw new Exception("Người dùng đang trong mối quan hệ khác");
+            var relationShipsTo = await _context.Relationships
+                .Where(x => (x.FromId == relationship.ToId || x.ToId == relationship.ToId) && x.HasRelationship)
+                .ToListAsync();
 
-            if (relationship.IsAccept)
-                return;
+            var relationShips = relationShipsFrom.Concat(relationShipsTo);
+
+            relationShips = relationShips.Where(x => x.Id != relationship.Id).ToList();
+
+            foreach (var item in relationShips)
+            {
+                item.HasRelationship = false;
+                item.IsAccept = false;
+                item.UpdatedAt = DateTime.Now;
+            }
 
             relationship.IsAccept = true;
             relationship.UpdatedAt = DateTime.Now;
+            relationship.HasRelationship = true;
 
             try
             {
+                _context.Relationships.UpdateRange(relationShips);
                 _context.Relationships.Update(relationship);
                 await _context.SaveChangesAsync();
             }
@@ -53,34 +64,15 @@ namespace MakeFriendSolution.Application
             {
                 throw new Exception("Can not accept this relationship");
             }
-
         }
 
         public async Task<Relationship> Create(RelationshipRequest request)
         {
-
-            var re = await _context.Relationships
-                .Where(x => (x.FromId == request.ToId || x.ToId == request.ToId)
-                && x.HasRelationship && x.IsAccept).FirstOrDefaultAsync();
-
-            if (re != null && re.ToId != request.ToId)
-                throw new Exception("Người dùng đang trong mối quan hệ với người khác");
-
-            var existFrom = await _context.Relationships
-                .Where(x => (x.FromId == request.FromId || x.ToId == request.FromId) && x.HasRelationship && x.IsAccept)
-                .FirstOrDefaultAsync();
-
-            if (existFrom != null)
-            {
-                existFrom.HasRelationship = false;
-                existFrom.UpdatedAt = DateTime.Now;
-                _context.Relationships.Update(existFrom);
-            }
-
             var relationship = await _context.Relationships
                 .Where(x => x.FromId == request.FromId && x.ToId == request.ToId)
                 .FirstOrDefaultAsync();
 
+            //Chưa có relationship
             if(relationship == null)
             {
                 if (request.RelationShipType == Models.Enum.ERelationShip.Không_có_gì)
@@ -98,31 +90,24 @@ namespace MakeFriendSolution.Application
                 };
                 _context.Relationships.Add(relationship);
 
-                var exist = await _context.Relationships
-                    .Where(x => x.FromId == request.FromId && x.HasRelationship && x.IsAccept)
-                    .ToListAsync();
-
-                if(exist == null || exist.Count == 0)
-                {
-                    _context.Relationships.RemoveRange(exist);
-                }
             }
+            //Khác Null, đã từng có relationship
             else
             {
                 if (request.RelationShipType == relationship.RelationShipType)
                     return relationship;
 
-                if(request.RelationShipType == Models.Enum.ERelationShip.Không_có_gì)
+                relationship.IsAccept = false;
+                relationship.UpdatedAt = DateTime.Now;
+
+                if (request.RelationShipType == Models.Enum.ERelationShip.Không_có_gì)
                 {
-                    relationship.IsAccept = false;
                     relationship.HasRelationship = false;
                 }
                 else
                 {
-                    relationship.IsAccept = false;
                     relationship.HasRelationship = true;
                     relationship.RelationShipType = request.RelationShipType;
-                    relationship.UpdatedAt = DateTime.Now;
                 }
 
                 _context.Relationships.Update(relationship);

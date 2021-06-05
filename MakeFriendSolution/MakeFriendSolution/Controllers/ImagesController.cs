@@ -48,13 +48,14 @@ namespace MakeFriendSolution.Controllers
         /// Lấy thông tin user bằng ID
         /// </summary>
         /// <param name="userId">ID người dùng</param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("user/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ImageResponse>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetImageByUserId(Guid userId)
+        public async Task<IActionResult> GetImageByUserId(Guid userId, [FromQuery] PagingRequest request)
         {
             var isExist = await _context.Users.AnyAsync(x => x.Id == userId);
             if (!isExist)
@@ -64,7 +65,13 @@ namespace MakeFriendSolution.Controllers
                     Message = "Can not find User with id = " + userId
                 });
             }
-            var images = await _context.ThumbnailImages.Where(x => x.UserId == userId && x.Status == ImageStatus.Approved).ToListAsync();
+            var images = await _context.ThumbnailImages
+                .Where(x => x.UserId == userId && x.Status == ImageStatus.Approved)
+                .OrderByDescending(x=>x.CreatedAt)
+                .Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToListAsync();
+
             var errorImages = new List<ThumbnailImage>();
             var response = new List<ImageResponse>();
             foreach (var item in images)
