@@ -25,7 +25,7 @@ namespace MakeFriendSolution.HubConfig
 			_userCount--;
 			await Response();
             //
-            await HangUp();
+            HangUp();
 
             await base.OnDisconnectedAsync(exception);
         }
@@ -37,8 +37,6 @@ namespace MakeFriendSolution.HubConfig
 
 		public string GetConnectionId() => Context.ConnectionId;
 
-        /////////////////////////////////////////////////////////////////
-
         public RtcIceServer[] GetIceServers()
         {
             // Perhaps Ice server management.
@@ -46,49 +44,26 @@ namespace MakeFriendSolution.HubConfig
             return new RtcIceServer[] { new RtcIceServer() { Username = "", Credential = "" } };
         }
 
-        public async Task<UserConnection> GetTargetInfo(Guid userId, CallType callType)
-        {
-            var target = UserConnection.Get(userId);
-            var caller = UserConnection.Get(this.Context.ConnectionId);
-
-            if (target != null && caller != null)
-            {
-                await this.Clients.Client(target.ConnectionId).SendAsync("callerInfo", caller, callType);
-            }
-
-            return target;
-        }
 
         public UserConnection GetUserById(Guid userId)
         {
-            var user = UserConnection.Get(userId);
+            var users = UserConnection.Get(userId);
+            return users?[0];
+        }
+
+        public UserConnection GetUserByConnectionId(string connectionId)
+        {
+            var user = UserConnection.Get(connectionId);
             return user;
         }
 
-        public UserConnection GetMyInfo(Guid userId, string connectionId, string userName, string avatarPath)
+        public UserConnection SaveMyInfo(Guid userId, string connectionId, string userName, string avatarPath)
         {
             var user = UserConnection.Get(userId, connectionId, userName, avatarPath);
             return user;
         }
 
-        public async Task Join(Guid userId, string connectionId, string userName, string avatarPath, string roomName, bool isMobile, CallType callType)
-        {
-            var user = UserConnection.Get(userId, connectionId, userName, avatarPath, isMobile);
-            var room = Room.Get(roomName);
-
-            if (user.CurrentRoom != null)
-            {
-                room.Users.Remove(user);
-            }
-
-            user.CurrentRoom = room;
-            room.Users.Add(user);
-
-            await SendUserListUpdate(Clients.Caller, room, true, callType);
-            await SendUserListUpdate(Clients.Others, room, false, callType);
-        }
-
-        public async Task HangUp()
+        public void HangUp()
         {
             var callingUser = UserConnection.Get(Context.ConnectionId);
 
@@ -96,43 +71,73 @@ namespace MakeFriendSolution.HubConfig
             {
                 return;
             }
-
-            if (callingUser.CurrentRoom != null)
-            {
-                callingUser.CurrentRoom.Users.Remove(callingUser);
-                await SendUserListUpdate(Clients.Others, callingUser.CurrentRoom, false);
-            }
-
-            var user = callingUser;
             UserConnection.Remove(callingUser);
         }
 
         // WebRTC Signal Handler
-        public async Task SendSignal(string signal, string targetConnectionId, CallType callType)
+        public async Task SendSignal(string data, Guid userId)
         {
-            var callingUser = UserConnection.Get(Context.ConnectionId);
-            var targetUser = UserConnection.Get(targetConnectionId);
+            var receivers = UserConnection.Get(userId);
 
-            // Make sure both users are valid
-            if (callingUser == null || targetUser == null)
+            // Make sure receivers are valid
+            if (receivers == null)
             {
                 return;
             }
 
             // These folks are in a call together, let's let em talk WebRTC
-            await Clients.Client(targetConnectionId).SendAsync("receiveSignal", callingUser, signal, callType);
+            await Clients.Clients(receivers.Select(x=>x.ConnectionId).ToList()).SendAsync("receiveSignal", data);
         }
 
-        private async Task SendUserListUpdate(IClientProxy to, Room room, bool callTo, CallType callType = CallType.VoiceCall)
+        public async Task CallRequest(Guid userId, CallType callType)
         {
-            var users = room.Users.Where(x => x.IsCalling).ToList();
-            await to.SendAsync(callTo ? "callToUserList" : "updateUserList", room.Name, users, callType);
+            var caller = UserConnection.Get(this.GetConnectionId());
+            var receivers = UserConnection.Get(userId);
+
+            if(caller == null || receivers == null)
+            {
+                Console.WriteLine("Caller null || receiver null");
+            }
+            await this.Clients.Clients(receivers.Select(x => x.ConnectionId).ToList()).SendAsync("callRequest", caller, callType);
+            //await this.Clients.Clients(receiver.ConnectionId).SendAsync("callRequest", caller, callType);
         }
+
+        public async Task CallAccept(Guid userId)
+        {
+            var users = UserConnection.Get(userId);
+            try
+            {
+                await this.Clients.Clients(users.Select(x=>x.ConnectionId).ToList()).SendAsync("callStatus", CallStatus.Accept);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public async Task CallReject(string connectionId)
+        {
+            try
+            {
+                await this.Clients.Client(connectionId).SendAsync("callStatus", CallStatus.Reject);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
     }
 
     public enum CallType
     {
         VideoCall,
         VoiceCall
+    }
+
+    public enum CallStatus
+    {
+        Accept,
+        Reject
     }
 }

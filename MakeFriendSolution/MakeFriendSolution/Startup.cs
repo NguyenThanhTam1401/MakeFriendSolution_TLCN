@@ -50,7 +50,7 @@ namespace MakeFriendSolution
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .WithOrigins("https://localhost:4200", "http://localhost:4200", "http://hieuit.tech", "https://hieuit.tech")
+                    .WithOrigins("http://zinger.local:4200", "http://192.168.1.5", "https://localhost:4200", "http://localhost:4200", "http://hieuit.tech", "https://hieuit.tech")
                     //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()

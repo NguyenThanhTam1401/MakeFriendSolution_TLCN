@@ -13,30 +13,32 @@ namespace MakeFriendSolution.HubConfig.Models
         public string UserName { get; set; }
         public string AvatarPath { get; set; }
         public string ConnectionId { get; set; }
-        [JsonIgnore]
-        public Room CurrentRoom { get; set; }
-        [JsonIgnore]
-        public bool IsCalling { get; set; } = false;
         public static void Remove(UserConnection user)
         {
-            Users.Remove(user);
+            if(Users.Count > 0)
+            {
+                Users.Remove(user);
+            }
         }
 
         public static UserConnection Get(string connectionId)
         {
             return Users.Where(u => u.ConnectionId == connectionId).FirstOrDefault();
         }
-        public static UserConnection Get(Guid userId)
+        public static List<UserConnection> Get(Guid userId)
         {
-            return Users.Where(u => u.UserId == userId).FirstOrDefault();
+            if(Users.Count == 0)
+            {
+                return null;
+            }
+            return Users.Where(u => u.UserId == userId).ToList();
         }
 
-        public static UserConnection Get(Guid userId, string connectionId, string userName, string avatarPath, bool isMobile = false)
+        public static UserConnection Get(Guid userId, string connectionId, string userName, string avatarPath)
         {
             lock (Users)
             {
                 var current = Users.SingleOrDefault(u => u.ConnectionId == connectionId);
-                var u = Users.Where(u => u.UserId == userId).FirstOrDefault();
 
                 if (current == default(UserConnection))
                 {
@@ -46,11 +48,7 @@ namespace MakeFriendSolution.HubConfig.Models
                         UserName = userName,
                         AvatarPath = avatarPath,
                         ConnectionId = connectionId,
-                        IsCalling = false
                     };
-
-                    if (u != null)
-                        current.IsCalling = true;
 
                     Users.Add(current);
                 }
@@ -59,11 +57,7 @@ namespace MakeFriendSolution.HubConfig.Models
                     current.UserId = userId;
                     current.UserName = userName;
                     current.AvatarPath = avatarPath;
-                    current.IsCalling = (u == null) ? false : true;
                 }
-
-                if (isMobile)
-                    current.IsCalling = true;
 
                 return current;
             }

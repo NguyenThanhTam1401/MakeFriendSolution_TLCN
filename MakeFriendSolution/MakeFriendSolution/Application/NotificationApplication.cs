@@ -133,7 +133,7 @@ namespace MakeFriendSolution.Application
 
             try
             {
-                await _hub.Clients.Clients(receiver.ConnectionId).SendAsync("notification", notification);
+                await _hub.Clients.Clients(receiver.Select(x=>x.ConnectionId).ToList()).SendAsync("notification", notification);
             }
             catch (Exception)
             {

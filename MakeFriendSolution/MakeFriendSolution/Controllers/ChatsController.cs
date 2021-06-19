@@ -69,7 +69,6 @@ namespace MakeFriendSolution.Controllers
             };
 
             //await _hub.Clients.Clients(receiver.ConnectionId, sender.ConnectionId).SendAsync("transferData", response);
-            ChatHub hub = new ChatHub();
             await SendMessage(sender.Id, receiver.Id, response);
 
             return Ok(new { Message = "Request complete!" });
@@ -81,9 +80,9 @@ namespace MakeFriendSolution.Controllers
             var receiver = UserConnection.Get(receiverId);
 
             if (receiver == null)
-                await _hub.Clients.Clients(sender.ConnectionId).SendAsync("messageResponse", messageResponse);
+                await _hub.Clients.Clients(sender.Select(x => x.ConnectionId).ToList()).SendAsync("messageResponse", messageResponse);
             else
-                await _hub.Clients.Clients(sender.ConnectionId, receiver.ConnectionId).SendAsync("messageResponse", messageResponse);
+                await _hub.Clients.Clients(sender.Select(x => x.ConnectionId).ToList().Concat(receiver.Select(x => x.ConnectionId).ToList()).ToList()).SendAsync("messageResponse", messageResponse);
         }
 
         /// <summary>
