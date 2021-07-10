@@ -69,7 +69,7 @@ namespace MakeFriendSolution.Application
         public async Task<Relationship> Create(RelationshipRequest request)
         {
             var relationship = await _context.Relationships
-                .Where(x => x.FromId == request.FromId && x.ToId == request.ToId)
+                .Where(x => (x.FromId == request.FromId && x.ToId == request.ToId) || (x.FromId == request.ToId && x.ToId == request.FromId))
                 .FirstOrDefaultAsync();
 
             //Chưa có relationship

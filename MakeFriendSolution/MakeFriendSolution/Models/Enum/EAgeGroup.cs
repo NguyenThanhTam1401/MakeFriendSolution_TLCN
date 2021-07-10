@@ -12,6 +12,7 @@ namespace MakeFriendSolution.Models.Enum
         Từ_25_đến_30,
         Từ_31_đến_40,
         Từ_41_đến_50,
-        Trên_50
+        Trên_50,
+        Tất_cả
     }
 }

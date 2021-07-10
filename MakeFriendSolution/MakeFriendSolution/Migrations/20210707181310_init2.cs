@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MakeFriendSolution.Migrations
 {
-    public partial class init : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +13,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(nullable: false),
                     AuthorizeCount = table.Column<int>(nullable: false, defaultValue: 0),
                     UnauthorizeCount = table.Column<int>(nullable: false, defaultValue: 0)
@@ -27,7 +28,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
                     WeightRate = table.Column<double>(nullable: false, defaultValue: 1.0),
                     IsCalculated = table.Column<bool>(nullable: false),
@@ -43,7 +44,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Active = table.Column<bool>(nullable: false),
                     AutoFilter = table.Column<bool>(nullable: false),
                     Drawings = table.Column<double>(nullable: false, defaultValue: 0.0),
@@ -63,7 +64,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FromId = table.Column<Guid>(nullable: false),
                     ToId = table.Column<Guid>(nullable: false),
                     Type = table.Column<string>(nullable: false),
@@ -79,8 +80,8 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 5, 28, 0, 35, 19, 536, DateTimeKind.Local).AddTicks(273))
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 8, 1, 13, 10, 243, DateTimeKind.Local).AddTicks(4389))
                 },
                 constraints: table =>
                 {
@@ -104,7 +105,7 @@ namespace MakeFriendSolution.Migrations
                     Location = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 5, 28, 0, 35, 19, 497, DateTimeKind.Local).AddTicks(8994)),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 8, 1, 13, 10, 218, DateTimeKind.Local).AddTicks(7168)),
                     NumberOfFiends = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfLikes = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfImages = table.Column<int>(nullable: false, defaultValue: 0),
@@ -134,7 +135,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(nullable: false),
                     Weight = table.Column<int>(nullable: false, defaultValue: 1),
                     FeatureId = table.Column<int>(nullable: false)
@@ -154,7 +155,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(nullable: true),
                     IsLock = table.Column<bool>(nullable: false),
                     FromUserId = table.Column<Guid>(nullable: false),
@@ -180,7 +181,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(nullable: true),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false)
@@ -205,7 +206,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
                     Content = table.Column<string>(maxLength: 400, nullable: false),
@@ -228,7 +229,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(nullable: true),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false)
@@ -253,7 +254,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(maxLength: 5000, nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 1),
                     SentAt = table.Column<DateTime>(nullable: false),
@@ -280,7 +281,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FromId = table.Column<Guid>(nullable: false),
                     ToId = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
@@ -309,7 +310,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false),
                     Score = table.Column<double>(nullable: false, defaultValue: 0.0)
@@ -329,7 +330,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: false, defaultValue: "Image title"),
                     ImagePath = table.Column<string>(nullable: false),
@@ -353,7 +354,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     FeatureDetailId = table.Column<int>(nullable: false),
                     FeatureId = table.Column<int>(nullable: false)
@@ -383,7 +384,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     FeatureDetailId = table.Column<int>(nullable: false),
                     FeatureId = table.Column<int>(nullable: false)
@@ -416,7 +417,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     ImageId = table.Column<int>(nullable: false)
                 },
@@ -441,28 +442,27 @@ namespace MakeFriendSolution.Migrations
                 columns: new[] { "Id", "IsCalculated", "IsSearchFeature", "Name", "WeightRate" },
                 values: new object[,]
                 {
-                    { 2, true, true, "Học vấn", 1.0 },
-                    { 16, true, false, "Hút thuốc", 1.0 },
-                    { 15, true, false, "Chơi thể thao", 1.0 },
-                    { 14, true, false, "Thú cưng", 1.0 },
-                    { 13, true, false, "Công nghệ", 1.0 },
-                    { 12, true, false, "Nấu ăn", 1.0 },
-                    { 11, true, false, "Chơi game", 1.0 },
-                    { 10, true, false, "Đi du lịch", 1.0 },
-                    { 9, true, false, "Đi mua sắm", 1.0 },
-                    { 8, true, false, "Thích không khí", 1.0 },
-                    { 7, true, true, "Tính cách", 1.0 },
-                    { 6, true, false, "Phim ưa thích", 1.0 },
-                    { 5, true, false, "Tôn giáo", 1.0 },
-                    { 1, true, true, "Dáng người", 1.0 },
-                    { 17, true, false, "Uống rượu bia", 1.0 },
-                    { 3, true, false, "Phong cách sống", 1.0 }
+                    { 2, true, true, "Tính cách", 0.94999999999999996 },
+                    { 14, true, false, "Chơi game", 0.76000000000000001 },
+                    { 13, true, false, "Cắm trại", 0.75 },
+                    { 12, true, false, "Thiện nguyện", 0.64000000000000001 },
+                    { 11, true, false, "Du lịch", 0.80000000000000004 },
+                    { 10, true, false, "Thú cưng", 0.88 },
+                    { 9, true, false, "Mua sắm", 0.87 },
+                    { 8, true, false, "Cây cảnh", 0.64000000000000001 },
+                    { 7, true, false, "Máy tính", 0.68000000000000005 },
+                    { 6, true, false, "Đọc sách", 0.75 },
+                    { 5, true, false, "Xem phim", 0.80000000000000004 },
+                    { 4, true, true, "Lối sống", 0.82999999999999996 },
+                    { 3, true, true, "Phong cách", 0.84999999999999998 },
+                    { 1, true, true, "Dáng người", 0.90000000000000002 },
+                    { 15, true, false, "Thể thao", 0.85999999999999999 }
                 });
 
             migrationBuilder.InsertData(
                 table: "SimilariryFeatures",
                 columns: new[] { "Id", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2021, 5, 28, 0, 35, 19, 552, DateTimeKind.Local).AddTicks(7088) });
+                values: new object[] { 1, new DateTime(2021, 7, 8, 1, 13, 10, 254, DateTimeKind.Local).AddTicks(4347) });
 
             migrationBuilder.InsertData(
                 table: "Users",
@@ -489,83 +489,76 @@ namespace MakeFriendSolution.Migrations
                 columns: new[] { "Id", "Content", "FeatureId", "Weight" },
                 values: new object[,]
                 {
-                    { 1, "Nhỏ nhắn", 1, 1 },
-                    { 56, "Không chơi game", 11, 1 },
-                    { 54, "Thường xuyên", 10, 3 },
-                    { 53, "Thỉnh thoảng", 10, 2 },
-                    { 52, "Ít khi đi", 10, 1 },
-                    { 51, "Thường xuyên", 9, 3 },
-                    { 50, "Thỉnh thoảng", 9, 2 },
-                    { 49, "Ít khi đi", 9, 1 },
-                    { 48, "Náo nhiệt", 8, 5 },
-                    { 47, "Vui tươi", 8, 4 },
-                    { 46, "Bình yên", 8, 3 },
-                    { 45, "Êm đềm", 8, 2 },
-                    { 44, "Tĩnh lặng", 8, 1 },
-                    { 200, "Ngốc nghếch", 7, 10 },
-                    { 199, "Khó tính", 7, 9 },
-                    { 198, "Lạnh lùng", 7, 8 },
-                    { 57, "Thỉnh thoảng", 11, 2 },
-                    { 58, "Thường xuyên", 11, 3 },
-                    { 59, "Nghiện game", 11, 4 },
-                    { 60, "Không nấu ăn", 12, 1 },
-                    { 76, "Không uống", 17, 1 },
-                    { 75, "Hút nhiều", 16, 3 },
-                    { 74, "Hút xã giao", 16, 2 },
-                    { 73, "Không hút thuốc", 16, 1 },
-                    { 72, "Thường xuyên", 15, 3 },
-                    { 71, "Thỉnh thoảng", 15, 2 },
-                    { 70, "Ít khi chơi", 15, 1 },
-                    { 197, "Bướng bỉnh", 7, 7 },
-                    { 69, "Thích thú cưng", 14, 3 },
-                    { 67, "Không thích", 14, 1 },
-                    { 66, "Tính đồ công nghệ", 13, 3 },
-                    { 65, "Chỉ theo dõi", 13, 2 },
-                    { 64, "Bình thường", 13, 1 },
-                    { 63, "Thường xuyên", 12, 4 },
-                    { 62, "Thỉnh thoảng", 12, 3 },
-                    { 61, "Ít nấu ăn", 12, 2 },
-                    { 68, "Nuôi cho vui", 14, 2 },
-                    { 77, "Uống xã giao", 17, 2 },
-                    { 196, "Lạc quan", 7, 6 },
-                    { 194, "Tự tin", 7, 4 },
-                    { 16, "Lành mạnh", 3, 4 },
-                    { 15, "Lạc quan", 3, 3 },
-                    { 14, "Giản dị", 3, 2 },
-                    { 13, "An nhàn", 3, 1 },
-                    { 12, "Trên cao học", 2, 6 },
-                    { 11, "Cao học", 2, 5 },
-                    { 10, "Đại học", 2, 4 },
-                    { 9, "Cao đẳng", 2, 3 },
-                    { 8, "Trung cấp", 2, 2 },
-                    { 7, "Phổ thông", 2, 1 },
+                    { 1, "Nhỏ nhắn", 1, -2 },
+                    { 38, "Rất thích", 7, 2 },
+                    { 39, "Không thích", 8, -2 },
+                    { 40, "Bình thường", 8, -1 },
+                    { 41, "Thích", 8, 1 },
+                    { 42, "Rất thích", 8, 2 },
+                    { 43, "Không thích", 9, -2 },
+                    { 44, "Bình thường", 9, -1 },
+                    { 45, "Thích", 9, 1 },
+                    { 46, "Rất thích", 9, 2 },
+                    { 47, "Không thích", 10, -2 },
+                    { 48, "Bình thường", 10, -1 },
+                    { 49, "Thích", 10, 1 },
+                    { 50, "Rất thích", 10, 2 },
+                    { 51, "Không thích", 11, -2 },
+                    { 52, "Bình thường", 11, -1 },
+                    { 53, "Thích", 11, 1 },
+                    { 54, "Rất thích", 11, 2 },
+                    { 68, "Bình thường", 15, -1 },
+                    { 67, "Không thích", 15, -2 },
+                    { 66, "Rất thích", 14, 2 },
+                    { 65, "Thích", 14, 1 },
+                    { 64, "Bình thường", 14, -1 },
+                    { 63, "Không thích", 14, -2 },
+                    { 37, "Thích", 7, 1 },
+                    { 62, "Rất thích", 13, 2 },
+                    { 60, "Bình thường", 13, -1 },
+                    { 59, "Không thích", 13, -2 },
+                    { 58, "Rất thích", 12, 2 },
+                    { 57, "Thích", 12, 1 },
+                    { 56, "Bình thường", 12, -1 },
+                    { 55, "Không thích", 12, -2 },
+                    { 61, "Thích", 13, 1 },
+                    { 36, "Bình thường", 7, -1 },
+                    { 35, "Không thích", 7, -2 },
+                    { 34, "Rất thích", 6, 2 },
+                    { 15, "Thành đạt", 3, -3 },
+                    { 14, "Sang trọng", 3, -4 },
+                    { 13, "Ngốc nghếch", 2, 4 },
+                    { 12, "Vui vẻ", 2, 3 },
+                    { 11, "Lịch sự", 2, 2 },
+                    { 10, "Tự tin", 2, 1 },
+                    { 16, "Quyến rũ", 3, -2 },
+                    { 9, "Kín đáo", 2, -1 },
+                    { 7, "Lạnh lùng", 2, -3 },
                     { 6, "Vạm vỡ", 1, 6 },
-                    { 5, "Cao lớn", 1, 5 },
-                    { 4, "Mũm mĩm", 1, 4 },
-                    { 3, "Cân đối", 1, 3 },
-                    { 2, "Mảnh mai", 1, 2 },
-                    { 17, "Năng động", 3, 5 },
-                    { 18, "Tình cảm", 3, 6 },
-                    { 19, "Tự do", 3, 7 },
-                    { 27, "Không có đạo", 5, 1 },
-                    { 193, "Lịch sự", 7, 3 },
-                    { 40, "Cẩn thận", 7, 2 },
-                    { 39, "Vui vẻ", 7, 1 },
-                    { 38, "Hoạt hình", 6, 9 },
-                    { 37, "Lãng mạn", 6, 8 },
-                    { 36, "Kinh dị", 6, 7 },
-                    { 35, "Hài hước", 6, 6 },
-                    { 195, "Trung thực", 7, 5 },
-                    { 34, "Cổ trang", 6, 5 },
-                    { 32, "Chiến tranh", 6, 3 },
-                    { 31, "Khoa học viễn tưởng", 6, 2 },
-                    { 30, "Hành động", 6, 1 },
-                    { 101, "Đạo khác", 5, 5 },
-                    { 100, "Tin Lành", 5, 4 },
-                    { 29, "Phật giáo", 5, 3 },
-                    { 28, "Thiên Chúa giáo", 5, 2 },
-                    { 33, "Chiến tranh", 6, 4 },
-                    { 78, "Uống nhiều", 17, 3 }
+                    { 5, "Cao lớn", 1, 3 },
+                    { 4, "Mũm mĩm", 1, 2 },
+                    { 3, "Cân đối", 1, 1 },
+                    { 2, "Mảnh mai", 1, -1 },
+                    { 8, "Thật thà", 2, -2 },
+                    { 69, "Thích", 15, 1 },
+                    { 17, "Thể thao", 3, -1 },
+                    { 19, "Sành điệu", 3, 2 },
+                    { 33, "Thích", 6, 1 },
+                    { 32, "Bình thường", 6, -1 },
+                    { 31, "Không thích", 6, -2 },
+                    { 30, "Rất thích", 5, 2 },
+                    { 29, "Thích", 5, 1 },
+                    { 28, "Bình thường", 5, -1 },
+                    { 18, "Thời trang", 3, 1 },
+                    { 27, "Không thích", 5, -2 },
+                    { 25, "Hướng nội", 4, 2 },
+                    { 24, "Lạc quan", 4, 1 },
+                    { 23, "Tự do", 4, -1 },
+                    { 22, "Độc lập", 4, -2 },
+                    { 21, "Tối giản", 3, 4 },
+                    { 20, "Giản dị", 3, 3 },
+                    { 26, "Khuôn phép", 4, 5 },
+                    { 70, "Rất thích", 15, 2 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -79,6 +80,13 @@ namespace MakeFriendSolution
             services.AddScoped<INotificationApplication, NotificationApplication>();
             services.AddScoped<IFeedbackApplication, FeedbackApplication>();
             services.AddScoped<IRelationshipApplication, RelationshipApplication>();
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue; //not recommended value
+                options.MultipartBodyLengthLimit = long.MaxValue;
+            });
+
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -137,7 +145,6 @@ namespace MakeFriendSolution
                 var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
                 c.IncludeXmlComments(cmlCommentFullPath);
             });
-
 
             //add Session
             services.AddDistributedMemoryCache();

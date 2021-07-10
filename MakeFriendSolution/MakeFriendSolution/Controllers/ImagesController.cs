@@ -399,7 +399,6 @@ namespace MakeFriendSolution.Controllers
         [HttpPut("Approved/{imageId}")]
         public async Task<IActionResult> ApprovedImage(int imageId)
         {
-            return Ok();
             if (await _imageApplication.ApproveImage(imageId))
                 return Ok();
             else
@@ -410,7 +409,6 @@ namespace MakeFriendSolution.Controllers
         [HttpPut("BlockOut/{imageId}")]
         public async Task<IActionResult> BlockOutImage(int imageId)
         {
-            return Ok();
             if (await _imageApplication.BlockOutImage(imageId))
                 return Ok();
             else

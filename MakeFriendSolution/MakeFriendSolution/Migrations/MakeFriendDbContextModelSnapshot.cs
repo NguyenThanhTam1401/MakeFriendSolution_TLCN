@@ -16,8 +16,7 @@ namespace MakeFriendSolution.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("MakeFriendSolution.Models.Access", b =>
                 {
@@ -34,7 +33,7 @@ namespace MakeFriendSolution.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("UnauthorizeCount")
                         .ValueGeneratedOnAdd()
@@ -50,20 +49,20 @@ namespace MakeFriendSolution.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("AvatarPath")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("Dob")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<int>("FindAgeGroup")
@@ -74,7 +73,7 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<int>("Gender")
@@ -85,23 +84,23 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<bool>("IsInfoUpdated")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsUpdatePosition")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Job")
                         .HasColumnType("int");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<int>("Location")
                         .HasColumnType("int");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<int>("NumberOfFiends")
                         .ValueGeneratedOnAdd()
@@ -125,22 +124,22 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<string>("PassWord")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200)
                         .IsUnicode(false);
 
                     b.Property<string>("PasswordForgottenCode")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasDefaultValue("");
 
                     b.Property<DateTime>("PasswordForgottenPeriod")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasDefaultValue(new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -149,10 +148,10 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Summary")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("TypeAccount")
                         .ValueGeneratedOnAdd()
@@ -161,12 +160,12 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 5, 28, 0, 35, 19, 497, DateTimeKind.Local).AddTicks(8994));
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2021, 7, 8, 1, 13, 10, 218, DateTimeKind.Local).AddTicks(7168));
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
@@ -632,16 +631,16 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("FromUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("IsLock")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<Guid>("ToUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -662,13 +661,13 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("FromUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("ToUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -689,18 +688,18 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsCalculated")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsSearchFeature")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<double>("WeightRate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(1.0);
 
                     b.HasKey("Id");
@@ -714,127 +713,119 @@ namespace MakeFriendSolution.Migrations
                             IsCalculated = true,
                             IsSearchFeature = true,
                             Name = "Dáng người",
-                            WeightRate = 1.0
+                            WeightRate = 0.90000000000000002
                         },
                         new
                         {
                             Id = 2,
                             IsCalculated = true,
                             IsSearchFeature = true,
-                            Name = "Học vấn",
-                            WeightRate = 1.0
+                            Name = "Tính cách",
+                            WeightRate = 0.94999999999999996
                         },
                         new
                         {
                             Id = 3,
                             IsCalculated = true,
-                            IsSearchFeature = false,
-                            Name = "Phong cách sống",
-                            WeightRate = 1.0
+                            IsSearchFeature = true,
+                            Name = "Phong cách",
+                            WeightRate = 0.84999999999999998
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsCalculated = true,
+                            IsSearchFeature = true,
+                            Name = "Lối sống",
+                            WeightRate = 0.82999999999999996
                         },
                         new
                         {
                             Id = 5,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Tôn giáo",
-                            WeightRate = 1.0
+                            Name = "Xem phim",
+                            WeightRate = 0.80000000000000004
                         },
                         new
                         {
                             Id = 6,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Phim ưa thích",
-                            WeightRate = 1.0
+                            Name = "Đọc sách",
+                            WeightRate = 0.75
                         },
                         new
                         {
                             Id = 7,
                             IsCalculated = true,
-                            IsSearchFeature = true,
-                            Name = "Tính cách",
-                            WeightRate = 1.0
+                            IsSearchFeature = false,
+                            Name = "Máy tính",
+                            WeightRate = 0.68000000000000005
                         },
                         new
                         {
                             Id = 8,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Thích không khí",
-                            WeightRate = 1.0
+                            Name = "Cây cảnh",
+                            WeightRate = 0.64000000000000001
                         },
                         new
                         {
                             Id = 9,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Đi mua sắm",
-                            WeightRate = 1.0
+                            Name = "Mua sắm",
+                            WeightRate = 0.87
                         },
                         new
                         {
                             Id = 10,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Đi du lịch",
-                            WeightRate = 1.0
+                            Name = "Thú cưng",
+                            WeightRate = 0.88
                         },
                         new
                         {
                             Id = 11,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Chơi game",
-                            WeightRate = 1.0
+                            Name = "Du lịch",
+                            WeightRate = 0.80000000000000004
                         },
                         new
                         {
                             Id = 12,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Nấu ăn",
-                            WeightRate = 1.0
+                            Name = "Thiện nguyện",
+                            WeightRate = 0.64000000000000001
                         },
                         new
                         {
                             Id = 13,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Công nghệ",
-                            WeightRate = 1.0
+                            Name = "Cắm trại",
+                            WeightRate = 0.75
                         },
                         new
                         {
                             Id = 14,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Thú cưng",
-                            WeightRate = 1.0
+                            Name = "Chơi game",
+                            WeightRate = 0.76000000000000001
                         },
                         new
                         {
                             Id = 15,
                             IsCalculated = true,
                             IsSearchFeature = false,
-                            Name = "Chơi thể thao",
-                            WeightRate = 1.0
-                        },
-                        new
-                        {
-                            Id = 16,
-                            IsCalculated = true,
-                            IsSearchFeature = false,
-                            Name = "Hút thuốc",
-                            WeightRate = 1.0
-                        },
-                        new
-                        {
-                            Id = 17,
-                            IsCalculated = true,
-                            IsSearchFeature = false,
-                            Name = "Uống rượu bia",
-                            WeightRate = 1.0
+                            Name = "Thể thao",
+                            WeightRate = 0.85999999999999999
                         });
                 });
 
@@ -849,7 +840,7 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("FeatureId")
                         .HasColumnType("int");
@@ -871,35 +862,35 @@ namespace MakeFriendSolution.Migrations
                             Id = 1,
                             Content = "Nhỏ nhắn",
                             FeatureId = 1,
-                            Weight = 1
+                            Weight = -2
                         },
                         new
                         {
                             Id = 2,
                             Content = "Mảnh mai",
                             FeatureId = 1,
-                            Weight = 2
+                            Weight = -1
                         },
                         new
                         {
                             Id = 3,
                             Content = "Cân đối",
                             FeatureId = 1,
-                            Weight = 3
+                            Weight = 1
                         },
                         new
                         {
                             Id = 4,
                             Content = "Mũm mĩm",
                             FeatureId = 1,
-                            Weight = 4
+                            Weight = 2
                         },
                         new
                         {
                             Id = 5,
                             Content = "Cao lớn",
                             FeatureId = 1,
-                            Weight = 5
+                            Weight = 3
                         },
                         new
                         {
@@ -911,499 +902,450 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 7,
-                            Content = "Phổ thông",
+                            Content = "Lạnh lùng",
                             FeatureId = 2,
-                            Weight = 1
+                            Weight = -3
                         },
                         new
                         {
                             Id = 8,
-                            Content = "Trung cấp",
+                            Content = "Thật thà",
                             FeatureId = 2,
-                            Weight = 2
+                            Weight = -2
                         },
                         new
                         {
                             Id = 9,
-                            Content = "Cao đẳng",
+                            Content = "Kín đáo",
                             FeatureId = 2,
-                            Weight = 3
+                            Weight = -1
                         },
                         new
                         {
                             Id = 10,
-                            Content = "Đại học",
+                            Content = "Tự tin",
                             FeatureId = 2,
-                            Weight = 4
+                            Weight = 1
                         },
                         new
                         {
                             Id = 11,
-                            Content = "Cao học",
+                            Content = "Lịch sự",
                             FeatureId = 2,
-                            Weight = 5
+                            Weight = 2
                         },
                         new
                         {
                             Id = 12,
-                            Content = "Trên cao học",
+                            Content = "Vui vẻ",
                             FeatureId = 2,
-                            Weight = 6
+                            Weight = 3
                         },
                         new
                         {
                             Id = 13,
-                            Content = "An nhàn",
-                            FeatureId = 3,
-                            Weight = 1
+                            Content = "Ngốc nghếch",
+                            FeatureId = 2,
+                            Weight = 4
                         },
                         new
                         {
                             Id = 14,
-                            Content = "Giản dị",
+                            Content = "Sang trọng",
                             FeatureId = 3,
-                            Weight = 2
+                            Weight = -4
                         },
                         new
                         {
                             Id = 15,
-                            Content = "Lạc quan",
+                            Content = "Thành đạt",
                             FeatureId = 3,
-                            Weight = 3
+                            Weight = -3
                         },
                         new
                         {
                             Id = 16,
-                            Content = "Lành mạnh",
+                            Content = "Quyến rũ",
                             FeatureId = 3,
-                            Weight = 4
+                            Weight = -2
                         },
                         new
                         {
                             Id = 17,
-                            Content = "Năng động",
+                            Content = "Thể thao",
                             FeatureId = 3,
-                            Weight = 5
+                            Weight = -1
                         },
                         new
                         {
                             Id = 18,
-                            Content = "Tình cảm",
+                            Content = "Thời trang",
                             FeatureId = 3,
-                            Weight = 6
+                            Weight = 1
                         },
                         new
                         {
                             Id = 19,
-                            Content = "Tự do",
+                            Content = "Sành điệu",
                             FeatureId = 3,
-                            Weight = 7
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Content = "Giản dị",
+                            FeatureId = 3,
+                            Weight = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Content = "Tối giản",
+                            FeatureId = 3,
+                            Weight = 4
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Content = "Độc lập",
+                            FeatureId = 4,
+                            Weight = -2
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Content = "Tự do",
+                            FeatureId = 4,
+                            Weight = -1
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Content = "Lạc quan",
+                            FeatureId = 4,
+                            Weight = 1
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Content = "Hướng nội",
+                            FeatureId = 4,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Content = "Khuôn phép",
+                            FeatureId = 4,
+                            Weight = 5
                         },
                         new
                         {
                             Id = 27,
-                            Content = "Không có đạo",
+                            Content = "Không thích",
                             FeatureId = 5,
-                            Weight = 1
+                            Weight = -2
                         },
                         new
                         {
                             Id = 28,
-                            Content = "Thiên Chúa giáo",
+                            Content = "Bình thường",
                             FeatureId = 5,
-                            Weight = 2
+                            Weight = -1
                         },
                         new
                         {
                             Id = 29,
-                            Content = "Phật giáo",
+                            Content = "Thích",
                             FeatureId = 5,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 100,
-                            Content = "Tin Lành",
-                            FeatureId = 5,
-                            Weight = 4
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Content = "Đạo khác",
-                            FeatureId = 5,
-                            Weight = 5
+                            Weight = 1
                         },
                         new
                         {
                             Id = 30,
-                            Content = "Hành động",
-                            FeatureId = 6,
-                            Weight = 1
+                            Content = "Rất thích",
+                            FeatureId = 5,
+                            Weight = 2
                         },
                         new
                         {
                             Id = 31,
-                            Content = "Khoa học viễn tưởng",
+                            Content = "Không thích",
                             FeatureId = 6,
-                            Weight = 2
+                            Weight = -2
                         },
                         new
                         {
                             Id = 32,
-                            Content = "Chiến tranh",
+                            Content = "Bình thường",
                             FeatureId = 6,
-                            Weight = 3
+                            Weight = -1
                         },
                         new
                         {
                             Id = 33,
-                            Content = "Chiến tranh",
+                            Content = "Thích",
                             FeatureId = 6,
-                            Weight = 4
+                            Weight = 1
                         },
                         new
                         {
                             Id = 34,
-                            Content = "Cổ trang",
+                            Content = "Rất thích",
                             FeatureId = 6,
-                            Weight = 5
+                            Weight = 2
                         },
                         new
                         {
                             Id = 35,
-                            Content = "Hài hước",
-                            FeatureId = 6,
-                            Weight = 6
+                            Content = "Không thích",
+                            FeatureId = 7,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 36,
-                            Content = "Kinh dị",
-                            FeatureId = 6,
-                            Weight = 7
+                            Content = "Bình thường",
+                            FeatureId = 7,
+                            Weight = -1
                         },
                         new
                         {
                             Id = 37,
-                            Content = "Lãng mạn",
-                            FeatureId = 6,
-                            Weight = 8
+                            Content = "Thích",
+                            FeatureId = 7,
+                            Weight = 1
                         },
                         new
                         {
                             Id = 38,
-                            Content = "Hoạt hình",
-                            FeatureId = 6,
-                            Weight = 9
+                            Content = "Rất thích",
+                            FeatureId = 7,
+                            Weight = 2
                         },
                         new
                         {
                             Id = 39,
-                            Content = "Vui vẻ",
-                            FeatureId = 7,
-                            Weight = 1
+                            Content = "Không thích",
+                            FeatureId = 8,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 40,
-                            Content = "Cẩn thận",
-                            FeatureId = 7,
-                            Weight = 2
+                            Content = "Bình thường",
+                            FeatureId = 8,
+                            Weight = -1
                         },
                         new
                         {
-                            Id = 193,
-                            Content = "Lịch sự",
-                            FeatureId = 7,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 194,
-                            Content = "Tự tin",
-                            FeatureId = 7,
-                            Weight = 4
-                        },
-                        new
-                        {
-                            Id = 195,
-                            Content = "Trung thực",
-                            FeatureId = 7,
-                            Weight = 5
-                        },
-                        new
-                        {
-                            Id = 196,
-                            Content = "Lạc quan",
-                            FeatureId = 7,
-                            Weight = 6
-                        },
-                        new
-                        {
-                            Id = 197,
-                            Content = "Bướng bỉnh",
-                            FeatureId = 7,
-                            Weight = 7
-                        },
-                        new
-                        {
-                            Id = 198,
-                            Content = "Lạnh lùng",
-                            FeatureId = 7,
-                            Weight = 8
-                        },
-                        new
-                        {
-                            Id = 199,
-                            Content = "Khó tính",
-                            FeatureId = 7,
-                            Weight = 9
-                        },
-                        new
-                        {
-                            Id = 200,
-                            Content = "Ngốc nghếch",
-                            FeatureId = 7,
-                            Weight = 10
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Content = "Tĩnh lặng",
+                            Id = 41,
+                            Content = "Thích",
                             FeatureId = 8,
                             Weight = 1
                         },
                         new
                         {
-                            Id = 45,
-                            Content = "Êm đềm",
+                            Id = 42,
+                            Content = "Rất thích",
                             FeatureId = 8,
                             Weight = 2
                         },
                         new
                         {
+                            Id = 43,
+                            Content = "Không thích",
+                            FeatureId = 9,
+                            Weight = -2
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Content = "Bình thường",
+                            FeatureId = 9,
+                            Weight = -1
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Content = "Thích",
+                            FeatureId = 9,
+                            Weight = 1
+                        },
+                        new
+                        {
                             Id = 46,
-                            Content = "Bình yên",
-                            FeatureId = 8,
-                            Weight = 3
+                            Content = "Rất thích",
+                            FeatureId = 9,
+                            Weight = 2
                         },
                         new
                         {
                             Id = 47,
-                            Content = "Vui tươi",
-                            FeatureId = 8,
-                            Weight = 4
+                            Content = "Không thích",
+                            FeatureId = 10,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 48,
-                            Content = "Náo nhiệt",
-                            FeatureId = 8,
-                            Weight = 5
+                            Content = "Bình thường",
+                            FeatureId = 10,
+                            Weight = -1
                         },
                         new
                         {
                             Id = 49,
-                            Content = "Ít khi đi",
-                            FeatureId = 9,
+                            Content = "Thích",
+                            FeatureId = 10,
                             Weight = 1
                         },
                         new
                         {
                             Id = 50,
-                            Content = "Thỉnh thoảng",
-                            FeatureId = 9,
+                            Content = "Rất thích",
+                            FeatureId = 10,
                             Weight = 2
                         },
                         new
                         {
                             Id = 51,
-                            Content = "Thường xuyên",
-                            FeatureId = 9,
-                            Weight = 3
+                            Content = "Không thích",
+                            FeatureId = 11,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 52,
-                            Content = "Ít khi đi",
-                            FeatureId = 10,
-                            Weight = 1
+                            Content = "Bình thường",
+                            FeatureId = 11,
+                            Weight = -1
                         },
                         new
                         {
                             Id = 53,
-                            Content = "Thỉnh thoảng",
-                            FeatureId = 10,
-                            Weight = 2
+                            Content = "Thích",
+                            FeatureId = 11,
+                            Weight = 1
                         },
                         new
                         {
                             Id = 54,
-                            Content = "Thường xuyên",
-                            FeatureId = 10,
-                            Weight = 3
+                            Content = "Rất thích",
+                            FeatureId = 11,
+                            Weight = 2
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Content = "Không thích",
+                            FeatureId = 12,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 56,
-                            Content = "Không chơi game",
-                            FeatureId = 11,
-                            Weight = 1
+                            Content = "Bình thường",
+                            FeatureId = 12,
+                            Weight = -1
                         },
                         new
                         {
                             Id = 57,
-                            Content = "Thỉnh thoảng",
-                            FeatureId = 11,
-                            Weight = 2
-                        },
-                        new
-                        {
-                            Id = 58,
-                            Content = "Thường xuyên",
-                            FeatureId = 11,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 59,
-                            Content = "Nghiện game",
-                            FeatureId = 11,
-                            Weight = 4
-                        },
-                        new
-                        {
-                            Id = 60,
-                            Content = "Không nấu ăn",
+                            Content = "Thích",
                             FeatureId = 12,
                             Weight = 1
                         },
                         new
                         {
-                            Id = 61,
-                            Content = "Ít nấu ăn",
+                            Id = 58,
+                            Content = "Rất thích",
                             FeatureId = 12,
                             Weight = 2
                         },
                         new
                         {
+                            Id = 59,
+                            Content = "Không thích",
+                            FeatureId = 13,
+                            Weight = -2
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Content = "Bình thường",
+                            FeatureId = 13,
+                            Weight = -1
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Content = "Thích",
+                            FeatureId = 13,
+                            Weight = 1
+                        },
+                        new
+                        {
                             Id = 62,
-                            Content = "Thỉnh thoảng",
-                            FeatureId = 12,
-                            Weight = 3
+                            Content = "Rất thích",
+                            FeatureId = 13,
+                            Weight = 2
                         },
                         new
                         {
                             Id = 63,
-                            Content = "Thường xuyên",
-                            FeatureId = 12,
-                            Weight = 4
+                            Content = "Không thích",
+                            FeatureId = 14,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 64,
                             Content = "Bình thường",
-                            FeatureId = 13,
-                            Weight = 1
+                            FeatureId = 14,
+                            Weight = -1
                         },
                         new
                         {
                             Id = 65,
-                            Content = "Chỉ theo dõi",
-                            FeatureId = 13,
-                            Weight = 2
+                            Content = "Thích",
+                            FeatureId = 14,
+                            Weight = 1
                         },
                         new
                         {
                             Id = 66,
-                            Content = "Tính đồ công nghệ",
-                            FeatureId = 13,
-                            Weight = 3
+                            Content = "Rất thích",
+                            FeatureId = 14,
+                            Weight = 2
                         },
                         new
                         {
                             Id = 67,
                             Content = "Không thích",
-                            FeatureId = 14,
-                            Weight = 1
+                            FeatureId = 15,
+                            Weight = -2
                         },
                         new
                         {
                             Id = 68,
-                            Content = "Nuôi cho vui",
-                            FeatureId = 14,
-                            Weight = 2
+                            Content = "Bình thường",
+                            FeatureId = 15,
+                            Weight = -1
                         },
                         new
                         {
                             Id = 69,
-                            Content = "Thích thú cưng",
-                            FeatureId = 14,
-                            Weight = 3
+                            Content = "Thích",
+                            FeatureId = 15,
+                            Weight = 1
                         },
                         new
                         {
                             Id = 70,
-                            Content = "Ít khi chơi",
-                            FeatureId = 15,
-                            Weight = 1
-                        },
-                        new
-                        {
-                            Id = 71,
-                            Content = "Thỉnh thoảng",
+                            Content = "Rất thích",
                             FeatureId = 15,
                             Weight = 2
-                        },
-                        new
-                        {
-                            Id = 72,
-                            Content = "Thường xuyên",
-                            FeatureId = 15,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 73,
-                            Content = "Không hút thuốc",
-                            FeatureId = 16,
-                            Weight = 1
-                        },
-                        new
-                        {
-                            Id = 74,
-                            Content = "Hút xã giao",
-                            FeatureId = 16,
-                            Weight = 2
-                        },
-                        new
-                        {
-                            Id = 75,
-                            Content = "Hút nhiều",
-                            FeatureId = 16,
-                            Weight = 3
-                        },
-                        new
-                        {
-                            Id = 76,
-                            Content = "Không uống",
-                            FeatureId = 17,
-                            Weight = 1
-                        },
-                        new
-                        {
-                            Id = 77,
-                            Content = "Uống xã giao",
-                            FeatureId = 17,
-                            Weight = 2
-                        },
-                        new
-                        {
-                            Id = 78,
-                            Content = "Uống nhiều",
-                            FeatureId = 17,
-                            Weight = 3
                         });
                 });
 
@@ -1418,22 +1360,22 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(400)")
+                        .HasColumnType("varchar(400) CHARACTER SET utf8mb4")
                         .HasMaxLength(400);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("Vote")
                         .HasColumnType("int");
@@ -1455,13 +1397,13 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("FromUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("ToUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -1483,17 +1425,17 @@ namespace MakeFriendSolution.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasMaxLength(5000);
 
                     b.Property<Guid>("ReceiverId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("SenderId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("SentAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -1519,38 +1461,38 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("AutoFilter")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<double>("Drawings")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
                     b.Property<double>("Hentai")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
                     b.Property<double>("Neutral")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
                     b.Property<double>("Porn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
                     b.Property<double>("Sexy")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -1570,7 +1512,7 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -1591,17 +1533,17 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("FromId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("ToId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
@@ -1612,29 +1554,28 @@ namespace MakeFriendSolution.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("FromId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("HasRelationship")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsAccept")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("RelationShipType")
                         .HasColumnType("int");
 
                     b.Property<Guid>("ToId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -1661,7 +1602,7 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -1678,13 +1619,12 @@ namespace MakeFriendSolution.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 5, 28, 0, 35, 19, 536, DateTimeKind.Local).AddTicks(273));
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2021, 7, 8, 1, 13, 10, 243, DateTimeKind.Local).AddTicks(4389));
 
                     b.HasKey("Id");
 
@@ -1694,7 +1634,7 @@ namespace MakeFriendSolution.Migrations
                         new
                         {
                             Id = 1,
-                            UpdatedAt = new DateTime(2021, 5, 28, 0, 35, 19, 552, DateTimeKind.Local).AddTicks(7088)
+                            UpdatedAt = new DateTime(2021, 7, 8, 1, 13, 10, 254, DateTimeKind.Local).AddTicks(4347)
                         });
                 });
 
@@ -1708,15 +1648,15 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("FromUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<double>("Score")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
                     b.Property<Guid>("ToUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -1735,11 +1675,11 @@ namespace MakeFriendSolution.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("NumberOflikes")
                         .ValueGeneratedOnAdd()
@@ -1752,11 +1692,11 @@ namespace MakeFriendSolution.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasDefaultValue("Image title");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -1769,8 +1709,7 @@ namespace MakeFriendSolution.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("FeatureDetailId")
                         .HasColumnType("int");
@@ -1779,7 +1718,7 @@ namespace MakeFriendSolution.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 

@@ -471,13 +471,21 @@ namespace MakeFriendSolution.Application
             var follow = await _context.Follows
                 .Where(x => x.FromUserId == userId).ToListAsync();
 
+            var user = await _context.Users.FindAsync(userId);
+
             var users = await (from u in _context.Users
+                               //where (u.Gender == user.FindPeople || user.FindPeople == EGender.Tất_Cả)
+                               //&& (GetAgeGroup(u.Dob) == user.FindAgeGroup || user.FindAgeGroup == EAgeGroup.Tất_cả)
                                select new UserCalculateVM()
                                {
                                    UserId = u.Id,
+                                   Dob = u.Dob,
                                    Age = CalculateAge(u.Dob),
                                    Gender = u.Gender
                                }).ToListAsync();
+
+            users = users.Where(u => (u.Gender == user.FindPeople || user.FindPeople == EGender.Tất_Cả)
+                               && (GetAgeGroup(u.Dob) == user.FindAgeGroup || user.FindAgeGroup == EAgeGroup.Tất_cả)).ToList();
 
             List<Guid> userIds = new List<Guid>
             {
@@ -501,9 +509,6 @@ namespace MakeFriendSolution.Application
             {
                 users.Remove(users.Where(x => x.UserId == item).FirstOrDefault());
             }
-
-            var user = await GetById(userId);
-
 
             foreach (var item in users)
             {

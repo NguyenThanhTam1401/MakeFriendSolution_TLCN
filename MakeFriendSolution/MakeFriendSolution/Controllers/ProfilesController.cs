@@ -70,8 +70,9 @@ namespace MakeFriendSolution.Controllers
             int tenNuSize = tenNu.Count;
             Random random = new Random();
             int gmailCount = 1;
+
             //Random Nu 40
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 200; i++)
             {
                 var user = new AppUser
                 {
@@ -92,9 +93,9 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
-                user.TypeAccount = ETypeAccount.Facebook;
+                user.TypeAccount = RandomEnumValue<ETypeAccount>();
                 user.UserName = user.Email;
-                user.NumberOfLikes = random.Next(10, 10000);
+                user.NumberOfLikes = random.Next(3, 99);
 
                 user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
 
@@ -104,7 +105,7 @@ namespace MakeFriendSolution.Controllers
 
                 int createdDay = random.Next(1, 29);
                 int createdMonth = random.Next(1, 13);
-                int createdYear = random.Next(2018, 2021);
+                int createdYear = random.Next(2020, 2022);
 
                 var dob = new DateTime(year, month, day);
                 var createdDate = new DateTime(createdYear, createdMonth, createdDay);
@@ -115,7 +116,7 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
             //Random Nam 50
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 185; i++)
             {
                 var user = new AppUser
                 {
@@ -136,9 +137,9 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
-                user.TypeAccount = ETypeAccount.Facebook;
+                user.TypeAccount = RandomEnumValue< ETypeAccount>();
                 user.UserName = user.Email;
-                user.NumberOfLikes = random.Next(10, 10000);
+                user.NumberOfLikes = random.Next(3, 99);
 
                 user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
 
@@ -148,7 +149,7 @@ namespace MakeFriendSolution.Controllers
 
                 int createdDay = random.Next(1, 29);
                 int createdMonth = random.Next(1, 13);
-                int createdYear = random.Next(2018, 2022);
+                int createdYear = random.Next(2020, 2022);
 
                 var dob = new DateTime(year, month, day);
                 var createdDate = new DateTime(createdYear, createdMonth, createdDay);
@@ -158,96 +159,96 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
 
-            //Random Nu 80
-            for (int i = 0; i < 20; i++)
-            {
-                var user = new AppUser
-                {
-                    FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)],
-                    Gender = EGender.Nữ,
+            ////Random Nu 80
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    var user = new AppUser
+            //    {
+            //        FullName = ho[random.Next(0, hoSize)] + " " + tenNu[random.Next(0, tenNuSize)],
+            //        Gender = EGender.Nữ,
 
-                    Email = (gmailCount++).ToString() + "@gmail.com",
-                    FindPeople = RandomEnumValue<EGender>(),
-                    Height = random.Next(145, 180),
-                    Weight = random.Next(30, 70),
-                    IsInfoUpdated = true,
-                    Job = RandomEnumValue<EJob>(),
-                    Location = RandomEnumValue<ELocation>(),
-                    PassWord = "1111",
-                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
-                    Role = ERole.User,
-                    Status = EUserStatus.Active
-                };
-                user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Title = "Kết bạn với " + user.FullName + " nhé!";
-                user.TypeAccount = ETypeAccount.System;
-                user.UserName = user.Email;
-                user.NumberOfLikes = random.Next(10, 10000);
+            //        Email = (gmailCount++).ToString() + "@gmail.com",
+            //        FindPeople = RandomEnumValue<EGender>(),
+            //        Height = random.Next(145, 180),
+            //        Weight = random.Next(30, 70),
+            //        IsInfoUpdated = true,
+            //        Job = RandomEnumValue<EJob>(),
+            //        Location = RandomEnumValue<ELocation>(),
+            //        PassWord = "1111",
+            //        PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+            //        Role = ERole.User,
+            //        Status = EUserStatus.Active
+            //    };
+            //    user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
+            //    user.Title = "Kết bạn với " + user.FullName + " nhé!";
+            //    user.TypeAccount = ETypeAccount.System;
+            //    user.UserName = user.Email;
+            //    user.NumberOfLikes = random.Next(3, 99);
 
-                user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
+            //    user.AvatarPath = "women/" + random.Next(101, 300) + ".jpg";
 
-                int day = random.Next(1, 29);
-                int month = random.Next(1, 13);
-                int year = random.Next(1970, 2007);
+            //    int day = random.Next(1, 29);
+            //    int month = random.Next(1, 13);
+            //    int year = random.Next(1970, 2007);
 
-                int createdDay = random.Next(1, 29);
-                int createdMonth = random.Next(1, 13);
-                int createdYear = random.Next(2018, 2021);
+            //    int createdDay = random.Next(1, 29);
+            //    int createdMonth = random.Next(1, 13);
+            //    int createdYear = random.Next(2020, 2021);
 
-                var dob = new DateTime(year, month, day);
-                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+            //    var dob = new DateTime(year, month, day);
+            //    var createdDate = new DateTime(createdYear, createdMonth, createdDay);
 
-                user.CreatedAt = createdDate;
-                user.Dob = dob.Date;
+            //    user.CreatedAt = createdDate;
+            //    user.Dob = dob.Date;
 
-                users.Add(user);
-            }
-            //Random Nam 90
-            for (int i = 0; i < 10; i++)
-            {
-                var user = new AppUser
-                {
-                    FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)],
-                    Gender = EGender.Nam,
+            //    users.Add(user);
+            //}
+            ////Random Nam 90
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var user = new AppUser
+            //    {
+            //        FullName = ho[random.Next(0, hoSize)] + " " + tenNam[random.Next(0, tenNamSize)],
+            //        Gender = EGender.Nam,
 
-                    Email = (gmailCount++).ToString() + "@gmail.com",
-                    FindPeople = RandomEnumValue<EGender>(),
-                    Height = random.Next(150, 200),
-                    Weight = random.Next(40, 80),
-                    IsInfoUpdated = true,
-                    Job = RandomEnumValue<EJob>(),
-                    Location = RandomEnumValue<ELocation>(),
-                    PassWord = "1111",
-                    PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
-                    Role = ERole.User,
-                    Status = EUserStatus.Active
-                };
-                user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
-                user.Title = "Kết bạn với " + user.FullName + " nhé!";
-                user.TypeAccount = ETypeAccount.System;
-                user.UserName = user.Email;
-                user.NumberOfLikes = random.Next(10, 10000);
+            //        Email = (gmailCount++).ToString() + "@gmail.com",
+            //        FindPeople = RandomEnumValue<EGender>(),
+            //        Height = random.Next(150, 200),
+            //        Weight = random.Next(40, 80),
+            //        IsInfoUpdated = true,
+            //        Job = RandomEnumValue<EJob>(),
+            //        Location = RandomEnumValue<ELocation>(),
+            //        PassWord = "1111",
+            //        PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
+            //        Role = ERole.User,
+            //        Status = EUserStatus.Active
+            //    };
+            //    user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
+            //    user.Title = "Kết bạn với " + user.FullName + " nhé!";
+            //    user.TypeAccount = ETypeAccount.System;
+            //    user.UserName = user.Email;
+            //    user.NumberOfLikes = random.Next(3, 99);
 
-                user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
+            //    user.AvatarPath = "men/" + random.Next(1, 100) + ".jpg";
 
-                int day = random.Next(1, 29);
-                int month = random.Next(1, 13);
-                int year = random.Next(1970, 2007);
+            //    int day = random.Next(1, 29);
+            //    int month = random.Next(1, 13);
+            //    int year = random.Next(1970, 2007);
 
-                int createdDay = random.Next(1, 29);
-                int createdMonth = random.Next(1, 13);
-                int createdYear = random.Next(2018, 2021);
+            //    int createdDay = random.Next(1, 29);
+            //    int createdMonth = random.Next(1, 13);
+            //    int createdYear = random.Next(2020, 2021);
 
-                var dob = new DateTime(year, month, day);
-                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
-                user.Dob = dob.Date;
-                user.CreatedAt = createdDate.Date;
+            //    var dob = new DateTime(year, month, day);
+            //    var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+            //    user.Dob = dob.Date;
+            //    user.CreatedAt = createdDate.Date;
 
-                users.Add(user);
-            }
+            //    users.Add(user);
+            //}
 
             //Random InActive Account 36
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 9; i++)
             {
                 var user = new AppUser
                 {
@@ -264,13 +265,13 @@ namespace MakeFriendSolution.Controllers
                     PassWord = "1111",
                     PhoneNumber = "+84" + (random.Next(100000000, 999999999)),
                     Role = ERole.User,
-                    Status = RandomEnumValue<EUserStatus>()
+                    Status = EUserStatus.Inactive
                 };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
-                user.TypeAccount = ETypeAccount.Google;
+                user.TypeAccount = RandomEnumValue<ETypeAccount>();
                 user.UserName = user.Email;
-                user.NumberOfLikes = random.Next(10, 10000);
+                user.NumberOfLikes = random.Next(3, 99);
 
                 while (user.Gender == EGender.Tất_Cả)
                 {
@@ -292,7 +293,7 @@ namespace MakeFriendSolution.Controllers
 
                 int createdDay = random.Next(1, 29);
                 int createdMonth = random.Next(1, 13);
-                int createdYear = random.Next(2018, 2021);
+                int createdYear = random.Next(2020, 2021);
 
                 var dob = new DateTime(year, month, day);
                 var createdDate = new DateTime(createdYear, createdMonth, createdDay);
@@ -303,22 +304,34 @@ namespace MakeFriendSolution.Controllers
                 users.Add(user);
             }
 
-            //var response = new List<UserResponse>();
-            //foreach (var item in users)
-            //{
-            //    var u = new UserResponse(item, _storageService);
-            //    response.Add(u);
-            //}
-            var fromDate = new DateTime(2018, 1, 1);
-            var toDate = new DateTime(2021, 12, 30);
+            foreach (var item in users)
+            {
+                _context.Users.Add(item);
+            }
+            _context.SaveChanges();
+
+            foreach (var item in users)
+            {
+                await GenData(item);
+            }
+            return Ok("Done");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("statistic")]
+        public IActionResult GenStatistic()
+        {
+            Random random = new Random();
+            var fromDate = new DateTime(2021, 1, 1);
+            var toDate = new DateTime(2021, 9, 30);
             List<Access> accesses = new List<Access>();
 
             while (toDate > fromDate)
             {
                 var access = new Access
                 {
-                    AuthorizeCount = random.Next(500, 2000),
-                    UnauthorizeCount = random.Next(200, 800),
+                    AuthorizeCount = random.Next(100, 230),
+                    UnauthorizeCount = random.Next(20, 100),
                     Date = fromDate.Date
                 };
                 fromDate = fromDate.AddDays(1);
@@ -326,15 +339,8 @@ namespace MakeFriendSolution.Controllers
             }
 
             _context.Accesses.AddRange(accesses);
-            _context.Users.AddRange(users);
             _context.SaveChanges();
-            var newUsers = _context.Users.ToList();
-
-            foreach (var item in newUsers)
-            {
-                await GenData(item);
-            }
-            return Ok();
+            return Ok("Done");
         }
 
         private static T RandomEnumValue<T>()
@@ -621,27 +627,11 @@ namespace MakeFriendSolution.Controllers
 
             var response = new
             {
-                //AtmosphereLike,
-                //Body,
-                //Character,
-                //DrinkBeer,
-                //Education,
-                //FavoriteMovie,
+
                 Gender,
                 FindPeople,
                 Job,
-                //LifeStyle,
                 Location,
-                //Marriage,
-                //MostValuable,
-                //Religion,
-                //Smoking,
-                //LikeTechnology,
-                //LikePet,
-                //PlaySport,
-                //Travel,
-                //Game,
-                //Shopping,
                 AgeGroup,
                 features
             };
