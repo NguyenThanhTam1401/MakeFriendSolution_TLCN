@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MakeFriendSolution.Migrations
 {
-    public partial class init2 : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,7 +81,7 @@ namespace MakeFriendSolution.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 8, 1, 13, 10, 243, DateTimeKind.Local).AddTicks(4389))
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 10, 18, 2, 28, 813, DateTimeKind.Local).AddTicks(8189))
                 },
                 constraints: table =>
                 {
@@ -105,7 +105,7 @@ namespace MakeFriendSolution.Migrations
                     Location = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 8, 1, 13, 10, 218, DateTimeKind.Local).AddTicks(7168)),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 10, 18, 2, 28, 787, DateTimeKind.Local).AddTicks(9589)),
                     NumberOfFiends = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfLikes = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfImages = table.Column<int>(nullable: false, defaultValue: 0),
@@ -462,7 +462,7 @@ namespace MakeFriendSolution.Migrations
             migrationBuilder.InsertData(
                 table: "SimilariryFeatures",
                 columns: new[] { "Id", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2021, 7, 8, 1, 13, 10, 254, DateTimeKind.Local).AddTicks(4347) });
+                values: new object[] { 1, new DateTime(2021, 7, 10, 18, 2, 28, 824, DateTimeKind.Local).AddTicks(9217) });
 
             migrationBuilder.InsertData(
                 table: "Users",

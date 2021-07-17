@@ -29,14 +29,14 @@ namespace MakeFriendSolution.Controllers
         }
 
 
-        [HttpGet("{fromId}")]
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetById(Guid fromId)
+        public async Task<IActionResult> GetById([FromQuery] GetRelationshipRequest request)
         {
             var user = _sessionService.GetDataFromToken();
             try
             {
-                var relationship = await _relationshipApp.GetById(fromId, user.UserId);
+                var relationship = await _relationshipApp.GetById(request.FromId, request.ToId);
                 return Ok(relationship);
             }
             catch (Exception e)
@@ -132,5 +132,12 @@ namespace MakeFriendSolution.Controllers
                 });
             }
         }
+    }
+
+    public class GetRelationshipRequest
+    {
+        public Guid FromId { get; set; }
+        public Guid ToId { get; set; }
+
     }
 }

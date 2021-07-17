@@ -310,6 +310,12 @@ namespace MakeFriendSolution.Controllers
             }
             _context.SaveChanges();
 
+
+            //_context.Users.AddRange(users);
+            //_context.SaveChanges();
+            //users = _context.Users.ToList();
+
+
             foreach (var item in users)
             {
                 await GenData(item);

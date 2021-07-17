@@ -329,7 +329,7 @@ namespace MakeFriendSolution.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "UserName or Password is not correct!"
+                    Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
                 });
             }
 
@@ -337,7 +337,7 @@ namespace MakeFriendSolution.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Please login with " + user.TypeAccount.ToString()
+                    Message = "Vui lòng đăng nhập với tài khoản " + user.TypeAccount.ToString()
                 });
             }
 
@@ -345,7 +345,7 @@ namespace MakeFriendSolution.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "UserName or Password is not correct!"
+                    Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
                 });
             }
 
@@ -371,7 +371,7 @@ namespace MakeFriendSolution.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Your account has been locked!"
+                    Message = "Tài khoản của bạn đã bị khóa bởi quản trị viên!"
                 });
             }
 
@@ -463,7 +463,7 @@ namespace MakeFriendSolution.Controllers
                 {
                     return BadRequest(new
                     {
-                        Message = "Your account has been locked!"
+                        Message = "Tài khoản của bạn đã bị khóa bởi quản trị viên!"
                     });
                 }
 

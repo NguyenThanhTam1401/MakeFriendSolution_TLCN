@@ -174,7 +174,7 @@ namespace MakeFriendSolution.Application
         public async Task<RelationshipResponse> GetById(Guid fromId, Guid toId)
         {
             var relationship = await _context.Relationships
-                .Where(x => x.FromId == fromId && x.ToId == toId && x.HasRelationship)
+                .Where(x => ((x.FromId == fromId && x.ToId == toId) || (x.FromId == toId && x.ToId == fromId)) && x.HasRelationship)
                 .FirstOrDefaultAsync();
 
             if (relationship == null)
