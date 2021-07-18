@@ -140,6 +140,16 @@ namespace MakeFriendSolution.Application
             }
         }
 
+        public async Task DeleteFromUseId(Guid userId)
+        {
+            var notis = await _context.Notifications
+                .Where(x => (x.FromId == userId || x.ToId == userId) && x.Type == "relationship" )
+                .ToListAsync();
+
+            _context.Notifications.RemoveRange(notis);
+            await _context.SaveChangesAsync();
+        }
+
         private class AvatarResponse
         {
             public Guid UserId { get; set; }

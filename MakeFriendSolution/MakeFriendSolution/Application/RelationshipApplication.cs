@@ -14,10 +14,12 @@ namespace MakeFriendSolution.Application
     {
         private readonly MakeFriendDbContext _context;
         private readonly IStorageService _storageService;
+        private readonly INotificationApplication _notificationApplication;
 
-        public RelationshipApplication(MakeFriendDbContext context, IStorageService storageService)
+        public RelationshipApplication(MakeFriendDbContext context, IStorageService storageService, INotificationApplication notificationApplication)
         {
             _context = context;
+            _notificationApplication = notificationApplication;
             _storageService = storageService;
         }
 
@@ -53,6 +55,9 @@ namespace MakeFriendSolution.Application
             relationship.IsAccept = true;
             relationship.UpdatedAt = DateTime.Now;
             relationship.HasRelationship = true;
+
+            await _notificationApplication.DeleteFromUseId(relationship.FromId);
+            await _notificationApplication.DeleteFromUseId(relationship.ToId);
 
             try
             {
@@ -137,6 +142,12 @@ namespace MakeFriendSolution.Application
             relationship.UpdatedAt = DateTime.Now;
             relationship.HasRelationship = false;
 
+            var notis = await _context.Notifications
+                .Where(x => ((x.FromId == relationship.FromId && x.ToId == relationship.ToId)
+                || (x.FromId == relationship.ToId && x.ToId == relationship.FromId))
+                && x.Type == "relationship").ToListAsync();
+
+            _context.Notifications.RemoveRange(notis);
             try
             {
                 _context.Relationships.Update(relationship);
