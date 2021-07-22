@@ -4,14 +4,16 @@ using MakeFriendSolution.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MakeFriendSolution.Migrations
 {
     [DbContext(typeof(MakeFriendDbContext))]
-    partial class MakeFriendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210718081547_UpdateMessage")]
+    partial class UpdateMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

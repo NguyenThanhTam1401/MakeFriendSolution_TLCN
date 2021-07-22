@@ -88,15 +88,23 @@ namespace MakeFriendSolution.Application
                     users = users.Where(x => x.Gender == gender).ToList();
             }
 
-            if (filter.FromAge != 0)
-            {
-                users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
-            }
 
-            if (filter.ToAge > filter.FromAge)
+            if (filter.AgeGroup != null && filter.AgeGroup != "")
             {
-                users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
+                if (Enum.TryParse(filter.AgeGroup.Trim(), out EAgeGroup ageGroup))
+                {
+                    users = users.Where(x => GetAgeGroup(x.Dob) == ageGroup).ToList();
+                }
             }
+            //if (filter.FromAge != 0)
+            //{
+            //    users = users.Where(x => CalculateAge(x.Dob) >= filter.FromAge).ToList();
+            //}
+
+            //if (filter.ToAge > filter.FromAge)
+            //{
+            //    users = users.Where(x => CalculateAge(x.Dob) <= filter.ToAge).ToList();
+            //}
         }
 
         public async Task<List<UserDisplay>> GetUserDisplay(List<AppUser> users, bool nonImage = false)
@@ -606,6 +614,8 @@ namespace MakeFriendSolution.Application
                 var distance = new Coordinates(u.Latitude, u.Longitude).DistanceTo(currentCoordinates);
                 u.Distance = distance;
             }
+
+            users = users.Where(x => x.Distance <= request.Distance).ToList();
 
             users = users.OrderBy(x => x.Distance)
                     .Skip((request.PageIndex - 1) * request.PageSize)
