@@ -456,7 +456,7 @@ namespace MakeFriendSolution.Controllers
 
             var pageTotal = data.Count / pagingRequest.PageSize;
 
-            var users = data
+            var users = data.OrderByDescending(x=>x.CreatedAt)
             .Skip((pagingRequest.PageIndex - 1) * pagingRequest.PageSize)
             .Take(pagingRequest.PageSize).ToList();
 

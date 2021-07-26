@@ -445,6 +445,7 @@ namespace MakeFriendSolution.Application
 
                 var total = users.Count / request.PageSize;
                 users = users.OrderByDescending(x => x.Point)
+                    .OrderByDescending(x=>x.CreatedAt)
                     .Skip((request.PageIndex - 1) * request.PageSize)
                     .Take(request.PageSize).ToList();
 
