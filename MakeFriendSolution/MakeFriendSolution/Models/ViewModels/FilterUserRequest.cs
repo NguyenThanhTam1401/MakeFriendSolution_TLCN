@@ -9,5 +9,6 @@ namespace MakeFriendSolution.Models.ViewModels
     {
         public string Feature { get; set; }
         public bool IsAscending { get; set; }
+        public string Name { get; set; }
     }
 }

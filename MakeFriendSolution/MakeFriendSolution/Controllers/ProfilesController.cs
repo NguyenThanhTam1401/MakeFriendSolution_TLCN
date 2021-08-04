@@ -137,7 +137,7 @@ namespace MakeFriendSolution.Controllers
                 };
                 user.Summary = "Mình là " + user.FullName + ", kết bạn với mình nhé!";
                 user.Title = "Kết bạn với " + user.FullName + " nhé!";
-                user.TypeAccount = RandomEnumValue< ETypeAccount>();
+                user.TypeAccount = RandomEnumValue<ETypeAccount>();
                 user.UserName = user.Email;
                 user.NumberOfLikes = random.Next(3, 99);
 
@@ -349,6 +349,79 @@ namespace MakeFriendSolution.Controllers
             return Ok("Done");
         }
 
+        [AllowAnonymous]
+        [HttpGet("images")]
+        public IActionResult GenImages()
+        {
+            var random = new Random();
+            var users = _context.Users.Take(105).ToList();
+            var images = new List<ThumbnailImage>();
+
+            var titles = new List<string>()
+            {
+                "Đẹp không mọi người 😍 🥰 😘",
+                "Nay đi chơi vui quá 😋 😛 😝",
+                "Để đây và không nói gì 🤔 🤭 🤫",
+                "Làm quen với mình nhé 😇 😇 😇",
+                "Covid ở nhà nha mọi người 😷 🤒 🤕",
+                "Kết bạn nè 😝 😝 😝",
+                "Các bạn thấy tớ có ngầu không 😎 😎 😎",
+                "Kết bạn nhaaaaaaa 🤗 🤗 🤗",
+                "Chúc cả nhà vui vẻ 😉 😉 😉",
+                "Have a nice day 🥳 🥳 🥳",
+                "Chúc mọi người vui 🤭 🤭 🤭"
+            };
+
+            for (int i = 0; i < 50; i++)
+            {
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2020, 2021);
+
+                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+
+                var image = new ThumbnailImage()
+                {
+                    CreatedAt = createdDate,
+                    ImagePath = "women/" + random.Next(101, 300) + ".jpg",
+                    Status = ImageStatus.Approved,
+                    UserId = users[i].Id,
+                    NumberOflikes = random.Next(5, 60),
+                    Title = titles[random.Next(0, 10)]
+                };
+
+                images.Add(image);
+            }
+
+            for (int i = 50; i < 100; i++)
+            {
+                int createdDay = random.Next(1, 29);
+                int createdMonth = random.Next(1, 13);
+                int createdYear = random.Next(2020, 2021);
+
+                var createdDate = new DateTime(createdYear, createdMonth, createdDay);
+
+                var image = new ThumbnailImage()
+                {
+                    CreatedAt = createdDate,
+                    ImagePath = "women/" + random.Next(101, 300) + ".jpg",
+                    Status = ImageStatus.Approved,
+                    UserId = users[i].Id,
+                    NumberOflikes = random.Next(5, 60),
+                    Title = titles[random.Next(0, 10)]
+                };
+
+                images.Add(image);
+            }
+
+
+            _context.ThumbnailImages.AddRange(images);
+            _context.SaveChanges();
+            
+
+            return Ok("Done");
+        }
+
         private static T RandomEnumValue<T>()
         {
             Random random = new Random();
@@ -456,7 +529,7 @@ namespace MakeFriendSolution.Controllers
 
             var pageTotal = data.Count / pagingRequest.PageSize;
 
-            var users = data.OrderByDescending(x=>x.CreatedAt)
+            var users = data.OrderByDescending(x => x.CreatedAt)
             .Skip((pagingRequest.PageIndex - 1) * pagingRequest.PageSize)
             .Take(pagingRequest.PageSize).ToList();
 
@@ -530,7 +603,7 @@ namespace MakeFriendSolution.Controllers
 
 
             var users = (from i in us
-                                select new UserResponse(i, _storageService)
+                         select new UserResponse(i, _storageService)
                                 ).ToList();
 
             foreach (var item in users)

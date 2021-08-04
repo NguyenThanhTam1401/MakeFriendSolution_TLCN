@@ -22,16 +22,14 @@ namespace MakeFriendSolution.Controllers
         }
     
         [HttpGet]
-        [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetImageScore()
         {
             return Ok(await _imageScoreApp.GetImageScore());
         }
 
         [HttpPut]
-        [AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateImageScore([FromForm] ImageScore imageScore)
         {
             var success = await _imageScoreApp.UpdateImageScore(imageScore);

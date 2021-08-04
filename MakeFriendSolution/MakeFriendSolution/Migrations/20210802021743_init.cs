@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MakeFriendSolution.Migrations
@@ -13,7 +12,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(nullable: false),
                     AuthorizeCount = table.Column<int>(nullable: false, defaultValue: 0),
                     UnauthorizeCount = table.Column<int>(nullable: false, defaultValue: 0)
@@ -28,7 +27,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     WeightRate = table.Column<double>(nullable: false, defaultValue: 1.0),
                     IsCalculated = table.Column<bool>(nullable: false),
@@ -44,7 +43,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Active = table.Column<bool>(nullable: false),
                     AutoFilter = table.Column<bool>(nullable: false),
                     Drawings = table.Column<double>(nullable: false, defaultValue: 0.0),
@@ -64,7 +63,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FromId = table.Column<Guid>(nullable: false),
                     ToId = table.Column<Guid>(nullable: false),
                     Type = table.Column<string>(nullable: false),
@@ -80,8 +79,8 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 10, 18, 2, 28, 813, DateTimeKind.Local).AddTicks(8189))
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 8, 2, 9, 17, 43, 79, DateTimeKind.Local).AddTicks(36))
                 },
                 constraints: table =>
                 {
@@ -105,7 +104,7 @@ namespace MakeFriendSolution.Migrations
                     Location = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 7, 10, 18, 2, 28, 787, DateTimeKind.Local).AddTicks(9589)),
+                    UpdatedAt = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2021, 8, 2, 9, 17, 43, 52, DateTimeKind.Local).AddTicks(5083)),
                     NumberOfFiends = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfLikes = table.Column<int>(nullable: false, defaultValue: 0),
                     NumberOfImages = table.Column<int>(nullable: false, defaultValue: 0),
@@ -135,7 +134,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: false),
                     Weight = table.Column<int>(nullable: false, defaultValue: 1),
                     FeatureId = table.Column<int>(nullable: false)
@@ -155,7 +154,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
                     IsLock = table.Column<bool>(nullable: false),
                     FromUserId = table.Column<Guid>(nullable: false),
@@ -181,7 +180,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false)
@@ -206,7 +205,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(maxLength: 100, nullable: false),
                     Content = table.Column<string>(maxLength: 400, nullable: false),
@@ -229,7 +228,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false)
@@ -254,9 +253,11 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(maxLength: 5000, nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 1),
+                    MessageType = table.Column<string>(nullable: true),
+                    FilePath = table.Column<string>(nullable: true),
                     SentAt = table.Column<DateTime>(nullable: false),
                     SenderId = table.Column<Guid>(nullable: false),
                     ReceiverId = table.Column<Guid>(nullable: false)
@@ -281,7 +282,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FromId = table.Column<Guid>(nullable: false),
                     ToId = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
@@ -310,7 +311,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FromUserId = table.Column<Guid>(nullable: false),
                     ToUserId = table.Column<Guid>(nullable: false),
                     Score = table.Column<double>(nullable: false, defaultValue: 0.0)
@@ -330,7 +331,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: false, defaultValue: "Image title"),
                     ImagePath = table.Column<string>(nullable: false),
@@ -354,7 +355,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(nullable: false),
                     FeatureDetailId = table.Column<int>(nullable: false),
                     FeatureId = table.Column<int>(nullable: false)
@@ -384,7 +385,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(nullable: false),
                     FeatureDetailId = table.Column<int>(nullable: false),
                     FeatureId = table.Column<int>(nullable: false)
@@ -417,7 +418,7 @@ namespace MakeFriendSolution.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(nullable: false),
                     ImageId = table.Column<int>(nullable: false)
                 },
@@ -462,7 +463,7 @@ namespace MakeFriendSolution.Migrations
             migrationBuilder.InsertData(
                 table: "SimilariryFeatures",
                 columns: new[] { "Id", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2021, 7, 10, 18, 2, 28, 824, DateTimeKind.Local).AddTicks(9217) });
+                values: new object[] { 1, new DateTime(2021, 8, 2, 9, 17, 43, 90, DateTimeKind.Local).AddTicks(8479) });
 
             migrationBuilder.InsertData(
                 table: "Users",

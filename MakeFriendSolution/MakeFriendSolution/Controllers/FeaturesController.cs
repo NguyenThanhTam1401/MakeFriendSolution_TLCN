@@ -41,6 +41,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(features);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddFeature([FromBody] CreateFeatureRequest request)
         {
             var feature = new Feature()
@@ -55,7 +56,9 @@ namespace MakeFriendSolution.Controllers
             await SetUpdateScore();
             return Ok(feature);
         }
+        
         [HttpPost("content")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddFeatureDetail([FromBody] CreateFeatureDetailRequest request)
         {
             var featureDetail = new FeatureDetail()
@@ -69,7 +72,9 @@ namespace MakeFriendSolution.Controllers
             await SetUpdateScore();
             return Ok(featureDetail);
         }
+        
         [HttpPut("content")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateFeatureDetail([FromBody] UpdateFeatureDetailRequest request)
         {
             var featureDetail = await _context.FeatureDetails.FindAsync(request.Id);
@@ -90,6 +95,7 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateFeature([FromBody] UpdateFeatureRequest request)
         {
             var updateFeature = await _featureApplication.GetFeatureById(request.Id);
@@ -128,6 +134,7 @@ namespace MakeFriendSolution.Controllers
         }
 
         [HttpDelete("content/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteFeatureDetail(int id)
         {
             var status = await _featureApplication.DeleteFeatureDetail(id);

@@ -475,7 +475,7 @@ namespace MakeFriendSolution.Application
         public async Task<List<UserCalculateVM>> GetUsersToCalculate(Guid userId)
         {
             var blockUser = await _context.BlockUsers
-                .Where(x => x.FromUserId == userId || x.ToUserId == userId).ToListAsync();
+                .Where(x => (x.FromUserId == userId || x.ToUserId == userId) && x.IsLock).ToListAsync();
 
             var follow = await _context.Follows
                 .Where(x => x.FromUserId == userId).ToListAsync();

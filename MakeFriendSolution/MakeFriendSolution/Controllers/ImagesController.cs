@@ -387,7 +387,7 @@ namespace MakeFriendSolution.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpGet("WaitingImage")]
         public async Task<IActionResult> GetInvalidImage([FromQuery] PagingRequest request)
         {
@@ -395,7 +395,7 @@ namespace MakeFriendSolution.Controllers
             return Ok(images);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Approved/{imageId}")]
         public async Task<IActionResult> ApprovedImage(int imageId)
         {
@@ -405,7 +405,7 @@ namespace MakeFriendSolution.Controllers
                 return BadRequest();
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpPut("BlockOut/{imageId}")]
         public async Task<IActionResult> BlockOutImage(int imageId)
         {

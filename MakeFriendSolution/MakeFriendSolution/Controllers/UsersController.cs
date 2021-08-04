@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using MakeFriendSolution.Models.Enum;
 using MakeFriendSolution.Application;
 using Microsoft.AspNetCore.Http;
+using MakeFriendSolution.Common;
 
 namespace MakeFriendSolution.Controllers
 {
@@ -577,6 +578,12 @@ namespace MakeFriendSolution.Controllers
 
                 default:
                     break;
+            }
+
+            if (!string.IsNullOrEmpty(request.Name))
+            {
+                var name = request.Name.NonUnicode().ToLower();
+                users = users.Where(x => x.FullName.NonUnicode().ToLower().Contains(name)).ToList();
             }
 
             var pageTotal = users.Count / request.PageSize;
