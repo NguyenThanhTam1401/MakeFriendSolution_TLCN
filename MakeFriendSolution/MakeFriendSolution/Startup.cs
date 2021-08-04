@@ -62,8 +62,8 @@ namespace MakeFriendSolution
             services.AddSignalR();
             
             services.AddDbContext<MakeFriendDbContext>(options =>
-                //options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
-                options.UseMySql(Configuration.GetConnectionString("MakeFriendConnection")
+                options.UseSqlServer(Configuration.GetConnectionString("MakeFriendConnection")
+                //options.UseMySql(Configuration.GetConnectionString("MakeFriendConnection")
                 ));
 
             //Declare DI
